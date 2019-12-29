@@ -6,7 +6,6 @@ public class FandeisiaGameManager{
 
     public FandeisiaGameManager(){
     }
-
     public List<Treasure> treasures = new ArrayList<>(); // Quando for 0 gameIsOver = true.
     public List<Hole> holes = new ArrayList<>();
     public List<Creature> creatures = new ArrayList<>();
@@ -72,7 +71,6 @@ public class FandeisiaGameManager{
     public void setRows(int rows){
         this.rows = rows;
     }
-
     public int getColumns(){
         return columns;
     }
