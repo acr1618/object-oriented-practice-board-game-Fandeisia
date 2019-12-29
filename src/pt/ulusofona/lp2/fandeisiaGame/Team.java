@@ -9,9 +9,6 @@ public class Team{
     protected int coins;
 
 
-    public Team(){
-
-    }
     public Team(int id, String name, int points, int coins){
         this.id =id;
         this.name = name;
