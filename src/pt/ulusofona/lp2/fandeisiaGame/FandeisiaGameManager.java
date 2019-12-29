@@ -10,8 +10,8 @@ public class FandeisiaGameManager{
     public List<Treasure> treasures = new ArrayList<>(); // Quando for 0 gameIsOver = true.
     public List<Hole> holes = new ArrayList<>();
     public List<Creature> creatures = new ArrayList<>();
-    public int ROWS;
-    public int COLUMNS;
+    public int rows;
+    public int columns;
     public Ldr teamLdr = new Ldr (10, "LDR", 0, 50);
     public Resistencia teamRes = new Resistencia (20, "RESISTENCIA", 0, 50);
     public Team currentTeam;
@@ -26,7 +26,7 @@ public class FandeisiaGameManager{
                 {"Dragao", "dragon.png", "add description", String.valueOf(9)},
                 {"Elfo", "elf.png", "add description", String.valueOf(5)},
                 {"Gigante", "giant.png", "add description", String.valueOf(5)},
-                {"Humano", "human.png", "add description", String.valueOf(2)},
+                {"Humano", "human.png", "add description", String.valueOf(3)},
         };
     }
     public String[][] getSpellTypes(){
@@ -67,8 +67,6 @@ public class FandeisiaGameManager{
 
     public int startGame(String[] content, int rows, int columns){
         System.out.println("Entrou em startGame");
-        ROWS = rows;
-        COLUMNS = columns;
         /*
         Deve inicializar as estruturas de dados
         relevantes para processar um jogo.
@@ -217,7 +215,7 @@ public class FandeisiaGameManager{
         return 0;
 
     }
-    public void setInitialTeamId(int teamId){
+    public void setInitialTeam(int teamId){
         if (teamId == teamLdr.getId()){
             currentTeam = teamLdr;
         }else {
@@ -294,7 +292,7 @@ public class FandeisiaGameManager{
         return currentTeam.getId();
     }
 
-    public int getCurrentTeamScore(int teamId){
+    public int getCurrentScore(int teamId){
         System.out.println("Estou em getCurrentTeamScore");
         return currentTeam.getPoints();
     }
