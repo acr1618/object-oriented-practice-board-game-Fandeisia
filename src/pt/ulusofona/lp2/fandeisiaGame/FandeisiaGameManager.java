@@ -162,6 +162,7 @@ public class FandeisiaGameManager{
             }
         }*/
 
+
         System.out.println(creatures);
         System.out.println(holes);
         System.out.println(treasures);
