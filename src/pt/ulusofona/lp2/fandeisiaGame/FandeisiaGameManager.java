@@ -81,47 +81,6 @@ public class FandeisiaGameManager{
         System.out.println("Entrou em startGame");
         setRows(rows);
         setColumns(columns);
-        /*
-        Deve inicializar as estruturas de dados
-        relevantes para processar um jogo.
-        O ​array content​ irá descrever o
-        conteúdo inicial do mundo (criaturas e
-        tesouros, buracos), tendo para isso várias
-        Strings. Cada String vai representar um
-        objecto do mundo. As Strings vão ter um
-        dos seguintes formatos:
-        Para criaturas:
-        “id: <id>, type: <type>,
-        teamId: <teamId>, x: <x>, y:
-        <y>, orientation:
-        <orientation>”
-        Para tesouros:
-        “id: <id>, type: treasure, x:
-        <x>, y: <y>”
-        Para buracos:
-        “id: <id>, type: hole, x: <x>, y: <y>”
-        As posições onde não exista nem uma
-        criatura, nem um tesouro, nem um buraco,
-        são posições vazias.
-        Esta função tem de validar os 2 exércitos
-        de forma a ver se respeitam o ​plafond​ de
-        pontos inicial.
-        Se ambos os exércitos respeitarem o
-        plafond, ​ deve ser devolvido o valor
-        numérico zero.
-        Se nenhum dos exércitos respeitar o
-        plafond respectivo, deve ser devolvido o
-        valor numérico um.
-        Se o exército da equipa LDR (Humano)
-        não respeitar o seu ​plafond​, deve ser
-        devolvido o valor dois.
-        Se o exército da equipa RESISTENCIA não
-        respeitar o seu ​plafond, ​ deve ser devolvido
-        o valor numérico três.
-        Os argumentos ​rows e columns
-        vão-nos indicar as dimensões do
-        tabuleiro.
-        */
         for(String line: content){
 
             String[] individual_line = line.split(", ");
