@@ -49,11 +49,11 @@ public class FandeisiaGameManager{
         Map<String, Integer> computerArmy = new HashMap<>();
 
         // Criando 1 apenas para teste.
-        computerArmy.put("Anao", 0); // criar um random entre 0 e 3.
-        computerArmy.put("Dragao", 0);
-        computerArmy.put("Elfo", 0);
-        computerArmy.put("Gigante", 0);
-        computerArmy.put("Humano", 1);
+        computerArmy.put("Anao", new Random().nextInt(4)); // criar um random entre 0 e 3.
+        computerArmy.put("Dragao", new Random().nextInt(4));
+        computerArmy.put("Elfo", new Random().nextInt(4));
+        computerArmy.put("Gigante", new Random().nextInt(4));
+        computerArmy.put("Humano", new Random().nextInt(4));
         return computerArmy;
         /*
         Deve devolver o exército escolhido pelo
