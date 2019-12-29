@@ -43,6 +43,7 @@ public class FandeisiaGameManager{
                 {"Descongela", "Descrição do feitiço", String.valueOf(8)},
         };
     }
+
     public Map<String, Integer> createComputerArmy(){
         System.out.println("Entrou em createComputerArmy");
 
@@ -65,8 +66,24 @@ public class FandeisiaGameManager{
         */
     }
 
+    public int getRows(){
+        return rows;
+    }
+    public void setRows(int rows){
+        this.rows = rows;
+    }
+
+    public int getColumns(){
+        return columns;
+    }
+    public void setColumns(int columns){
+        this.columns = columns;
+    }
+
     public int startGame(String[] content, int rows, int columns){
         System.out.println("Entrou em startGame");
+        setRows(rows);
+        setColumns(columns);
         /*
         Deve inicializar as estruturas de dados
         relevantes para processar um jogo.
@@ -334,39 +351,39 @@ public class FandeisiaGameManager{
         return "um jogador de futebol";
     }
 
-    public boolean PushNorth(int x, int y){
+    public boolean pushNorth(int x, int y){
         return true; // Custa 1 Move 1 para Norte
     }
 
-    public boolean PushEast(int x, int y){
+    public boolean pushEast(int x, int y){
         return true; // Custa 1 Move 1 para Leste
     }
 
-    public boolean PushSouth(int x, int y){
+    public boolean pushSouth(int x, int y){
         return true; // Custa 1 move para Sul
     }
 
-    public boolean PushWest(int x, int y){
+    public boolean pushWest(int x, int y){
         return true; // Custa 1 Move 1 para Oeste
     }
 
-    public boolean ReducesRange(int x, int y){
+    public boolean reducesRange(int x, int y){
         return true; // Custa 2 Reduz o alcance para
     }
 
-    public boolean DoubleRange(int x, int y){
+    public boolean doubleRange(int x, int y){
         return true; // Custa 3 Aumenta alcance para o dobro
     }
 
-    public boolean Freezes(int x, int y){
+    public boolean freezes(int x, int y){
         return true; // Custa 3 Não move neste turno
     }
 
-    public boolean Freezes4Ever(int x, int y){
+    public boolean freezes4Ever(int x, int y){
         return true; // Custa 10 Não move até o fim do jogo
     }
 
-    public boolean Unfreezes(int x, int y){
+    public boolean unfreezes(int x, int y){
         return true; // Custa 8 Inverte aplicação do Freezes4Ever.
     }
 }
