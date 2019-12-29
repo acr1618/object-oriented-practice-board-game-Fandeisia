@@ -305,7 +305,7 @@ public class FandeisiaGameManager{
     public String whoIsLordEder(){
         System.out.println("Estou em whoIsLordEder");
 
-        return "um jogador de futebol";
+        return "Éderzito António Macedo Lopes";
     }
 
     public boolean pushNorth(int x, int y){
