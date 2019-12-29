@@ -2,12 +2,16 @@ package pt.ulusofona.lp2.fandeisiaGame;
 
 import java.util.List;
 
-public abstract class Team{
+public class Team{
     protected int id;
     protected String name;
     protected int points;
     protected int coins;
 
+
+    public Team(){
+
+    }
     public Team(int id, String name, int points, int coins){
         this.id =id;
         this.name = name;

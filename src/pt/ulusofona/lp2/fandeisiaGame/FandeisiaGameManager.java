@@ -13,7 +13,7 @@ public class FandeisiaGameManager{
     public int columns;
     public Ldr teamLdr = new Ldr (10, "LDR", 0, 50);
     public Resistencia teamRes = new Resistencia (20, "RESISTENCIA", 0, 50);
-    public Team currentTeam;
+    public Team currentTeam = new Team();
 
     public int turns;
     public int turnsWithoutTreasure; // Será usado no gameIsOver. Quando for for >= 15 gameIsOver = true;
@@ -258,7 +258,6 @@ public class FandeisiaGameManager{
             }
         }
         return 0;
-
     }
 
     public int getCurrentTeamId(){
@@ -267,7 +266,7 @@ public class FandeisiaGameManager{
     }
 
     public int getCurrentScore(int teamId){
-        System.out.println("Estou em getCurrentTeamScore");
+        System.out.println("Estou em getCurrentScore");
         return currentTeam.getPoints();
     }
 
