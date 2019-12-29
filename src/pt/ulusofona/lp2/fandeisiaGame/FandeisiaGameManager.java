@@ -307,8 +307,6 @@ public class FandeisiaGameManager{
 
         return "Éderzito António Macedo Lopes";
     }
-
-
     public boolean pushNorth(int x, int y){
         return true; // Custa 1 Move 1 para Norte
     }
