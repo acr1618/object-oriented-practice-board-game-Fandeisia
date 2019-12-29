@@ -77,7 +77,6 @@ public class FandeisiaGameManager{
     public void setColumns(int columns){
         this.columns = columns;
     }
-
     public int startGame(String[] content, int rows, int columns){
         System.out.println("Entrou em startGame");
         setRows(rows);
