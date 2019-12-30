@@ -16,23 +16,23 @@ public class FandeisiaGameManager{
     Team teamRes = new Team (20, "RESISTENCIA", 0, 50);
     Team currentTeam = new Team(0,"0",0,0);
 
-    int ROWS;
-    int COLUMNS;
+    int rows;
+    int columns;
     int currentTurnCounter;
     int turnsWithoutTreasure; // Será usado no gameIsOver. Quando for for >= 15 gameIsOver = true;
     long logCounter = 0;
 
     public void setRows(int rows){
-        this.ROWS = rows;
+        this.rows = rows;
     }
     public void setColumns(int columns){
-        this.COLUMNS = columns;
+        this.columns = columns;
     }
     public int getRows(){
-        return ROWS;
+        return rows;
     }
     public int getColumns(){
-        return COLUMNS;
+        return columns;
     }
 
     // Dado binário (0 ou 1)
@@ -294,6 +294,7 @@ public class FandeisiaGameManager{
 
 
     // Divisor de águas - Pós criação de exército ok
+    // --------------------------------------------
 
 
 
@@ -332,9 +333,7 @@ public class FandeisiaGameManager{
         */
     }
 
-
-
-
+    //-----------------------------------------------
 
     // Feitiços and afins :
 
