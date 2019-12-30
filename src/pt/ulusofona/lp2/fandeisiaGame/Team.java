@@ -32,7 +32,7 @@ public class Team{
     }
 
     public int getCoins(){
-        return coins;
+        return this.coins;
     }
 
     public void addCoins(int coins){

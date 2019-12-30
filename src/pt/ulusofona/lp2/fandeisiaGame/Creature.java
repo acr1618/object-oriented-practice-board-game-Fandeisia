@@ -43,5 +43,9 @@ public abstract class Creature extends Element {
 
     public abstract boolean spin();
 
+    /*public void  spellCreature(Spell spellName){
+        this.spellName = spellName;
+    };*/
+
 
 }

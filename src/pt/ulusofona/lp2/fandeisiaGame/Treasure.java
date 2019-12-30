@@ -1,6 +1,6 @@
 package pt.ulusofona.lp2.fandeisiaGame;
 
-public abstract class Treasure extends Element{
+public class Treasure extends Element{
 
     protected String metalName;
     protected int points;
@@ -12,7 +12,7 @@ public abstract class Treasure extends Element{
 
     @Override
     public String toString() {
-        return id + " | " + points + " @ " + "(" + x +", " + y + ") " + metalName;
+        return id + " | " + points + " @ " + "(" + x +", " + y + ") ";
     }
 
     public int getPoints(){

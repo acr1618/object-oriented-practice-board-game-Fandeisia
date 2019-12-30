@@ -1,25 +1,72 @@
 package pt.ulusofona.lp2.fandeisiaGame;
 import java.io.File;
 import java.util.*;
-
+import java.io.*;
+import java.util.concurrent.ThreadLocalRandom;
 public class FandeisiaGameManager{
 
     public FandeisiaGameManager(){
     }
-    public List<Treasure> treasures = new ArrayList<>(); // Quando for 0 gameIsOver = true.
-    public List<Hole> holes = new ArrayList<>();
-    public List<Creature> creatures = new ArrayList<>();
-    public int rows;
-    public int columns;
-    public Ldr teamLdr = new Ldr (10, "LDR", 0, 50);
-    public Resistencia teamRes = new Resistencia (20, "RESISTENCIA", 0, 50);
-    public Team currentTeam;
 
-    public int turns;
-    public int turnsWithoutTreasure; // Será usado no gameIsOver. Quando for for >= 15 gameIsOver = true;
+    List<Treasure> treasures = new ArrayList<>(); // Quando for 0 gameIsOver = true.
+    List<Hole> holes = new ArrayList<>();
+    List<Creature> creatures = new ArrayList<>();
+
+    Team teamLdr = new Team (10, "LDR", 0, 50);
+    Team teamRes = new Team (20, "RESISTENCIA", 0, 50);
+    Team currentTeam = new Team(0,"0",0,0);
+
+    int ROWS;
+    int COLUMNS;
+    int currentTurnCounter;
+    int turnsWithoutTreasure; // Será usado no gameIsOver. Quando for for >= 15 gameIsOver = true;
+    long logCounter = 0;
+
+    public void setRows(int rows){
+        this.ROWS = rows;
+    }
+    public void setColumns(int columns){
+        this.COLUMNS = columns;
+    }
+    public int getRows(){
+        return ROWS;
+    }
+    public int getColumns(){
+        return COLUMNS;
+    }
+
+    // Dado binário (0 ou 1)
+    int rollDiceBinary(){ return ThreadLocalRandom.current().nextInt(1 );
+    }
+
+    // Contador para as linhas impressas no console vindas das funções - Lembrar que se crashar o long deve-se zerar no limite.
+    long iterate(long i){
+        if (i < 2147483647){
+        logCounter++;
+        return logCounter;
+        }else {
+            logCounter = -2000000000;
+        return logCounter;
+        }
+    }
+
+    /*int setCurrentTeamId(){
+        this.dice = rollDiceBinary();
+        if (this.dice =0 ){
+            currentTeamId = 10;
+        }
+        return 0;
+    }
+    int dice =
+    if (dice = 0){
+        Team CurrentTeam = teamLdr;
+    } else {
+        Team CurrentTeam = teamRes;
+    }*/  // serCurrentTeamId(?)
+
 
     public String[][] getCreatureTypes(){
-        System.out.println("Entrou em getCreatureTypes");
+        System.out.println( iterate(logCounter) + " - "+ "IN getCreatureTypes\n -----------------------------------\n");
         return new String[][]{
                 {"Anao", "dwarf.png", "add description", String.valueOf(1)},
                 {"Dragao", "dragon.png", "add description", String.valueOf(9)},
@@ -27,24 +74,10 @@ public class FandeisiaGameManager{
                 {"Gigante", "giant.png", "add description", String.valueOf(5)},
                 {"Humano", "human.png", "add description", String.valueOf(3)},
         };
-    }
-    public String[][] getSpellTypes(){
-        System.out.println("Got inside getSpellTypes");
-        return new String[][]{
-                {"Empurra Para Norte", "Descrição do feitiço", String.valueOf(1)},
-                {"Empurra Para Este", "Descrição do feitiço", String.valueOf(1)},
-                {"Empurra Para Sul", "Descrição do feitiço", String.valueOf(1)},
-                {"Empurra Para Oeste", "Descrição do feitiço", String.valueOf(1)},
-                {"Reduz Alcance", "Descrição do feitiço", String.valueOf(2)},
-                {"Duplica Alcance", "Descrição do feitiço", String.valueOf(3)},
-                {"Congela", "Descrição do feitiço", String.valueOf(3)},
-                {"Congela 4 Ever", "Descrição do feitiço", String.valueOf(10)},
-                {"Descongela", "Descrição do feitiço", String.valueOf(8)},
-        };
-    }
+    } //OK - 29-12
 
     public Map<String, Integer> createComputerArmy(){
-        System.out.println("Entrou em createComputerArmy");
+        System.out.println( iterate(logCounter) + " - "+"IN createComputerArmy\n -----------------------------------\n");
 
         Map<String, Integer> computerArmy = new HashMap<>();
 
@@ -65,29 +98,20 @@ public class FandeisiaGameManager{
         criaturas desse tipo que o jogador
         automático pretende.
         */
-    }
+    } //OK 29-12
 
-    public int getRows(){
-        return rows;
-    }
-    public void setRows(int rows){
-        this.rows = rows;
-    }
-    public int getColumns(){
-        return columns;
-    }
-    public void setColumns(int columns){
-        this.columns = columns;
-    }
     public int startGame(String[] content, int rows, int columns){
-        System.out.println("Entrou em startGame");
+        System.out.println( iterate(logCounter) + " - "+"IN startGame\n -----------------------------------\n");
+
+        // Pega rowns e columns e 'seta' nossa rows e columns.
         setRows(rows);
         setColumns(columns);
+
         for(String line: content){
 
             String[] individual_line = line.split(", ");
 
-            if (individual_line.length >= 5 ) { // É criatura
+            if (individual_line.length >= 6 ) { // É criatura
 
                 String[] detach_colon = individual_line[0].split(": ");
                 int id = Integer.parseInt(detach_colon[1]);
@@ -143,20 +167,20 @@ public class FandeisiaGameManager{
                     holes.add(new Hole (id, x, y));
                 } else {
                     if(type.equals("gold")){
-                        treasures.add(new Gold (id, x, y, 3));
+                        treasures.add(new Treasure (id, x, y, 3));
                     }
                     if(type.equals("silver")){
-                        treasures.add(new Silver (id, x, y, 3));
+                        treasures.add(new Treasure (id, x, y, 2));
                     }
                     if(type.equals("bronze")){
-                        treasures.add(new Bronze (id, x, y, 3));
+                        treasures.add(new Treasure (id, x, y, 1));
                     }
                 }
             }
         }
 
-        /* if creatures are from Resistência Army give them different images! Like negative filtered ones
-        for(Creature creature: creaturesLdr){
+        // Gerar imagens diferentes para cada time
+        /*for(Creature creature: creaturesLdr){
             if (creature.getType().equals("baker")){
                 stringType[0][1] = "bird.png";
             } else if (creature.getType().equals("milker")){
@@ -165,13 +189,15 @@ public class FandeisiaGameManager{
         }*/
 
 
-        System.out.println(creatures);
-        System.out.println(holes);
-        System.out.println(treasures);
-        System.out.println(teamRes.getId());
-        System.out.println(teamLdr.getId());
-        System.out.println(createComputerArmy());
+        // Prints de fluxo dos elementos fatiados e separados.
+        System.out.println(iterate(logCounter) + " - "+"  LISTA DE CRIATURAS IN START GAME: "+ creatures + "\n");
+        System.out.println(iterate(logCounter) + " - "+"  LISTA DE BURACOS IN START GAME: " + holes + "\n");
+        System.out.println(iterate(logCounter) + " - "+"  LISTA DE TESOUROS IN START GAME: " + treasures + "\n");
+        System.out.println(iterate(logCounter) + " - "+"  ID DE RESISTENCIA IN START GAME: " + teamRes.getId() + "\n");
+        System.out.println(iterate(logCounter) + " - "+"  ID DE LDR IN START GAME:" + teamLdr.getId() + "\n");
+        System.out.println(iterate(logCounter) + " - "+"  HASH DE COMPUTER ARMY IN START GAME: " + createComputerArmy() + "\n\n");
 
+        //Subtrai moedas para cada criatura de cada time
         for (Creature c: creatures){
             switch (c.getTeamId()) {
                 case 10: teamLdr.removeCoins(c.cost);
@@ -190,17 +216,89 @@ public class FandeisiaGameManager{
         }
         return 0;
 
-    }
-    public void setInitialTeam(int teamId){
+    } //OK 29-12
+
+    public int getCurrentScore(int teamId){
+        System.out.println(iterate(logCounter) + " - "+"IN getCurrentScore\n -----------------------------------\n");
+        System.out.println(iterate(logCounter) + " - "+"  teamLdr.getId() in CUURRENTSCORE: " +teamLdr.getId());
+        System.out.println(iterate(logCounter) + " - "+"  teamRes.getId() in CUURRENTSCORE: " +teamRes.getId() + "\n");
+
         if (teamId == teamLdr.getId()){
+            return teamLdr.getPoints();
+        }else {
+            return teamRes.getPoints();
+        }
+    } //OK 29-12 Está sendo chamada duas vezes seguidas no Visuliador. Depois é chamadas mais 2 vezes.
+
+    public int getCoinTotal(int teamId){
+        System.out.println(iterate(logCounter) + " - "+"IN getCoinTotal\n -----------------------------------\n");
+
+        if (teamId == 10){
+            System.out.println(iterate(logCounter) + " - "+"teamLdr.getCoins(): "  + teamLdr.getCoins() + "\n");
+            return teamLdr.getCoins();
+        } else{
+            System.out.println(iterate(logCounter) + " - "+"  teamRes.getCoins() " + teamRes.getCoins() + "\n");
+
+            return teamRes.getCoins();
+        }
+    } //OK 29-12 Também se repete depois de escolher exercito
+
+    public void setInitialTeam(int teamId){
+        System.out.println(iterate(logCounter) + " - "+"Entrou em setInitialTeam\n -----------------------------------\n\n");
+
+        //Seleção aleatório usando o dado. Ignora teamId vinda dessa função...
+        int resultDice = rollDiceBinary();
+        if (resultDice == 0){
             currentTeam = teamLdr;
         }else {
             currentTeam = teamRes;
         }
-    }
+    } //OK 29-12
+
+    public int getCurrentTeamId(){
+        System.out.println(iterate(logCounter) + " - "+"IN currentTeamId\n -----------------------------------\n");
+        System.out.println(iterate(logCounter) + " - "+"  currentTeam.getId(): "+ currentTeam.getId() + "\n");
+        return currentTeam.getId();
+    } //OK 29-12
+
+    public List<Creature> getCreatures(){
+        System.out.println(iterate(logCounter) + " - "+"IN getCreatures");
+        System.out.println(iterate(logCounter) + " - "+"    Lista de criaturas do mundo: "+ creatures);
+        return creatures;
+    } // OK 29-12
+
+    public int getElementId(int x, int y){
+        System.out.println(iterate(logCounter) + " - "+"IN getElementId("+x+","+y+")");
+
+        //System.out.println("    Dimensões do mundo (rows e columns): " + ROWS + " e " + COLUMNS);
+
+        List<Element> elements = new ArrayList<>();
+        elements.addAll(creatures);
+        elements.addAll(treasures);
+        elements.addAll(holes);
+
+        for(Element e: elements){
+            if(e.getX() == x && e.getY() == y){
+                return e.getId();
+            }
+        }
+        // System.out.println("\n");
+        return 0;
+    } //OK 29-12 percorre tabuleiro e quando acha uma criatura chama o getSpell();
+
+    public String getSpell (int x, int y){
+        System.out.println(iterate(logCounter) + " - "+"IN getSpell");
+        return null;
+    }// null 29-12 - FEITIÇO
+
+
+
+    // Divisor de águas - Pós criação de exército ok
+
+
 
     public void processTurn(){
-        System.out.println("Entrou em  processTurn");
+        System.out.println("Entrou em  processTurn\n");
 
         /*
         Deve processar um turno do jogo. Inclui o
@@ -208,10 +306,7 @@ public class FandeisiaGameManager{
         */
 
     }
-    public List<Creature> getCreatures(){
-        System.out.println("Estou em  getCreatures");
-        return creatures;
-    }
+
 
     public boolean gameIsOver(){
         System.out.println("Estou em gameIsOver");
@@ -242,75 +337,30 @@ public class FandeisiaGameManager{
         */
     }
 
-    public List<Element> joinElements(){
-        List<Element> elements = new ArrayList<>();
-        elements.addAll(creatures);
-        elements.addAll(treasures);
-        elements.addAll(holes);
 
-        return elements;
-    }
-    public int getElementId(int x, int y){
-        System.out.println("Estou em getElementId");
 
-        List<Element> elements = joinElements();
-        for(Element e: elements){
-            if(e.getX() == x && e.getY() == y){
-                return e.getId();
-            }
-        }
-        return 0;
-    }
 
-    public int getCurrentTeamId(){
-        System.out.println("Estou em currentTeamId");
-        return currentTeam.getId();
-    }
 
-    public int getCurrentScore(int teamId){
-        System.out.println("Entrou em getCurrentScore");
-        if (teamId == teamLdr.getId()){
-            return teamLdr.getPoints();
-        }else {
-            return teamRes.getPoints();
-        }
+    // Feitiços and relatives :
+
+    public String[][] getSpellTypes(){
+        System.out.println("Got inside getSpellTypes");
+        return new String[][]{
+                {"Empurra Para Norte", "Descrição do feitiço", String.valueOf(1)},
+                {"Empurra Para Este", "Descrição do feitiço", String.valueOf(1)},
+                {"Empurra Para Sul", "Descrição do feitiço", String.valueOf(1)},
+                {"Empurra Para Oeste", "Descrição do feitiço", String.valueOf(1)},
+                {"Reduz Alcance", "Descrição do feitiço", String.valueOf(2)},
+                {"Duplica Alcance", "Descrição do feitiço", String.valueOf(3)},
+                {"Congela", "   Descrição do feitiço", String.valueOf(3)},
+                {"Congela 4 Ever", "Descrição do feitiço", String.valueOf(10)},
+                {"Descongela", "Descrição do feitiço", String.valueOf(8)},
+        };
     }
 
     public boolean enchant (int x, int y, String spellName){
         System.out.println("Estou em enchant");
         return true;
-    }
-
-    public String getSpell (int x, int y){
-        System.out.println("Estou em getSpell");
-        return null;
-    }
-
-    public int getCoinTotal(int teamId){
-        System.out.println("Estou em getCoinTotal");
-
-        if (teamId == 10){
-            return teamLdr.getCoins();
-        } else{
-            return teamRes.getCoins();
-        }
-    }
-
-    public boolean saveGame (File fich){
-        System.out.println("Estou em saveGame");
-        return true;
-    }
-
-    public boolean loadGame (File fich){
-        System.out.println("Estou em loadGame");
-
-        return true;
-    }
-
-    public String whoIsLordEder(){
-        System.out.println("Estou em whoIsLordEder");
-
-        return "Éderzito António Macedo Lopes";
     }
 
     public boolean pushNorth(int x, int y){
@@ -348,4 +398,30 @@ public class FandeisiaGameManager{
     public boolean unfreezes(int x, int y){
         return true; // Custa 8 Inverte aplicação do Freezes4Ever.
     }
+
+    // Save e Load Game:
+
+    public boolean saveGame (File fich){
+        System.out.println("Estou em saveGame");
+        return true;
+    }
+
+    public boolean loadGame (File fich){
+        System.out.println("Estou em loadGame");
+
+        return true;
+    }
+
+
+
+    // Parecem finalizadas ok:
+
+    public String whoIsLordEder(){
+        System.out.println("Estou em whoIsLordEder");
+
+        return "Éderzito António Macedo Lopes";
+    } //OK 29-12
+
+
+
 }
