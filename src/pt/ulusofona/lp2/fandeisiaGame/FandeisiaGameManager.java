@@ -307,7 +307,6 @@ public class FandeisiaGameManager{
 
     }
 
-
     public boolean gameIsOver(){
         System.out.println("Estou em gameIsOver");
 
@@ -316,10 +315,6 @@ public class FandeisiaGameManager{
         alcançada uma das condições de paragem
         do jogo e ​false​ em caso contrário.
         */
-    }
-
-    public List<String> getAuthors(){
-        return Collections.singletonList("Allyson Rodrigues");
     }
 
     public List<String> getResults(){
@@ -341,7 +336,7 @@ public class FandeisiaGameManager{
 
 
 
-    // Feitiços and relatives :
+    // Feitiços and afins :
 
     public String[][] getSpellTypes(){
         System.out.println("Got inside getSpellTypes");
@@ -357,55 +352,43 @@ public class FandeisiaGameManager{
                 {"Descongela", "Descrição do feitiço", String.valueOf(8)},
         };
     }
-
     public boolean enchant (int x, int y, String spellName){
         System.out.println("Estou em enchant");
         return true;
     }
-
     public boolean pushNorth(int x, int y){
         return true; // Custa 1 Move 1 para Norte
     }
-
     public boolean pushEast(int x, int y){
         return true; // Custa 1 Move 1 para Leste
     }
-
     public boolean pushSouth(int x, int y){
         return true; // Custa 1 move para Sul
     }
-
     public boolean pushWest(int x, int y){
         return true; // Custa 1 Move 1 para Oeste
     }
-
     public boolean reducesRange(int x, int y){
         return true; // Custa 2 Reduz o alcance para
     }
-
     public boolean doubleRange(int x, int y){
         return true; // Custa 3 Aumenta alcance para o dobro
     }
-
     public boolean freezes(int x, int y){
         return true; // Custa 3 Não move neste turno
     }
-
     public boolean freezes4Ever(int x, int y){
         return true; // Custa 10 Não move até o fim do jogo
     }
-
     public boolean unfreezes(int x, int y){
         return true; // Custa 8 Inverte aplicação do Freezes4Ever.
     }
 
     // Save e Load Game:
-
     public boolean saveGame (File fich){
         System.out.println("Estou em saveGame");
         return true;
     }
-
     public boolean loadGame (File fich){
         System.out.println("Estou em loadGame");
 
@@ -414,14 +397,14 @@ public class FandeisiaGameManager{
 
 
 
-    // Parecem finalizadas ok:
-
+    //Não tem que mexer mais:
     public String whoIsLordEder(){
         System.out.println("Estou em whoIsLordEder");
 
         return "Éderzito António Macedo Lopes";
     } //OK 29-12
-
-
+    public List<String> getAuthors(){
+        return Collections.singletonList("Allyson Rodrigues");
+    }
 
 }
