@@ -49,11 +49,13 @@ public class FandeisiaGameManager{
         Map<String, Integer> computerArmy = new HashMap<>();
 
         // Criando 1 apenas para teste.
-        computerArmy.put("Anao", new Random().nextInt(4)); // criar um random entre 0 e 3.
-        computerArmy.put("Dragao", new Random().nextInt(4));
-        computerArmy.put("Elfo", new Random().nextInt(4));
-        computerArmy.put("Gigante", new Random().nextInt(4));
-        computerArmy.put("Humano", new Random().nextInt(4));
+        //computerArmy.put("Anao", new Random().nextInt(4)); // criar um random entre 0 e 3.
+        //computerArmy.put("Dragao", new Random().nextInt(4));
+        //computerArmy.put("Elfo", new Random().nextInt(4));
+        //computerArmy.put("Gigante", new Random().nextInt(4));
+        //computerArmy.put("Humano", new Random().nextInt(4));
+        //computerArmy.put("Humano", new Random().nextInt(4));
+        computerArmy.put("Humano", 1);
         return computerArmy;
         /*
         Deve devolver o exército escolhido pelo
@@ -266,7 +268,7 @@ public class FandeisiaGameManager{
     }
 
     public int getCurrentScore(int teamId){
-        System.out.println("Estou em getCurrentScore");
+        System.out.println("Entrou em getCurrentScore");
         if (teamId == teamLdr.getId()){
             return teamLdr.getPoints();
         }else {
