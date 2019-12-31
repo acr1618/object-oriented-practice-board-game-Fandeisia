@@ -70,12 +70,12 @@ public class FandeisiaGameManager{
 
         // Criando 1 apenas para teste.
         //computerArmy.put("Anao", new Random().nextInt(4)); // criar um random entre 0 e 3.
-        //computerArmy.put("Dragao", new Random().nextInt(4));
-        //computerArmy.put("Elfo", new Random().nextInt(4));
-        //computerArmy.put("Gigante", new Random().nextInt(4));
+        computerArmy.put("Dragao", new Random().nextInt(4));
+        computerArmy.put("Elfo", new Random().nextInt(4));
+        computerArmy.put("Gigante", new Random().nextInt(4));
+        computerArmy.put("Humano", new Random().nextInt(4));
         //computerArmy.put("Humano", new Random().nextInt(4));
-        //computerArmy.put("Humano", new Random().nextInt(4));
-        computerArmy.put("Humano", 1);
+        //computerArmy.put("Humano", 1);
         return computerArmy;
         /*
         Deve devolver o exército escolhido pelo
@@ -280,6 +280,41 @@ public class FandeisiaGameManager{
 
     public void processTurn(){
         System.out.println("Entrou em  processTurn\n");
+        for (Creature creature: creatures){
+            switch (creature.getOrientation()) {
+                case ("Norte"): {
+                    nextX = creature.getX();
+                    nextY = creature.getY() - 1;
+                    break;
+                }
+
+                case ("Este"): {
+                    nextX = creature.getX() + 1;
+                    nextY = creature.getY();
+                    break;
+                }
+
+                case ("Sul"): {
+                    nextX = creature.getX();
+                    nextY = creature.getY() + 1;
+                    break;
+                }
+
+                case ("Oeste"): {
+                    nextX = creature.getX() - 1;
+                    nextY = creature.getY();
+                    break;
+                }
+            }
+
+            if (creature.getTypeName().equals("Dwarf")){
+                if(validateMovement(creature.getX(),creature.getY(),nextX,nextY)){
+                    creature.move();
+                }
+
+            }
+
+        }
 
         /*
         Deve processar um turno do jogo. Inclui o
@@ -322,10 +357,10 @@ public class FandeisiaGameManager{
     // Validar movimento:
     private boolean validateMovement(int x, int y, int nextX, int nextY) {
 
-        if (nextX < 0 || nextY <0){ // coordenada invalida
+        if (nextX < 0 || nextY < 0){ // fora da tela
             return false;
         }
-        if (nextX > rows+1|| nextY > columns+1){ // fora da tela
+        if (nextX > columns+1 || nextY > rows+1){ // fora da tela
             return false;
         }
 
@@ -336,6 +371,7 @@ public class FandeisiaGameManager{
         /* outra criatura */
         return getElementId(nextX, nextY) <= 0;
     }
+
 
     // Checar saldo;
     private boolean checkBalanceToSpell(int teamId) {

@@ -10,9 +10,8 @@ public class Dragon extends Creature {
     }
 
     @Override
-    public boolean move() {
-        return false;
-    }
+    public void move() {
+            }
 
     @Override
     public boolean spin() {

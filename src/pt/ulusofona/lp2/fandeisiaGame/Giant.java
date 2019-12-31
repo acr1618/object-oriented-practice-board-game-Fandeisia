@@ -10,8 +10,8 @@ public class Giant extends Creature {
     }
 
     @Override
-    public boolean move() {
-        return false;
+    public void move() {
+
     }
 
     @Override

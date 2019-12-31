@@ -5,14 +5,35 @@ public class Dwarf extends Creature {
     public Dwarf (int id, int x, int y, int teamId, int cost, String orientation){
         super(id, x, y, teamId, cost, orientation);
         image = "dwarf.png";
-        typeName = "Anao";
+        typeName = "Dwarf";
         range = 1;
     }
 
     @Override
-    public boolean move() {
+    public void move() {
+        switch (this.orientation){
+            case ("Norte"): {
+                this.y = y-1;
+                break;
+            }
+            case ("Este"): {
+                this.x = x+1;
+                break;
+            }
 
-        return false;
+            case ("Sul"): {
+                this.y = y+1;
+                break;
+            }
+
+            case ("Oeste"): {
+                this.x = x-1;
+                break;
+            }
+
+
+        }
+
     }
 
     @Override

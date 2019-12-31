@@ -2,7 +2,7 @@ package pt.ulusofona.lp2.fandeisiaGame;
 
 import java.util.List;
 
-public class Creature extends Element {
+public abstract class Creature extends Element {
 
     protected int teamId;
     protected int cost;
@@ -44,9 +44,13 @@ public class Creature extends Element {
         return id + " | " + typeName + " | " + teamId + " | " + points + " @ " + "(" + x +", " + y + ") " + orientation;
     }
 
-    public boolean move(){
-        return true;
-    } // Talvez deixe de ser abstrato e passe a ter a implementação básica (anão) e sobrescrita nas outras classes de criatura. todo
+    public String getTypeName() {
+        return typeName;
+    }
+
+    public abstract void move();
+        //return true;
+     //} Talvez deixe de ser abstrato e passe a ter a implementação básica (anão) e sobrescrita nas outras classes de criatura. todo
 
     public boolean spin(){
         return true;
@@ -107,7 +111,6 @@ public class Creature extends Element {
     public void congela4Ever(boolean isCongelada4Ever) {
         this.isFreezed4Ever = isCongelada4Ever;
     }
-
 
 
     public void pushNorth(){
