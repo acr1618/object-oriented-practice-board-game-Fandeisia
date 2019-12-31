@@ -6,6 +6,7 @@ public class Giant extends Creature {
         super(id, x, y, teamId, cost, orientation);
         image = "giant.png";
         typeName = "Gigante";
+        range = 3;
     }
 
     @Override

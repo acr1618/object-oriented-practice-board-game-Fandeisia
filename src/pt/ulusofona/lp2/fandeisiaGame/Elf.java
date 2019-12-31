@@ -6,6 +6,7 @@ public class Elf extends Creature {
         super(id, x, y, teamId, cost, orientation);
         image = "elf.png";
         typeName = "Elfo";
+        range = 2;
 
     }
 

@@ -20,7 +20,9 @@ public class FandeisiaGameManager{
     int columns;
     int currentTurnCounter;
     int turnsWithoutTreasure; // Será usado no gameIsOver. Quando for for >= 15 gameIsOver = true;
-    long logCounter = 0;
+    long logCounter = 0; // usado como contador do meu log de execução do jogo
+    int nextX;
+    int nextY;
 
     public void setRows(int rows){
         this.rows = rows;
@@ -49,21 +51,6 @@ public class FandeisiaGameManager{
         return logCounter;
         }
     }
-
-    /*int setCurrentTeamId(){
-        this.dice = rollDiceBinary();
-        if (this.dice =0 ){
-            currentTeamId = 10;
-        }
-        return 0;
-    }
-    int dice =
-    if (dice = 0){
-        Team CurrentTeam = teamLdr;
-    } else {
-        Team CurrentTeam = teamRes;
-    }*/  // serCurrentTeamId(?)
-
 
     public String[][] getCreatureTypes(){
         System.out.println( iterate(logCounter) + " - "+ "IN getCreatureTypes\n -----------------------------------\n");
@@ -228,7 +215,7 @@ public class FandeisiaGameManager{
         }else {
             return teamRes.getPoints();
         }
-    } //OK 29-12 Está sendo chamada duas vezes seguidas no Visuliador. Depois é chamadas mais 2 vezes.
+    } //OK 29-12 Está sendo chamada duas vezes seguidas no Visualizador. Depois é chamadas mais 2 vezes.
 
     public int getCoinTotal(int teamId){
         System.out.println(iterate(logCounter) + " - "+"IN getCoinTotal\n -----------------------------------\n");
@@ -246,7 +233,7 @@ public class FandeisiaGameManager{
     public void setInitialTeam(int teamId){
         System.out.println(iterate(logCounter) + " - "+"Entrou em setInitialTeam\n -----------------------------------\n\n");
 
-        //Seleção aleatório usando o dado. Ignora teamId vinda dessa função...
+        //Seleção aleatória usando o dado. Ignora teamId vinda dessa função e sorteia.
         int resultDice = rollDiceBinary();
         if (resultDice == 0){
             currentTeam = teamLdr;
@@ -286,16 +273,9 @@ public class FandeisiaGameManager{
         return 0;
     } //OK 29-12 percorre tabuleiro e quando acha uma criatura chama o getSpell();
 
-    public String getSpell (int x, int y){
-        System.out.println(iterate(logCounter) + " - "+"IN getSpell");
-        return null;
-    }// null 29-12 - FEITIÇO
-
-
 
     // Divisor de águas - Pós criação de exército ok
     // --------------------------------------------
-
 
 
     public void processTurn(){
@@ -304,6 +284,10 @@ public class FandeisiaGameManager{
         /*
         Deve processar um turno do jogo. Inclui o
         movimento das criaturas.
+
+        -- Lembrar que a criatura só se movimenta se:
+            validar validateMovement() retorna true;
+            cada criatura tem seu proprio movimento. apenas chamamos move ?? mas como validar depois do move? pensarr....
         */
 
     }
@@ -335,52 +319,188 @@ public class FandeisiaGameManager{
 
     //-----------------------------------------------
 
+    // Validar movimento:
+    private boolean validateMovement(int x, int y, int nextX, int nextY) {
+
+        return getElementId(nextX, nextY) <= 0 && getElementId(nextX, nextY) > -500;
+    }
+
+    // Checar saldo;
+    private boolean checkBalanceToSpell(int teamId) {
+        return teamId == 10 && (teamLdr.checkBalanceToSpell(1));
+    }
+
+
     // Feitiços and afins :
+
+    public boolean enchant (int x, int y, String spellName){
+
+        System.out.println("Estou em enchant");
+        for (Creature c: creatures){
+            if (c.getX() == x && c.getY() == y) {
+                if (c.isEnchant()){ // Se tá enfeitiçada só recebe outro feitiço se der match congela4Ever/descongela
+                      if (c.isFreezed4Ever() && spellName.equals("unfreezes")){ // Se está enfeitiçada vê se tá congelada e o feitiço a ser aplicado é descongela. Se for retorna true e descongela.
+                              c.unfreezes();
+                              c.setEnchant(false);
+                              return true;
+                      }
+                      else {
+                          return false; //Criatura está enfeitiçada mas não dá match congelada4ever-descongela enchant retorna falso
+                      }
+                }
+
+                else {
+
+                    // A criatura não estava enfeitiçada. Agora ela recebe o feitiço e esta fç enchant retorna true; <---> SE FOR VÁLIDO O QUE FOR O FEITIÇO!!!
+                    switch (spellName){
+
+                        case ("freezes"): {
+                            if (checkBalanceToSpell(c.getTeamId())){
+                                c.setEnchant(true);
+                                c.freezes();
+                                return true;
+                            } else {
+                                return false;
+                            }
+                        }
+
+                        case ("freezes4Ever"):{
+                            if (checkBalanceToSpell(c.getTeamId())){
+                                c.setEnchant(true);
+                                c.freezes4Ever();
+                                return true;
+                            } else {
+                                return false;
+                            }
+                        }
+
+                        case ("pushNorth"): {
+                            nextX = x;
+                            nextY = y - 1;
+                            if (validateMovement(x, y, nextX, nextY)){ // movimento é valido
+                                if (checkBalanceToSpell(c.getTeamId())){
+                                    c.setEnchant(true);
+                                    c.freezes();
+                                    return true;
+                                } else {
+                                    return false;
+                                }
+                            } else {
+                                return false; // Se não entrar nesse if tem erro!
+                            }
+                        }
+
+                        case ("pushEast"): {
+                            nextX = x+ 1;
+                            nextY = y;
+                            if (validateMovement(x, y, nextX, nextY)){ // movimento é valido
+                                if (checkBalanceToSpell(c.getTeamId())){
+                                    c.setEnchant(true);
+                                    c.freezes();
+                                    return true;
+                                } else {
+                                    return false;
+                                }
+                            } else {
+                                return false; // Se não entrar nesse if tem erro!
+                            }
+                        }
+
+                        case ("pushSouth"): {
+
+                            nextX = x;
+                            nextY = y + 1;
+                            if (validateMovement(x, y, nextX, nextY)){ // movimento é valido
+                                if (checkBalanceToSpell(c.getTeamId())){
+                                    c.setEnchant(true);
+                                    c.freezes();
+                                    return true;
+                                } else {
+                                    return false;
+                                }
+                            } else return false; // Se não entrar nesse if tem erro!
+                        }
+
+                        case ("pushWest"): {
+                            nextX = x -1;
+                            nextY = y;
+                            if (validateMovement(x, y, nextX, nextY)){ // movimento é valido
+                                if (checkBalanceToSpell(c.getTeamId())){
+                                    c.setEnchant(true);
+                                    c.freezes();
+                                    return true;
+                                } else {
+                                    return false;
+                                }
+                            } else return false; // Se não entrar nesse if tem erro!
+                        }
+
+                        case ("reducesRange"): {
+                            // calcula custo
+                            c.reducesRange();
+                            c.setEnchant(true);
+                            return true;
+                        }
+
+                        case ("doubleRange"): {
+                            // calcula custo
+                            c.doubleRange(c.getRange());
+                            c.setEnchant(true);
+                            return true;
+                        }
+
+                        case ("unFreezes"):{
+                            // calcula custo
+                            c.setEnchant(false);
+                            return false; // Neste caso não se faz unfreeze porque se tivesse mesmo freezed4Ever teria unfreezed lá em cima!
+                        }
+
+
+                        // próximos cases;
+                        // Aqui eu valido o movimento. Se for válido passo pra criatura fazer.
+                        //c.lookAtTheWorld(rows, columns, holes, treasures, creatures); // Criatura que irá ser enfeitiçada conhece o mundo para lá na fç validar o feitiço(movimento)
+                    }
+                }
+                // } else {
+                // O feitiço leva para um lugar ocupado ou buraco ou para fora do tabuleiro? --> Retorna falso
+                // A criatura está congelada ou congelada4ever? --> Retorna falso
+                // Se tá congelada4ever e spellName == descongela return true e c.isFrozen(c.getId()) = false;
+                // Outras casos retorna true.
+                // c.
+
+               // return true;
+            }
+
+        } return false; // Porque nesse x e y não há criatura.
+
+    }
+
+    public String getSpell (int x, int y){
+        System.out.println(iterate(logCounter) + " - "+"IN getSpell");
+        int idCreature = getElementId(x,y);
+        //boolean isSpell = isSpell(idCreature);
+        /*for (Creature c: creatures){
+            if (c.getX() == x && c.getY()==y){
+                switch (spell)
+            }
+        }*/
+
+        return null;
+    }
 
     public String[][] getSpellTypes(){
         System.out.println("Got inside getSpellTypes");
         return new String[][]{
-                {"Empurra Para Norte", "Descrição do feitiço", String.valueOf(1)},
-                {"Empurra Para Este", "Descrição do feitiço", String.valueOf(1)},
-                {"Empurra Para Sul", "Descrição do feitiço", String.valueOf(1)},
-                {"Empurra Para Oeste", "Descrição do feitiço", String.valueOf(1)},
-                {"Reduz Alcance", "Descrição do feitiço", String.valueOf(2)},
-                {"Duplica Alcance", "Descrição do feitiço", String.valueOf(3)},
-                {"Congela", "   Descrição do feitiço", String.valueOf(3)},
-                {"Congela 4 Ever", "Descrição do feitiço", String.valueOf(10)},
-                {"Descongela", "Descrição do feitiço", String.valueOf(8)},
+                {"pushNorth", "Descrição do feitiço", String.valueOf(1)},
+                {"pushEast", "Descrição do feitiço", String.valueOf(1)},
+                {"pushSouth", "Descrição do feitiço", String.valueOf(1)},
+                {"pushEast", "Descrição do feitiço", String.valueOf(1)},
+                {"reduceRange", "Descrição do feitiço", String.valueOf(2)},
+                {"doubleRange", "Descrição do feitiço", String.valueOf(3)},
+                {"freezes", "Descrição do feitiço", String.valueOf(3)},
+                {"freezes4Ever", "Descrição do feitiço", String.valueOf(10)},
+                {"unfreezes", "Descrição do feitiço", String.valueOf(8)},
         };
-    }
-    public boolean enchant (int x, int y, String spellName){
-        System.out.println("Estou em enchant");
-        return true;
-    }
-    public boolean pushNorth(int x, int y){
-        return true; // Custa 1 Move 1 para Norte
-    }
-    public boolean pushEast(int x, int y){
-        return true; // Custa 1 Move 1 para Leste
-    }
-    public boolean pushSouth(int x, int y){
-        return true; // Custa 1 move para Sul
-    }
-    public boolean pushWest(int x, int y){
-        return true; // Custa 1 Move 1 para Oeste
-    }
-    public boolean reducesRange(int x, int y){
-        return true; // Custa 2 Reduz o alcance para
-    }
-    public boolean doubleRange(int x, int y){
-        return true; // Custa 3 Aumenta alcance para o dobro
-    }
-    public boolean freezes(int x, int y){
-        return true; // Custa 3 Não move neste turno
-    }
-    public boolean freezes4Ever(int x, int y){
-        return true; // Custa 10 Não move até o fim do jogo
-    }
-    public boolean unfreezes(int x, int y){
-        return true; // Custa 8 Inverte aplicação do Freezes4Ever.
     }
 
     // Save e Load Game:
@@ -395,7 +515,6 @@ public class FandeisiaGameManager{
     }
 
 
-
     //Não tem que mexer mais:
     public String whoIsLordEder(){
         System.out.println("Estou em whoIsLordEder");
@@ -406,4 +525,123 @@ public class FandeisiaGameManager{
         return Collections.singletonList("Allyson Rodrigues");
     }
 
+
+/* Grupo 373 on leaderboard
+------------------------------------------------------------
+    JUnit Summary (Teacher Tests)
+    Tests run: 24, Failures: 21, Errors: 0, Time elapsed: 0.108 sec
+-------------------------------------------------------------------
+
+FAILURE: pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_002_Elfo
+java.lang.AssertionError: getElementId() expected:<0> but was:<3>
+	at pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_002_Elfo(TestTeacherSimuladorP2.java:700)
+
+
+FAILURE: pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_004_JogoCompletoEmpate
+java.lang.AssertionError: getCurrentTeamId() expected:<20> but was:<10>
+	at pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_004_JogoCompletoEmpate(TestTeacherSimuladorP2.java:1013)
+
+
+
+FAILURE: pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_010_HumanoBasico
+java.lang.AssertionError: expected:<0> but was:<1>
+	at pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_010_HumanoBasico(TestTeacherSimuladorP2.java:804)
+
+
+FAILURE: pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_011_AnaoEHumano
+java.lang.AssertionError: getElementId() expected:<3> but was:<0>
+	at pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_011_AnaoEHumano(TestTeacherSimuladorP2.java:888)
+
+
+FAILURE: pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_012_DuplicaAlcanceBasico
+java.lang.AssertionError: expected:<DuplicaAlcance> but was:<null>
+	at pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_012_DuplicaAlcanceBasico(TestTeacherSimuladorP2.java:953)
+
+
+FAILURE: pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_012_TooManyTurnsWithoutTreasuresBeingFoundAfterOneCaptureIsDone
+java.lang.AssertionError: expected:<3> but was:<0>
+	at pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_012_TooManyTurnsWithoutTreasuresBeingFoundAfterOneCaptureIsDone(TestTeacherSimuladorP2.java:378)
+
+
+
+FAILURE: pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_014_JogoCompletoSoComAnoesESemFeiticos
+java.lang.AssertionError: getElementId() expected:<1> but was:<0>
+	at pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_014_JogoCompletoSoComAnoesESemFeiticos(TestTeacherSimuladorP2.java:447)
+
+
+FAILURE: pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_015_JogoCompleto_2
+java.lang.AssertionError: getElementId() expected:<1> but was:<0>
+	at pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_015_JogoCompleto_2(TestTeacherSimuladorP2.java:580)
+
+
+FAILURE: pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_018_enfeiticarComCongelaEDescongela
+java.lang.AssertionError: getSpell() expected:<Congela4Ever> but was:<null>
+	at pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_018_enfeiticarComCongelaEDescongela(TestTeacherSimuladorP2.java:1611)
+
+
+FAILURE: pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_019_Gigante
+java.lang.AssertionError: expected:<0> but was:<4>
+	at pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_019_Gigante(TestTeacherSimuladorP2.java:1320)
+
+
+
+FAILURE: pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_01_Leitura_Escrita_Ficheiro1
+java.lang.AssertionError: Não criou o ficheiro
+	at pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_01_Leitura_Escrita_Ficheiro1(TestTeacherSimuladorP2.java:43)
+
+
+FAILURE: pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_020_enfeiticarComEmpurrasHorizontais
+java.lang.AssertionError: getCoinTotal() expected:<36> but was:<37>
+	at pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_020_enfeiticarComEmpurrasHorizontais(TestTeacherSimuladorP2.java:1514)
+
+
+FAILURE: pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_021_enfeiticarComEmpurrasVerticais
+java.lang.AssertionError: getCoinTotal() expected:<36> but was:<37>
+	at pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_021_enfeiticarComEmpurrasVerticais(TestTeacherSimuladorP2.java:1438)
+
+
+FAILURE: pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_023_ProcessTurnDaMoedas
+java.lang.AssertionError: expected:<0> but was:<1>
+	at pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_023_ProcessTurnDaMoedas(TestTeacherSimuladorP2.java:1369)
+
+
+
+FAILURE: pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_02_Anao_EscapeTheCornerTest
+java.lang.AssertionError: A fn getElementId() devolveu o valor errado. expected:<1> but was:<0>
+	at pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_02_Anao_EscapeTheCornerTest(TestTeacherSimuladorP2.java:279)
+
+
+
+FAILURE: pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_02_GetCreatureTypes
+java.lang.AssertionError: A fn getCreatureTypes() nao devolveu o tipo de criatura:Anão
+	at pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_02_GetCreatureTypes(TestTeacherSimuladorP2.java:102)
+
+
+
+FAILURE: pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_04_StartGameAndToString
+java.lang.AssertionError: A fn getCreatures() devolveu o nr errado de elementos. expected:<5> but was:<3>
+	at pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_04_StartGameAndToString(TestTeacherSimuladorP2.java:148)
+
+
+FAILURE: pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_05_IniciaJogoDuasVezes
+java.lang.AssertionError: A fn getCreatures() devolveu o nr errado de criaturas. expected:<2> but was:<0>
+	at pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_05_IniciaJogoDuasVezes(TestTeacherSimuladorP2.java:185)
+
+
+FAILURE: pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_06_GetSpellTypes
+java.lang.AssertionError: A fn getSpellTypes() nao devolveu todos os feiticos existentes. expected:<9> but was:<2>
+	at pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_06_GetSpellTypes(TestTeacherSimuladorP2.java:253)
+
+
+FAILURE: pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_08_DragaoBasico
+java.lang.AssertionError: getElementId() expected:<1> but was:<0>
+	at pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_08_DragaoBasico(TestTeacherSimuladorP2.java:1131)
+
+
+
+FAILURE: pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_09_JogoCompletoComFeiticos
+java.lang.AssertionError: getCoinTotal(10) expected:<38> but was:<47>
+	at pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_09_JogoCompletoComFeiticos(TestTeacherSimuladorP2.java:1196)
+
+*/
 }

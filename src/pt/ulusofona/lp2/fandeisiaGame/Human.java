@@ -5,6 +5,7 @@ public class Human extends Creature {
         super(id, x, y, teamId, cost, orientation);
         image = "human.png";
         typeName = "Humano";
+        range = 2;
     }
 
     @Override

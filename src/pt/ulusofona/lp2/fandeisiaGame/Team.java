@@ -59,4 +59,8 @@ public class Team{
     public String toString() {
         return null;
     }
+
+    public boolean checkBalanceToSpell(int spellCost) {
+        return this.coins >= spellCost;
+    }
 }

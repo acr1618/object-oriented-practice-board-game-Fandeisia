@@ -6,6 +6,7 @@ public class Dwarf extends Creature {
         super(id, x, y, teamId, cost, orientation);
         image = "dwarf.png";
         typeName = "Anao";
+        range = 1;
     }
 
     @Override
