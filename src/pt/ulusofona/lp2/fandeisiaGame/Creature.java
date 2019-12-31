@@ -2,7 +2,7 @@ package pt.ulusofona.lp2.fandeisiaGame;
 
 import java.util.List;
 
-public abstract class Creature extends Element {
+public class Creature extends Element {
 
     protected int teamId;
     protected int cost;
@@ -14,6 +14,7 @@ public abstract class Creature extends Element {
     protected boolean isEnchant;
     protected boolean isFreezed;
     protected boolean isFreezed4Ever;
+    protected String itSpellName;
 
 
     // Variáveis para guardar o mundo:
@@ -31,6 +32,7 @@ public abstract class Creature extends Element {
         this.isEnchant = false;
         this.isFreezed = false;
         this.isFreezed4Ever = false;
+        this.itSpellName = null;
     }
 
     public String getImagePNG(){
@@ -42,9 +44,13 @@ public abstract class Creature extends Element {
         return id + " | " + typeName + " | " + teamId + " | " + points + " @ " + "(" + x +", " + y + ") " + orientation;
     }
 
-    public abstract boolean move(); // Talvez deixe de ser abstrato e passe a ter a implementação básica (anão) e sobrescrita nas outras classes de criatura. todo
+    public boolean move(){
+        return true;
+    } // Talvez deixe de ser abstrato e passe a ter a implementação básica (anão) e sobrescrita nas outras classes de criatura. todo
 
-    public abstract boolean spin(); // Talvez deixe de ser abstrata e passe a ter implementação básica (90º) e será sobrescrita em Dragão e Elfo. todo
+    public boolean spin(){
+        return true;
+    } // Talvez deixe de ser abstrata e passe a ter implementação básica (90º) e será sobrescrita em Dragão e Elfo. todo
 
     public int getTeamId() {
         return teamId;
@@ -78,6 +84,14 @@ public abstract class Creature extends Element {
         isEnchant = enchant;
     }
 
+    public String getItSpellName() {
+        return itSpellName;
+    }
+
+    public void setItSpellName(String itSpellName) {
+        this.itSpellName = itSpellName;
+    }
+
     public boolean isFrozen() {
         return isFreezed;
     }
@@ -94,7 +108,7 @@ public abstract class Creature extends Element {
         this.isFreezed4Ever = isCongelada4Ever;
     }
 
-    // Feitiços:
+
 
     public void pushNorth(){
         this.y = this.y -1;
