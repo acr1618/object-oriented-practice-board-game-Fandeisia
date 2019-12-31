@@ -8,32 +8,32 @@ public class FandeisiaGameManager{
     public FandeisiaGameManager(){
     }
 
-    List<Treasure> treasures = new ArrayList<>(); // Quando for 0 gameIsOver = true.
-    List<Hole> holes = new ArrayList<>();
-    List<Creature> creatures = new ArrayList<>();
+    private List<Treasure> treasures = new ArrayList<>(); // Quando for 0 gameIsOver = true.
+    private List<Hole> holes = new ArrayList<>();
+    private List<Creature> creatures = new ArrayList<>();
 
-    Team teamLdr = new Team (10, "LDR", 0, 50);
-    Team teamRes = new Team (20, "RESISTENCIA", 0, 50);
-    Team currentTeam = new Team(0,"0",0,0);
+    private Team teamLdr = new Team (10, "LDR", 0, 50);
+    private Team teamRes = new Team (20, "RESISTENCIA", 0, 50);
+    private Team currentTeam = new Team(0,"0",0,0);
 
-    int rows;
-    int columns;
-    int currentTurnCounter;
-    int turnsWithoutTreasure; // Será usado no gameIsOver. Quando for for >= 15 gameIsOver = true;
-    long logCounter = 0; // usado como contador do meu log de execução do jogo
-    int nextX;
-    int nextY;
+    private int rows;
+    private int columns;
+    private int currentTurnCounter;
+    private int turnsWithoutTreasure; // Será usado no gameIsOver. Quando for for >= 15 gameIsOver = true;
+    private long logCounter = 0; // usado como contador do meu log de execução do jogo
+    private int nextX;
+    private int nextY;
 
-    public void setRows(int rows){
+    private void setRows(int rows){
         this.rows = rows;
     }
-    public void setColumns(int columns){
+    private void setColumns(int columns){
         this.columns = columns;
     }
-    public int getRows(){
+    private int getRows(){
         return rows;
     }
-    public int getColumns(){
+    private int getColumns(){
         return columns;
     }
 
@@ -322,14 +322,19 @@ public class FandeisiaGameManager{
     // Validar movimento:
     private boolean validateMovement(int x, int y, int nextX, int nextY) {
 
-        if (nextX < 0 || nextY <0){
+        if (nextX < 0 || nextY <0){ // coordenada invalida
             return false;
         }
-        if (nextX > rows+1|| nextY > columns+1){
+        if (nextX > rows+1|| nextY > columns+1){ // fora da tela
             return false;
         }
 
-        return getElementId(nextX, nextY) <= 0 || getElementId(nextX, nextY) > -500;
+        if (getElementId(nextX, nextY) <=-500){ // buraco
+            return false;
+        }
+
+        /* outra criatura */
+        return getElementId(nextX, nextY) <= 0;
     }
 
     // Checar saldo;
@@ -339,11 +344,23 @@ public class FandeisiaGameManager{
             return teamLdr.checkBalanceToSpell(1);
         }
         if (teamId == 20){
-            return teamLdr.checkBalanceToSpell(1);
+            return teamRes.checkBalanceToSpell(1);
         }
-        System.out.println("O teamId passado não é válido. Impossível consultar saldo ");
+        System.out.println(iterate(logCounter) + " - "+"O teamId passado não é válido. Impossível consultar saldo ");
         return false;
 
+    }
+    // Debita moedas dos feitiços
+    private void taxSpell(int teamId, int cost) {
+        if (teamId == 10){
+            teamLdr.removeCoins(cost);
+            System.out.println(iterate(logCounter) + " - "+"Spell taxed from LORD ELDER");
+
+        }
+        if (teamId == 20){
+            teamRes.removeCoins(cost);
+            System.out.println(iterate(logCounter) + " - "+"Spell taxed from RESISTENCIA:");
+        }
     }
 
     /* int getCreatureIdByPosition(int x, int y){
@@ -366,6 +383,7 @@ public class FandeisiaGameManager{
      * * Sobreposição de criaturas
      * * Feitiços estão sendo aplicados apenas direto sem o usuário parar a jogada. -- Parece que o propósito é este. Não?
      * As moedas ainda não estão sendo removidas
+
      * */
 
     public boolean enchant (int x, int y, String spellName){
@@ -450,6 +468,8 @@ public class FandeisiaGameManager{
                                     c.setEnchant(false);
                                     c.setItSpellName("pushEast");
                                     c.pushEast();
+                                    taxSpell(c.getTeamId(),1);
+                                    // if(getElementId(nextX))matchTreasure() -- TODO --> pegar tesouro. Método de creature ou FGM ou Treasure?
                                     return true;
                                 } else {
                                     return false;
@@ -524,6 +544,8 @@ public class FandeisiaGameManager{
         } return false; // Porque nesse x e y não há criatura.
 
     }
+
+
 
     public String getSpell (int x, int y){
         System.out.println(iterate(logCounter) + " - "+"IN getSpell");
