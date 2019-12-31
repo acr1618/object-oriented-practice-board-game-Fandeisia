@@ -284,32 +284,34 @@ public class FandeisiaGameManager{
             switch (creature.getOrientation()) {
                 case ("Norte"): {
                     nextX = creature.getX();
-                    nextY = creature.getY() - 1;
+                    nextY = creature.getY()-1;
                     break;
                 }
 
                 case ("Este"): {
-                    nextX = creature.getX() + 1;
+                    nextX = creature.getX()+1;
                     nextY = creature.getY();
                     break;
                 }
 
                 case ("Sul"): {
-                    nextX = creature.getX();
-                    nextY = creature.getY() + 1;
+                    nextX = creature.getX() ;
+                    nextY = creature.getY()+1;
                     break;
                 }
 
                 case ("Oeste"): {
-                    nextX = creature.getX() - 1;
+                    nextX = creature.getX()-1;
                     nextY = creature.getY();
                     break;
                 }
             }
 
-            if (creature.getTypeName().equals("Dwarf")){
-                if(validateMovement(creature.getX(),creature.getY(),nextX,nextY)){
-                    creature.move();
+            switch (creature.getTypeName()){
+                case ("Dwarf"): {
+                    if(validateMovement(creature.getX(),creature.getY(),nextX,nextY)){
+                        creature.move();
+                    }
                 }
 
             }
@@ -360,7 +362,7 @@ public class FandeisiaGameManager{
         if (nextX < 0 || nextY < 0){ // fora da tela
             return false;
         }
-        if (nextX > columns+1 || nextY > rows+1){ // fora da tela
+        if (nextX > columns-1 || nextY > rows-1){ // fora da tela
             return false;
         }
 
@@ -528,7 +530,9 @@ public class FandeisiaGameManager{
                                 } else {
                                     return false;
                                 }
-                            } else return false; // Se não entrar nesse if tem erro!
+                            } else {
+                                return false; // Se não entrar nesse if tem erro!
+                            }
                         }
 
                         case ("pushWest"): {
