@@ -533,15 +533,17 @@ public class FandeisiaGameManager{
                     case ("freezes"): {
                         creature.setFrozen(true); // nos movimentos por o if isFrozen
                         creature.setEnchant(false);
-                        //creature.setImage("IMAGEM CONGELADA"); //todo
+                        creature.setImage(creature.getTypeName() + "-Frozen.png"); //todo
                         creature.setItSpellName(null); // Já foi executado o feitiço, então passa a ficar em estado desencantado (já pode receber outros feitiços) Como vai ficar isso? Por enquanto parece ok.
+                        break;
                     }
 
                     case ("freezes4Ever") : {
                         creature.setFrozen4Ever(true); // nos movimentos por o if isFrozen4Ever
                         creature.setEnchant(false); //todo
-                        //creature.setImage("IMAGEM CONGELADA 4 EVER");
+                        creature.setImage(creature.getTypeName() + "-Frozen4Ever.png");
                         creature.setItSpellName(null); // Já foi executado o feitiço, então passa a ficar em estado desencantado (já pode receber outros feitiços - no caso, apenas o descongela!). todo
+                        break;
                     }
 
                     case ("pushNorth"): {
@@ -581,6 +583,20 @@ public class FandeisiaGameManager{
                             creature.setEnchant(false);
                             break;
                         }
+                        break;
+                    }
+
+                    case ("reducesRange"): {
+                        creature.setRange(1);
+                        creature.setItSpellName(null);
+                        creature.setEnchant(false);
+                        break;
+                    }
+
+                    case ("doubleRange"): {
+                        creature.setRange(creature.getRange()*2);
+                        creature.setItSpellName(null);
+                        creature.setEnchant(false);
                         break;
                     }
                 }

@@ -5,7 +5,7 @@ public class Elf extends Creature {
     public Elf (int id, int x, int y, int teamId, int cost, String orientation){
         super(id, x, y, teamId, cost, orientation);
         image = "elf.png";
-        typeName = "Elfo";
+        typeName = "elf";
         range = 2;
 
     }
