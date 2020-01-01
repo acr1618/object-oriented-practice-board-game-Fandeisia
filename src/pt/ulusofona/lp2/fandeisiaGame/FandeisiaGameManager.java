@@ -1,4 +1,6 @@
 package pt.ulusofona.lp2.fandeisiaGame;
+import com.sun.istack.internal.NotNull;
+
 import java.io.File;
 import java.util.*;
 import java.io.*;
@@ -274,9 +276,218 @@ public class FandeisiaGameManager{
     } //OK 29-12 percorre tabuleiro e quando acha uma criatura chama o getSpell();
 
 
-    // Divisor de águas - Pós criação de exército ok
-    // --------------------------------------------
+    public String[][] getSpellTypes(){
+        System.out.println(iterate(logCounter) + " - "+"IN getSpellTypes");
+        return new String[][]{
+                {"pushNorth", "Descrição do feitiço", String.valueOf(1)},
+                {"pushEast", "Descrição do feitiço", String.valueOf(1)},
+                {"pushSouth", "Descrição do feitiço", String.valueOf(1)},
+                {"pushWest", "Descrição do feitiço", String.valueOf(1)},
+                {"reduceRange", "Descrição do feitiço", String.valueOf(2)},
+                {"doubleRange", "Descrição do feitiço", String.valueOf(3)},
+                {"freezes", "Descrição do feitiço", String.valueOf(3)},
+                {"freezes4Ever", "Descrição do feitiço", String.valueOf(10)},
+                {"unfreezes", "Descrição do feitiço", String.valueOf(8)},
+        };
+    } //ok 01/01
 
+    public String getSpell (int x, int y){ // Scanner dos spells de todas as criaturas presentes. Ela que marca a varinha na criatura que retornou true para enchant! ok.
+        System.out.println(iterate(logCounter) + " - "+"IN getSpell");
+        //int creatureId = getCreatureIdByPosition(x, y); // Seria o mesmo que getElementId??????! Provavelmente simm...
+        for(Creature creature: creatures){
+            if(creature.getX() == x && creature.getY() == y){
+                String spellName = creature.getItSpellName();
+                if (spellName != null){ // <<------------------ não pode ser null
+                    return spellName;
+                }
+            }
+        }
+        System.out.println("ERRO - retornou null em GetSpell()");
+        return null; // É suposto que o simulador chame apenas quando há criatura na coordenada.
+    } // ok 01/01
+
+    public boolean enchant (int x, int y, String spellName){
+
+        System.out.println(iterate(logCounter) + " - "+"Estou em enchant");
+        for (Creature c: creatures){
+            if (c.getX() == x && c.getY() == y) {
+                if (c.isEnchant()){ // Se tá enfeitiçada só recebe outro feitiço se der match congela4Ever/descongela
+                    if (c.isFrozen() && spellName.equals("unfreezes")){ // Se está enfeitiçada vê se tá congelada e o feitiço a ser aplicado é descongela. Se for retorna true e descongela.
+                        //c.unfreezes();
+                        if (checkBalanceToSpell(getCurrentTeamId())){
+                            c.setEnchant(true);
+                            c.setItSpellName(spellName);
+                            taxSpell(getCurrentTeamId(), 8);
+                            return true;
+                        }
+                        // revisar pois pode não precisar já que uma criatura não pode ser enfeitiçada duas vezez no mesmo turno, ao que parece. todo
+                    } /*else {
+                          return false; //Criatura está enfeitiçada mas não dá match congelada4ever-descongela enchant retorna falso
+                      }*/
+                }
+
+                else {
+
+                    // A criatura não estava enfeitiçada. Agora ela recebe o feitiço e esta fç enchant retorna true; <---> SE FOR VÁLIDO O QUE FOR O FEITIÇO!!!
+                    if (spellName != null){
+                        switch (spellName){
+                            case ("freezes"): {
+                                if (checkBalanceToSpell(getCurrentTeamId())){
+                                    c.setEnchant(true);
+                                    taxSpell(getCurrentTeamId(), 3);
+                                    c.setItSpellName(spellName);
+                                    //c.freezes();
+                                    //c.setItSpellName("freezes");
+                                    return true;
+                                } else {
+                                    return false;
+                                }
+                            }
+
+                            case ("freezes4Ever"):{
+                                if (checkBalanceToSpell(getCurrentTeamId())){
+                                    c.setEnchant(true);
+                                    //c.freezes4Ever();
+                                    //c.setItSpellName("freezes4Ever");
+                                    taxSpell(getCurrentTeamId(), 10);
+                                    c.setItSpellName(spellName);
+                                    return true;
+                                } else {
+                                    return false;
+                                }
+                            }
+
+                            case ("unfreezes"):{
+                                if (checkBalanceToSpell(getCurrentTeamId())){
+                                    c.setEnchant(true);
+                                    //c.freezes();
+                                    //c.setItSpellName("unfreezes");
+                                    taxSpell(getCurrentTeamId(), 8);
+                                    c.setItSpellName(spellName);
+
+                                    return true;
+                                } else {
+                                    return false; // Neste caso não se faz unfreeze porque se tivesse mesmo frozen4Ever teria unfrozed lá em cima!
+                                }
+                            }
+
+                            case ("pushNorth"): {
+                                nextX = x;
+                                nextY = y - 1;
+                                if (validateMovement(x, y, nextX, nextY)){ // movimento é valido
+                                    if (checkBalanceToSpell(getCurrentTeamId())){
+                                        c.setEnchant(true);
+                                        //c.freezes();
+                                        //c.setItSpellName("pushNorth");
+                                        taxSpell(getCurrentTeamId(), 1);
+                                        c.setItSpellName(spellName);
+                                        return true;
+                                    } else {
+                                        return false;
+                                    }
+                                } else {
+                                    return false; // Se não entrar nesse if tem erro!
+                                }
+                            }
+
+                            case ("pushEast"): {
+                                nextX = x+ 1;
+                                nextY = y;
+                                if (validateMovement(x, y, nextX, nextY)){ // movimento é valido
+                                    if (checkBalanceToSpell(getCurrentTeamId())){
+                                        c.setEnchant(true);
+                                        //c.setItSpellName("pushEast");
+                                        //c.pushEast();
+                                        taxSpell(getCurrentTeamId(),1);
+                                        c.setItSpellName(spellName);
+                                        // if(getElementId(nextX))matchTreasure() -- TODO --> pegar tesouro. Método de creature ou FGM ou Treasure?
+                                        return true;
+                                    } else {
+                                        return false;
+                                    }
+                                } else {
+                                    return false; // Se não entrar nesse if tem erro!
+                                }
+                            }
+
+                            case ("pushSouth"): {
+                                nextX = x;
+                                nextY = y + 1;
+                                if (validateMovement(x, y, nextX, nextY)){ // movimento é valido
+                                    if (checkBalanceToSpell(getCurrentTeamId())){
+                                        c.setEnchant(true);
+                                        //c.freezes();
+                                        //c.setItSpellName("pushSouth");
+                                        taxSpell(getCurrentTeamId(), 1);
+                                        c.setItSpellName(spellName);
+                                        return true;
+                                    } else {
+                                        return false;
+                                    }
+                                } else {
+                                    return false;
+                                }
+                            }
+
+                            case ("pushWest"): {
+                                nextX = x -1;
+                                nextY = y;
+                                if (validateMovement(x, y, nextX, nextY)){ // movimento é valido
+                                    if (checkBalanceToSpell(getCurrentTeamId())){
+                                        c.setEnchant(true);
+                                        //c.freezes();
+                                        //c.setItSpellName("pushWest");
+                                        taxSpell(getCurrentTeamId(), 1);
+                                        c.setItSpellName(spellName);
+                                        return true;
+                                    } else {
+                                        return false;
+                                    }
+                                } else {
+                                    return false;
+                                }
+                            }
+
+                            case ("reducesRange"): {
+
+                                if (checkBalanceToSpell(getCurrentTeamId())){
+                                    c.setEnchant(true);
+                                    taxSpell(getCurrentTeamId(), 2);
+                                    c.setItSpellName(spellName);
+                                    //c.reducesRange();
+                                    //c.setItSpellName("reducesRange");
+                                }
+
+                                return true;
+                            }
+
+                            case ("doubleRange"): {
+                                if (checkBalanceToSpell(getCurrentTeamId())){
+                                    c.setEnchant(true);
+                                    taxSpell(c.getTeamId(), 3);
+                                    c.setItSpellName(spellName);
+                                    //c.doubleRange(c.getRange());
+                                    //c.setItSpellName("doubleRange");
+                                }
+
+                                return true;
+                            }
+                        }
+                    }
+                }
+                // } else {
+                // O feitiço leva para um lugar ocupado ou buraco ou para fora do tabuleiro? --> Retorna falso
+                // A criatura está congelada ou congelada4ever? --> Retorna falso
+                // Se tá congelada4ever e spellName == descongela return true e c.isFrozen(c.getId()) = false;
+                // Outras casos retorna true.
+                // c.
+
+                // return true;
+            }
+
+        } return false; // Porque nesse x e y não há criatura.
+
+    }
 
 
     public void processTurn(){
@@ -311,35 +522,6 @@ public class FandeisiaGameManager{
 
     }
 
-    private void executeStandartMovement(int x, int y, String orientation, boolean frozen,
-                                         boolean frozen4Ever, String typeName) {
-        for (Creature creature: creatures){
-            if (!creature.isFrozen() && !creature.isFrozen4Ever()){
-
-                switch (creature.getTypeName()){
-                    case ("Dwarf"): {
-                        switch (creature.getOrientation()){
-                            case ("Norte"):{
-                                creature.setNextX(creature.getRange());
-                                creature.setNextY(creature.getRange());
-                                if (validateMovement(x,y,creature.getNextX(),creature.getNextY())){
-                                    creature.move();
-                                }
-
-                            }
-                        }
-                    }
-                }
-
-            } else {
-                creature.setFrozen(false);
-            }
-
-
-
-        }
-
-    }
 
     private void executeSpell(int id,String spell) {
 
@@ -375,7 +557,6 @@ public class FandeisiaGameManager{
                     case ("pushEast"): {
                         if (validateMovement(creature.getX(), creature.getY(), creature.getX()+1,creature.getY())) {
                             creature.setX(creature.getX()+1);
-                            creature.setItSpellName(null);
                             creature.setItSpellName(null); // Já foi executado o feitiço, então passa a ficar em estado desencantado.
                             creature.setEnchant(false);
                             break;
@@ -385,7 +566,7 @@ public class FandeisiaGameManager{
 
                     case ("pushSouth"): {
                         if (validateMovement(creature.getX(), creature.getY(), creature.getX(),creature.getY()+1)) {
-                            creature.setNextY(creature.getY() + 1);
+                            creature.setY(creature.getY() + 1);
                             creature.setItSpellName(null); // Já foi executado o feitiço, então passa a ficar em estado desencantado.
                             creature.setEnchant(false);
                             break;
@@ -395,7 +576,7 @@ public class FandeisiaGameManager{
 
                     case ("pushWest"): {
                         if (validateMovement(creature.getX(), creature.getY(), creature.getX()-1,creature.getY())) {
-                            creature.setNextX(creature.getX() - 1);
+                            creature.setX(creature.getX() - 1);
                             creature.setItSpellName(null); // Já foi executado o feitiço, então passa a ficar em estado desencantado.
                             creature.setEnchant(false);
                             break;
@@ -407,6 +588,35 @@ public class FandeisiaGameManager{
         }
     }
 
+    private void executeStandartMovement(int x, int y, String orientation, boolean frozen,
+                                         boolean frozen4Ever, String typeName) {
+        for (Creature creature: creatures){
+            if (!creature.isFrozen() && !creature.isFrozen4Ever()){
+
+                switch (creature.getTypeName()){
+                    case ("Dwarf"): {
+                        switch (creature.getOrientation()){
+                            case ("Norte"):{
+                                creature.setNextX(creature.getRange());
+                                creature.setNextY(creature.getRange());
+                                if (validateMovement(x,y,creature.getNextX(),creature.getNextY())){
+                                    creature.move();
+                                }
+
+                            }
+                        }
+                    }
+                }
+
+            } else {
+                creature.setFrozen(false);
+            }
+
+
+
+        }
+
+    }
     public boolean gameIsOver(){
         System.out.println("Estou em gameIsOver");
 
@@ -452,7 +662,6 @@ public class FandeisiaGameManager{
         return getElementId(nextX, nextY) <= 0;
     }
 
-
     // Checar saldo;
     private boolean checkBalanceToSpell(int teamId) {
 
@@ -466,6 +675,7 @@ public class FandeisiaGameManager{
         return false;
 
     }
+
     // Debita moedas dos feitiços
     private void taxSpell(int teamId, int cost) {
         if (teamId == 10){
@@ -501,224 +711,6 @@ public class FandeisiaGameManager{
      * As moedas ainda não estão sendo removidas
 
      * */
-
-    public String[][] getSpellTypes(){
-        System.out.println(iterate(logCounter) + " - "+"IN getSpellTypes");
-        return new String[][]{
-                {"pushNorth", "Descrição do feitiço", String.valueOf(1)},
-                {"pushEast", "Descrição do feitiço", String.valueOf(1)},
-                {"pushSouth", "Descrição do feitiço", String.valueOf(1)},
-                {"pushWest", "Descrição do feitiço", String.valueOf(1)},
-                {"reduceRange", "Descrição do feitiço", String.valueOf(2)},
-                {"doubleRange", "Descrição do feitiço", String.valueOf(3)},
-                {"freezes", "Descrição do feitiço", String.valueOf(3)},
-                {"freezes4Ever", "Descrição do feitiço", String.valueOf(10)},
-                {"unfreezes", "Descrição do feitiço", String.valueOf(8)},
-        };
-    } //ok 01/01
-
-    public String getSpell (int x, int y){ // Scanner dos spells de todas as criaturas presentes. Ela que marca a varinha na criatura que retornou true para enchant! ok.
-        System.out.println(iterate(logCounter) + " - "+"IN getSpell");
-        //int creatureId = getCreatureIdByPosition(x, y); // Seria o mesmo que getElementId??????! Provavelmente simm...
-        for(Creature creature: creatures){
-            if(creature.getX() == x && creature.getY() == y){
-                String spellName = creature.getItSpellName();
-                if (spellName != null){ // <<------------------ não pode ser null
-                    return spellName;
-                }
-            }
-        }
-        System.out.println("ERRO - retornou null em GetSpell()");
-        return null; // É suposto que o simulador chame apenas quando há criatura na coordenada.
-    } // ok 01/01
-
-    public boolean enchant (int x, int y, String spellName){
-
-        System.out.println(iterate(logCounter) + " - "+"Estou em enchant");
-        for (Creature c: creatures){
-            if (c.getX() == x && c.getY() == y) {
-                if (c.isEnchant()){ // Se tá enfeitiçada só recebe outro feitiço se der match congela4Ever/descongela
-                      if (c.isFrozen() && spellName.equals("unfreezes")){ // Se está enfeitiçada vê se tá congelada e o feitiço a ser aplicado é descongela. Se for retorna true e descongela.
-                              //c.unfreezes();
-                              if (checkBalanceToSpell(getCurrentTeamId())){
-                                  c.setEnchant(true);
-                                  c.setItSpellName(spellName);
-                                  taxSpell(getCurrentTeamId(), 8);
-                                  return true;
-                              }
-                              // revisar pois pode não precisar já que uma criatura não pode ser enfeitiçada duas vezez no mesmo turno, ao que parece. todo
-                      } /*else {
-                          return false; //Criatura está enfeitiçada mas não dá match congelada4ever-descongela enchant retorna falso
-                      }*/
-                }
-
-                else {
-
-                    // A criatura não estava enfeitiçada. Agora ela recebe o feitiço e esta fç enchant retorna true; <---> SE FOR VÁLIDO O QUE FOR O FEITIÇO!!!
-                    switch (spellName){
-
-                        case ("freezes"): {
-                            if (checkBalanceToSpell(getCurrentTeamId())){
-                                c.setEnchant(true);
-                                taxSpell(getCurrentTeamId(), 3);
-                                c.setItSpellName(spellName);
-                                //c.freezes();
-                                //c.setItSpellName("freezes");
-                                return true;
-                            } else {
-                                return false;
-                            }
-                        }
-
-                        case ("freezes4Ever"):{
-                            if (checkBalanceToSpell(getCurrentTeamId())){
-                                c.setEnchant(true);
-                                //c.freezes4Ever();
-                                //c.setItSpellName("freezes4Ever");
-                                taxSpell(getCurrentTeamId(), 10);
-                                c.setItSpellName(spellName);
-                                return true;
-                            } else {
-                                return false;
-                            }
-                        }
-
-                        case ("unfreezes"):{
-                            if (checkBalanceToSpell(getCurrentTeamId())){
-                                c.setEnchant(true);
-                                //c.freezes();
-                                //c.setItSpellName("unfreezes");
-                                taxSpell(getCurrentTeamId(), 8);
-                                c.setItSpellName(spellName);
-
-                                return true;
-                            } else {
-                            return false; // Neste caso não se faz unfreeze porque se tivesse mesmo frozen4Ever teria unfrozed lá em cima!
-                            }
-                        }
-
-                        case ("pushNorth"): {
-                            nextX = x;
-                            nextY = y - 1;
-                            if (validateMovement(x, y, nextX, nextY)){ // movimento é valido
-                                if (checkBalanceToSpell(getCurrentTeamId())){
-                                    c.setEnchant(true);
-                                    //c.freezes();
-                                    //c.setItSpellName("pushNorth");
-                                    taxSpell(getCurrentTeamId(), 1);
-                                    c.setItSpellName(spellName);
-                                    return true;
-                                } else {
-                                    return false;
-                                }
-                            } else {
-                                return false; // Se não entrar nesse if tem erro!
-                            }
-                        }
-
-                        case ("pushEast"): {
-                            nextX = x+ 1;
-                            nextY = y;
-                            if (validateMovement(x, y, nextX, nextY)){ // movimento é valido
-                                if (checkBalanceToSpell(getCurrentTeamId())){
-                                    c.setEnchant(true);
-                                    //c.setItSpellName("pushEast");
-                                    //c.pushEast();
-                                    taxSpell(getCurrentTeamId(),1);
-                                    c.setItSpellName(spellName);
-                                    // if(getElementId(nextX))matchTreasure() -- TODO --> pegar tesouro. Método de creature ou FGM ou Treasure?
-                                    return true;
-                                } else {
-                                    return false;
-                                }
-                            } else {
-                                return false; // Se não entrar nesse if tem erro!
-                            }
-                        }
-
-                        case ("pushSouth"): {
-
-                            nextX = x;
-                            nextY = y + 1;
-                            if (validateMovement(x, y, nextX, nextY)){ // movimento é valido
-                                if (checkBalanceToSpell(getCurrentTeamId())){
-                                    c.setEnchant(true);
-                                    //c.freezes();
-                                    //c.setItSpellName("pushSouth");
-                                    taxSpell(getCurrentTeamId(), 1);
-                                    c.setItSpellName(spellName);
-                                    return true;
-                                } else {
-                                    return false;
-                                }
-                            } else {
-                                return false;
-                            }
-                        }
-
-                        case ("pushWest"): {
-                            nextX = x -1;
-                            nextY = y;
-                            if (validateMovement(x, y, nextX, nextY)){ // movimento é valido
-                                if (checkBalanceToSpell(getCurrentTeamId())){
-                                    c.setEnchant(true);
-                                    //c.freezes();
-                                    //c.setItSpellName("pushWest");
-                                    taxSpell(getCurrentTeamId(), 1);
-                                    c.setItSpellName(spellName);
-                                    return true;
-                                } else {
-                                    return false;
-                                }
-                            } else {
-                                return false;
-                            }
-                        }
-
-                        case ("reducesRange"): {
-
-                            if (checkBalanceToSpell(getCurrentTeamId())){
-                                c.setEnchant(true);
-                                taxSpell(getCurrentTeamId(), 2);
-                                c.setItSpellName(spellName);
-                                //c.reducesRange();
-                                //c.setItSpellName("reducesRange");
-                            }
-
-                            return true;
-                        }
-
-                        case ("doubleRange"): {
-                            if (checkBalanceToSpell(getCurrentTeamId())){
-                                c.setEnchant(true);
-                                taxSpell(c.getTeamId(), 3);
-                                c.setItSpellName(spellName);
-                                //c.doubleRange(c.getRange());
-                                //c.setItSpellName("doubleRange");
-                            }
-
-                            return true;
-                        }
-
-                        // próximos cases;
-                        // Aqui eu valido o movimento. Se for válido passo pra criatura fazer.
-                        //c.lookAtTheWorld(rows, columns, holes, treasures, creatures); // Criatura que irá ser enfeitiçada conhece o mundo para lá na fç validar o feitiço(movimento)
-                    }
-                }
-                // } else {
-                // O feitiço leva para um lugar ocupado ou buraco ou para fora do tabuleiro? --> Retorna falso
-                // A criatura está congelada ou congelada4ever? --> Retorna falso
-                // Se tá congelada4ever e spellName == descongela return true e c.isFrozen(c.getId()) = false;
-                // Outras casos retorna true.
-                // c.
-
-               // return true;
-            }
-
-        } return false; // Porque nesse x e y não há criatura.
-
-    }
-
 
 
 
