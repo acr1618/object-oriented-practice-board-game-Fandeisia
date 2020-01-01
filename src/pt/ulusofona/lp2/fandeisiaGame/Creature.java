@@ -41,6 +41,10 @@ public abstract class Creature extends Element {
         return image;
     }
 
+    public void setImage(String image) {
+        this.image = image;
+    }
+
     @Override
     public String toString() {
         return id + " | " + typeName + " | " + teamId + " | " + points + " @ " + "(" + x +", " + y + ") " + orientation;

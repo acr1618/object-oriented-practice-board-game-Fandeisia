@@ -350,10 +350,16 @@ public class FandeisiaGameManager{
                 switch(spell){
                     case ("freezes"): {
                         creature.setFrozen(true); // nos movimentos por o if isFrozen
+                        creature.setEnchant(false);
+                        creature.setImage("IMAGEM CONGELADA"); //todo
+                        creature.setItSpellName(null); // Já foi executado o feitiço, então passa a ficar em estado desencantado (já pode receber outros feitiços) Como vai ficar isso? Por enquanto parece ok.
                     }
 
                     case ("freezes4Ever") : {
                         creature.setFrozen4Ever(true); // nos movimentos por o if isFrozen4Ever
+                        creature.setEnchant(false); //todo
+                        creature.setImage("IMAGEM CONGELADA 4 EVER");
+                        creature.setItSpellName(null); // Já foi executado o feitiço, então passa a ficar em estado desencantado (já pode receber outros feitiços - no caso, apenas o descongela!). todo
                     }
 
                     case ("pushNorth"): {
@@ -502,7 +508,7 @@ public class FandeisiaGameManager{
                 {"pushNorth", "Descrição do feitiço", String.valueOf(1)},
                 {"pushEast", "Descrição do feitiço", String.valueOf(1)},
                 {"pushSouth", "Descrição do feitiço", String.valueOf(1)},
-                {"pushEast", "Descrição do feitiço", String.valueOf(1)},
+                {"pushWest", "Descrição do feitiço", String.valueOf(1)},
                 {"reduceRange", "Descrição do feitiço", String.valueOf(2)},
                 {"doubleRange", "Descrição do feitiço", String.valueOf(3)},
                 {"freezes", "Descrição do feitiço", String.valueOf(3)},
