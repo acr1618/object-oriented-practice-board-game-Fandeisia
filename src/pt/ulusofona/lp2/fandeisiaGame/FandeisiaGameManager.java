@@ -71,12 +71,12 @@ public class FandeisiaGameManager{
         Map<String, Integer> computerArmy = new HashMap<>();
 
         // Criando 1 apenas para teste.
-        //computerArmy.put("Anao", new Random().nextInt(4)); // criar um random entre 0 e 3.
-        //computerArmy.put("Dragao", new Random().nextInt(4));
-        //computerArmy.put("Elfo", new Random().nextInt(4));
-        //computerArmy.put("Gigante", new Random().nextInt(4));
-        //computerArmy.put("Humano", new Random().nextInt(4));
-        //computerArmy.put("Humano", new Random().nextInt(4));
+        computerArmy.put("Anao", new Random().nextInt(4)); // criar um random entre 0 e 3.
+        computerArmy.put("Dragao", new Random().nextInt(4));
+        computerArmy.put("Elfo", new Random().nextInt(4));
+        computerArmy.put("Gigante", new Random().nextInt(4));
+        computerArmy.put("Humano", new Random().nextInt(4));
+        computerArmy.put("Humano", new Random().nextInt(4));
         computerArmy.put("Dragao", 1);
         return computerArmy;
         /*
@@ -168,7 +168,13 @@ public class FandeisiaGameManager{
             }
         }
 
-        // Gerar imagens diferentes para cada time
+        // Gerar imagens diferentes para criaturas da Resistencia! :)
+        for (Creature creature: creatures){
+            if (creature.getTeamId() == 20){
+                creature.setImage("bird.png");
+            }
+        }
+
         /*for(Creature creature: creaturesLdr){
             if (creature.getType().equals("baker")){
                 stringType[0][1] = "bird.png";
@@ -522,8 +528,6 @@ public class FandeisiaGameManager{
 
     }
 
-    // problem checkBalance. Coins going negative before deny tax. TODO
-
     private void executeSpell(int id,String spell) {
 
         for (Creature creature : creatures){
@@ -694,14 +698,14 @@ public class FandeisiaGameManager{
     }
 
     // Debita moedas dos feitiços
-    private void taxSpell(int teamId, int cost) {
+    private void taxSpell(int teamId, int spellCost) {
         if (teamId == 10){
-            teamLdr.removeCoins(cost);
+            teamLdr.removeCoins(spellCost);
             System.out.println(iterate(logCounter) + " - "+"Spell taxed from LORD ELDER");
 
         }
         if (teamId == 20){
-            teamRes.removeCoins(cost);
+            teamRes.removeCoins(spellCost);
             System.out.println(iterate(logCounter) + " - "+"Spell taxed from RESISTENCIA:");
         }
     }
@@ -728,9 +732,6 @@ public class FandeisiaGameManager{
      * As moedas ainda não estão sendo removidas
 
      * */
-
-
-
 
 
 
