@@ -12,9 +12,11 @@ public abstract class Creature extends Element {
     protected String typeName;
     protected int range;
     protected boolean isEnchant;
-    protected boolean isFreezed;
-    protected boolean isFreezed4Ever;
+    protected boolean isFrozen;
+    protected boolean isFrozen4Ever;
     protected String itSpellName;
+    protected int nextX;
+    protected int nextY;
 
 
     // Variáveis para guardar o mundo:
@@ -30,9 +32,9 @@ public abstract class Creature extends Element {
         this.cost = cost;
         this.orientation = orientation;
         this.isEnchant = false;
-        this.isFreezed = false;
-        this.isFreezed4Ever = false;
-        this.itSpellName = null;
+        this.isFrozen = false;
+        this.isFrozen4Ever = false;
+        //this.itSpellName = null;
     }
 
     public String getImagePNG(){
@@ -97,21 +99,41 @@ public abstract class Creature extends Element {
     }
 
     public boolean isFrozen() {
-        return isFreezed;
+        return isFrozen;
     }
 
-    public void freezes(boolean isFrozen) { // Talvez isso é o próprio feitiço - PROVAVELMENTE!!!
-        this.isFreezed = isFrozen;
+    public void setFrozen(boolean frozen) {
+        isFrozen = frozen;
     }
 
-    public boolean isFreezed4Ever() {
-        return isFreezed4Ever;
+    public boolean isFrozen4Ever() {
+        return isFrozen4Ever;
+    }
+
+    public void setFrozen4Ever(boolean frozen4Ever) {
+        isFrozen4Ever = frozen4Ever;
     }
 
     public void congela4Ever(boolean isCongelada4Ever) {
-        this.isFreezed4Ever = isCongelada4Ever;
+        this.isFrozen4Ever = isCongelada4Ever;
     }
 
+
+    public int getNextX() {
+        return nextX;
+    }
+
+    public void setNextX(int nextX) {
+        this.nextX = nextX;
+    }
+
+    public int getNextY() {
+        return nextY;
+    }
+
+    public void setNextY(int nextY) {
+        this.nextY = nextY;
+    }
 
     public void pushNorth(){
         this.y = this.y -1;
@@ -135,12 +157,6 @@ public abstract class Creature extends Element {
     public void doubleRange(int range){
         this.range = range *2;
          // Custa 3 Aumenta alcance para o dobro
-    }
-    public boolean freezes(){
-        return true; // Custa 3 Não move neste turno
-    }
-    public boolean freezes4Ever(){
-        return true; // Custa 10 Não move até o fim do jogo
     }
     public boolean unfreezes(){
         return true; // Custa 8 Inverte aplicação do Freezes4Ever.

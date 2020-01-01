@@ -13,21 +13,21 @@ public class Dwarf extends Creature {
     public void move() {
         switch (this.orientation){
             case ("Norte"): {
-                this.y = y-1;
+                this.y = y-this.range;
                 break;
             }
             case ("Este"): {
-                this.x = x+1;
+                this.x = x+this.range;
                 break;
             }
 
             case ("Sul"): {
-                this.y = y+1;
+                this.y = y+this.range;
                 break;
             }
 
             case ("Oeste"): {
-                this.x = x-1;
+                this.x = x-this.range;
                 break;
             }
 
