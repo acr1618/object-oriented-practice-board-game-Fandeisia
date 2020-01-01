@@ -314,7 +314,7 @@ public class FandeisiaGameManager{
                 if (c.isEnchant()){ // Se tá enfeitiçada só recebe outro feitiço se der match congela4Ever/descongela
                     if (c.isFrozen() && spellName.equals("unfreezes")){ // Se está enfeitiçada vê se tá congelada e o feitiço a ser aplicado é descongela. Se for retorna true e descongela.
                         //c.unfreezes();
-                        if (checkBalanceToSpell(getCurrentTeamId())){
+                        if (checkBalanceToSpell(getCurrentTeamId(),8)){
                             c.setEnchant(true);
                             c.setItSpellName(spellName);
                             taxSpell(getCurrentTeamId(), 8);
@@ -332,7 +332,7 @@ public class FandeisiaGameManager{
                     if (spellName != null){
                         switch (spellName){
                             case ("freezes"): {
-                                if (checkBalanceToSpell(getCurrentTeamId())){
+                                if (checkBalanceToSpell(getCurrentTeamId(),3)){
                                     c.setEnchant(true);
                                     taxSpell(getCurrentTeamId(), 3);
                                     c.setItSpellName(spellName);
@@ -345,7 +345,7 @@ public class FandeisiaGameManager{
                             }
 
                             case ("freezes4Ever"):{
-                                if (checkBalanceToSpell(getCurrentTeamId())){
+                                if (checkBalanceToSpell(getCurrentTeamId(),10)){
                                     c.setEnchant(true);
                                     //c.freezes4Ever();
                                     //c.setItSpellName("freezes4Ever");
@@ -358,7 +358,7 @@ public class FandeisiaGameManager{
                             }
 
                             case ("unfreezes"):{
-                                if (checkBalanceToSpell(getCurrentTeamId())){
+                                if (checkBalanceToSpell(getCurrentTeamId(),8)){
                                     c.setEnchant(true);
                                     //c.freezes();
                                     //c.setItSpellName("unfreezes");
@@ -375,7 +375,7 @@ public class FandeisiaGameManager{
                                 nextX = x;
                                 nextY = y - 1;
                                 if (validateMovement(x, y, nextX, nextY)){ // movimento é valido
-                                    if (checkBalanceToSpell(getCurrentTeamId())){
+                                    if (checkBalanceToSpell(getCurrentTeamId(),1)){
                                         c.setEnchant(true);
                                         //c.freezes();
                                         //c.setItSpellName("pushNorth");
@@ -394,7 +394,7 @@ public class FandeisiaGameManager{
                                 nextX = x+ 1;
                                 nextY = y;
                                 if (validateMovement(x, y, nextX, nextY)){ // movimento é valido
-                                    if (checkBalanceToSpell(getCurrentTeamId())){
+                                    if (checkBalanceToSpell(getCurrentTeamId(),1)){
                                         c.setEnchant(true);
                                         //c.setItSpellName("pushEast");
                                         //c.pushEast();
@@ -414,7 +414,7 @@ public class FandeisiaGameManager{
                                 nextX = x;
                                 nextY = y + 1;
                                 if (validateMovement(x, y, nextX, nextY)){ // movimento é valido
-                                    if (checkBalanceToSpell(getCurrentTeamId())){
+                                    if (checkBalanceToSpell(getCurrentTeamId(),1)){
                                         c.setEnchant(true);
                                         //c.freezes();
                                         //c.setItSpellName("pushSouth");
@@ -433,7 +433,7 @@ public class FandeisiaGameManager{
                                 nextX = x -1;
                                 nextY = y;
                                 if (validateMovement(x, y, nextX, nextY)){ // movimento é valido
-                                    if (checkBalanceToSpell(getCurrentTeamId())){
+                                    if (checkBalanceToSpell(getCurrentTeamId(),1)){
                                         c.setEnchant(true);
                                         //c.freezes();
                                         //c.setItSpellName("pushWest");
@@ -450,7 +450,7 @@ public class FandeisiaGameManager{
 
                             case ("reducesRange"): {
 
-                                if (checkBalanceToSpell(getCurrentTeamId())){
+                                if (checkBalanceToSpell(getCurrentTeamId(),1)){
                                     c.setEnchant(true);
                                     taxSpell(getCurrentTeamId(), 2);
                                     c.setItSpellName(spellName);
@@ -462,7 +462,7 @@ public class FandeisiaGameManager{
                             }
 
                             case ("doubleRange"): {
-                                if (checkBalanceToSpell(getCurrentTeamId())){
+                                if (checkBalanceToSpell(getCurrentTeamId(),1)){
                                     c.setEnchant(true);
                                     taxSpell(c.getTeamId(), 3);
                                     c.setItSpellName(spellName);
@@ -522,6 +522,7 @@ public class FandeisiaGameManager{
 
     }
 
+    // problem checkBalance. Coins going negative before deny tax. TODO
 
     private void executeSpell(int id,String spell) {
 
@@ -679,13 +680,13 @@ public class FandeisiaGameManager{
     }
 
     // Checar saldo;
-    private boolean checkBalanceToSpell(int teamId) {
+    private boolean checkBalanceToSpell(int teamId, int spellCost) {
 
         if (teamId == 10){
-            return teamLdr.checkBalanceToSpell(1);
+            return teamLdr.checkBalanceToSpell(spellCost);
         }
         if (teamId == 20){
-            return teamRes.checkBalanceToSpell(1);
+            return teamRes.checkBalanceToSpell(spellCost);
         }
         System.out.println(iterate(logCounter) + " - "+"O teamId passado não é válido. Impossível consultar saldo ");
         return false;
