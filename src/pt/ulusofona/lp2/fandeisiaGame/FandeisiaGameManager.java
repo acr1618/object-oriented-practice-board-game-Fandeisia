@@ -1,6 +1,4 @@
 package pt.ulusofona.lp2.fandeisiaGame;
-import com.sun.istack.internal.NotNull;
-import sun.security.jgss.GSSUtil;
 
 import java.io.File;
 import java.sql.SQLOutput;
@@ -40,9 +38,9 @@ public class FandeisiaGameManager{
 
     // Dado binário (0 ou 1)
     int rollDiceBinary(){ return ThreadLocalRandom.current().nextInt(1 );
-    }
+    } // Usado para sortear time que começa o jogo
 
-    // Contador para as linhas impressas no console vindas das funções - Lembrar que se crashar o long deve-se zerar no limite.
+    // Contador para as linhas impressas no console vindas das funções. Apenas para utilizar no desenvolvimento.
     long iterate(long i){
         if (i < 2147483647){
         logCounter++;
@@ -71,21 +69,13 @@ public class FandeisiaGameManager{
 
         // Criando 1 apenas para teste.
         computerArmy.put("Anao", new Random().nextInt(4)); // criar um random entre 0 e 3.
-        //computerArmy.put("Dragao", new Random().nextInt(4));
-        //computerArmy.put("Elfo", new Random().nextInt(4));
-        //computerArmy.put("Gigante", new Random().nextInt(4));
-        //computerArmy.put("Humano", new Random().nextInt(4));
-        computerArmy.put("Dragao", 0);
+        computerArmy.put("Dragao", new Random().nextInt(4));
+        computerArmy.put("Elfo", new Random().nextInt(4));
+        computerArmy.put("Gigante", new Random().nextInt(4));
+        computerArmy.put("Humano", new Random().nextInt(4));
+        //computerArmy.put("Dragao", 1);
         return computerArmy;
-        /*
-        Deve devolver o exército escolhido pelo
-        computador.
-        A função deve devolver um ​Map​ cuja chave
-        é o tipo da criatura e o valor é o número de
-        criaturas desse tipo que o jogador
-        automático pretende.
-        */
-    }
+    } //OK 29-12
 
     public int startGame(String[] content, int rows, int columns){
         //System.out.println( iterate(logCounter) + " - "+"IN startGame\n -----------------------------------\n");
@@ -489,6 +479,10 @@ public class FandeisiaGameManager{
 
     public void processTurn(){
         System.out.println("Entrou em  processTurn\n");
+        int turn = 0;
+        turn += turn;
+        changeCurrentTeam();
+
         for (Creature creature: creatures){
 
             // Timer para descongelar
@@ -522,13 +516,21 @@ public class FandeisiaGameManager{
         }
     }
 
+    private void changeCurrentTeam() {
+        if (currentTeam.equals(teamLdr)){
+            currentTeam = teamRes;
+        } else {
+            currentTeam = teamLdr;
+        }
+    }
+
     private boolean executeStandardMovement(int x, int y, String orientation, String typeName) {
         System.out.println("Entrou em executeStandardMovement");
         for (Creature creature: creatures){
             if (creature.getX() == x && creature.getY()==y){
                 switch (creature.getTypeName()){
-                    case ("dwarf"):
-                    case ("dwarfNegate"): {
+
+                    case ("dwarf"):case("dwarfNegate"):case("human"):case("humanNegate") : {
                         switch (creature.getOrientation()){
                             case ("Norte"):{
                                 creature.setNextX(creature.getX());
@@ -678,6 +680,8 @@ public class FandeisiaGameManager{
 
     public boolean gameIsOver(){
         System.out.println("Entrou em gameIsOver");
+
+
 
         return false;
         /*Deve devolver ​true​ caso já tenha sido

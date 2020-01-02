@@ -7,8 +7,4 @@ public class Human extends Creature {
         typeName = "human";
         range = 2;
     }
-
-    @Override
-    public void move() {
-    }
 }

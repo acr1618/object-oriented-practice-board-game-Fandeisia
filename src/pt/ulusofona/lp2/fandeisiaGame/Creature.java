@@ -2,6 +2,7 @@ package pt.ulusofona.lp2.fandeisiaGame;
 
 import java.util.List;
 
+
 public abstract class Creature extends Element {
 
     protected int teamId;
@@ -54,7 +55,26 @@ public abstract class Creature extends Element {
         return typeName;
     }
 
-    public abstract void move();
+    public void move(){
+        switch (this.orientation){
+            case ("Norte"): {
+                this.y = y-this.range;
+                break;
+            }
+            case ("Este"): {
+                this.x = x+this.range;
+                break;
+            }
+            case ("Sul"): {
+                this.y = y+this.range;
+                break;
+            }
+            case ("Oeste"): {
+                this.x = x-this.range;
+                break;
+            }
+        }
+    }
         //return true;
      //} Talvez deixe de ser abstrato e passe a ter a implementação básica (anão) e sobrescrita nas outras classes de criatura. todo
 
