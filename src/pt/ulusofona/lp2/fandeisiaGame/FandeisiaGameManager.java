@@ -71,12 +71,12 @@ public class FandeisiaGameManager{
         Map<String, Integer> computerArmy = new HashMap<>();
 
         // Criando 1 apenas para teste.
-        computerArmy.put("Anao", new Random().nextInt(4)); // criar um random entre 0 e 3.
-        computerArmy.put("Dragao", new Random().nextInt(4));
-        computerArmy.put("Elfo", new Random().nextInt(4));
-        computerArmy.put("Gigante", new Random().nextInt(4));
-        computerArmy.put("Humano", new Random().nextInt(4));
-        computerArmy.put("Humano", new Random().nextInt(4));
+        //computerArmy.put("Anao", new Random().nextInt(4)); // criar um random entre 0 e 3.
+        //computerArmy.put("Dragao", new Random().nextInt(4));
+        //computerArmy.put("Elfo", new Random().nextInt(4));
+        //computerArmy.put("Gigante", new Random().nextInt(4));
+        //computerArmy.put("Humano", new Random().nextInt(4));
+        //computerArmy.put("Humano", new Random().nextInt(4));
         computerArmy.put("Dragao", 1);
         return computerArmy;
         /*
@@ -171,17 +171,15 @@ public class FandeisiaGameManager{
         // Gerar imagens diferentes para criaturas da Resistencia! :)
         for (Creature creature: creatures){
             if (creature.getTeamId() == 20){
-                creature.setImage("bird.png");
+                creature.setImage("bird.png"); // make function outside startGame and call it here! todo
             }
         }
 
-        /*for(Creature creature: creaturesLdr){
-            if (creature.getType().equals("baker")){
-                stringType[0][1] = "bird.png";
-            } else if (creature.getType().equals("milker")){
-                stringType[0][1] = "simba.png";
-            }
-        }*/
+        /* set initial orientation image */
+        for (Creature creature: creatures){
+            creature.setImage(creature.getTypeName()+"-"+creature.getOrientation()+".png");
+        }
+
 
 
         // Prints de fluxo dos elementos fatiados e separados.
