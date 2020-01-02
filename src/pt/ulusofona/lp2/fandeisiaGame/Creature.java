@@ -13,19 +13,18 @@ public abstract class Creature extends Element {
     protected String typeName;
     protected int range;
     protected boolean isEnchant;
-    protected boolean isFrozen;
+    protected boolean isFrozen, isFrozen4Ever;
     protected int frozenTime;
-    protected boolean isFrozen4Ever;
     protected String itSpellName;
-    protected int nextX;
-    protected int nextY;
+    protected int nextX, nextY;
+    protected int gold =0, silver =0, bronze =0;
 
-    // Variáveis para guardar o mundo:
+    /*// Variáveis para guardar o mundo:
     protected int rows;
     protected int columns;
     protected List<Hole> holes;
     protected List<Treasure> treasures;
-    // ------------------------------------
+    // ------------------------------------*/
 
     public Creature (int id, int x, int y, int teamId, int cost, String orientation){
         super(id,x,y);
@@ -220,5 +219,27 @@ public abstract class Creature extends Element {
 
     public void freezes4Ever() {
         isFrozen4Ever= true;
+    }
+
+    public void addGold() {
+        gold = gold +1;
+    }
+    public void addSilver() {
+        silver = silver +1;
+    }
+    public void addBronze() {
+        bronze = bronze +1;
+    }
+
+    public int getGold() {
+        return gold;
+    }
+
+    public int getSilver() {
+        return silver;
+    }
+
+    public int getBronze() {
+        return bronze;
     }
 }

@@ -26,7 +26,7 @@ public class FandeisiaGameManager{
     private void setColumns(int columns){
         this.columns = columns;
     }
-    private int turnCounter = 1;
+    private int turnCounter = 0;
 
     // Dado binário (0 ou 1)
     int rollDiceBinary(){ return ThreadLocalRandom.current().nextInt(1 );
@@ -474,8 +474,9 @@ public class FandeisiaGameManager{
 
     public void processTurn(){ // TODO
         System.out.println("Entrou em  processTurn\n");
-        //changeCurrentTeam();
-        turnCounter =+ turnCounter;
+        switchCurrentTeam();
+        turnCounter = turnCounter +1;
+        System.out.println(turnCounter);
         turnsWithoutTreasure =+turnsWithoutTreasure; // zera toda vez que encontra um tesouro
         for (Creature creature: creatures){
 
@@ -511,14 +512,6 @@ public class FandeisiaGameManager{
                     creature.spin();
                 }
             }
-        }
-    }
-
-    private void changeCurrentTeam() {
-        if (currentTeam.equals(teamLdr)){
-            currentTeam = teamRes;
-        } else {
-            currentTeam = teamLdr;
         }
     }
 
@@ -583,6 +576,15 @@ public class FandeisiaGameManager{
                     Treasure treasure = i.next();
                     if (x == treasure.getX() && y == treasure.getY()){ // MATCH
                         creature.addPoints(treasure.getPoints()); // Add pontos criatura
+                        if (treasure.getPoints() ==3){
+                            creature.addGold();
+                        }
+                        if (treasure.getPoints() ==2){
+                            creature.addSilver();
+                        }
+                        if (treasure.getPoints() ==1){
+                            creature.addBronze();
+                        }
                         if (teamId == 10){
                             teamLdr.addPoints(treasure.getPoints()); // Add pontos time
                         } else {
@@ -678,57 +680,6 @@ public class FandeisiaGameManager{
         }
     }
 
-    public boolean gameIsOver(){
-        System.out.println("Entrou em gameIsOver");
-
-        if (treasures.size() == 0 || turnsWithoutTreasure >=15){
-            return true;
-        }
-
-        if (impossibleToWin(teamLdr.getPoints(),teamRes.getPoints(), sumPointsTreasuresNotFounds())){
-            return true;
-        }
-        return false;
-
-    }
-
-    private boolean impossibleToWin(int pointsLdr, int pointsRes, int sum) {
-        if (pointsLdr + sum < pointsRes){
-            return true;
-        }
-        if (pointsRes + sum < pointsLdr){
-            return true;
-        }
-        return false;
-    }
-
-    private int sumPointsTreasuresNotFounds() {
-        int sum = 0;
-        for (Treasure treasure: treasures){
-            sum = sum + treasure.getPoints();
-        }
-        return sum;
-    }
-
-    public List<String> getResults(){
-        System.out.println("Estou em getResults");
-
-        return new ArrayList<>();
-        /*Devolve uma lista de ​Strings​ que
-        representem os resultados do jogo,
-        conforme descrito na secção dos
-        “Resultados da execução ...”.
-        Este método não pode devolver ​null​.
-        Caso não calculem a informação
-        respectiva, devem devolver ​uma lista
-        vazia​.
-        */
-    }
-
-    //-----------------------------------------------
-
-    // Validar movimento: // Tá dando erro nos movimentos quando junta com spell!
-
     private boolean validateMovement(int x, int y, int nextX, int nextY) {
 
         if (nextX < 0 || nextY < 0){ // fora da tela
@@ -773,28 +724,86 @@ public class FandeisiaGameManager{
         }
     }
 
-    /* int getCreatureIdByPosition(int x, int y){
-        for(Creature creature: creatures){
-            if (creature.getX() == x && creature.getY() == y ){
-                return creature.getId();
+    private void switchCurrentTeam() {
+        if (currentTeam.equals(teamLdr)){
+            currentTeam = teamRes;
+        } else {
+            currentTeam = teamLdr;
+        }
+    }
+
+    public boolean gameIsOver(){
+        System.out.println("Entrou em gameIsOver");
+
+        if (treasures.size() == 0 || turnsWithoutTreasure >=15){
+            return true;
+        }
+
+        if (impossibleToWin(teamLdr.getPoints(),teamRes.getPoints(), sumPointsTreasuresNotFounds())){
+            return true;
+        }
+        return false;
+
+    }
+
+    private boolean impossibleToWin(int pointsLdr, int pointsRes, int sum) {
+        if (pointsLdr + sum < pointsRes){
+            return true;
+        }
+        if (pointsRes + sum < pointsLdr){
+            return true;
+        }
+        return false;
+    }
+
+    private int sumPointsTreasuresNotFounds() {
+        int sum = 0;
+        for (Treasure treasure: treasures){
+            sum = sum + treasure.getPoints();
+        }
+        return sum;
+    }
+
+    public List<String> getResults(){
+        List<String> results = new ArrayList<>();
+
+        if (teamLdr.getPoints() > teamRes.getPoints()){
+            results.add("Welcome to FANDEISIA");
+            results.add("Resultado: Vitória da equipa " + teamLdr.getName());
+            results.add("LDR: "+ teamLdr.getPoints());
+            results.add("RESISTENCIA: "+ teamRes.getPoints());
+            results.add("Nr. de Turnos jogados: "+ turnCounter);
+            results.add("-----");
+            for (Creature c: creatures){
+                results.add(c.getId() +" : " + c.getTypeName() + " : " + c.getGold() + " : " + c.getSilver() + " : " + c.getBronze() + " : " + c.getPoints());
+            }
+        } else {
+            if (teamRes.getPoints() == teamLdr.getPoints()){
+                results.add("Welcome to FANDEISIA");
+                results.add("Resultado: EMPATE");
+                results.add("LDR: "+ teamLdr.getPoints());
+                results.add("RESISTENCIA: "+ teamRes.getPoints());
+                results.add("Nr. de Turnos jogados: "+ turnCounter);
+                results.add("-----");
+                for (Creature c: creatures){
+                    results.add(c.getId() +" : " + c.getTypeName() + " : " + c.getGold() + " : " + c.getSilver() + " : " + c.getBronze() + " : " + c.getPoints());
+                }
+            }else {
+                results.add("Welcome to FANDEISIA");
+                results.add("Resultado: Vitória da equipa " + teamRes.getName());
+                results.add("RESISTENCIA: "+ teamRes.getPoints());
+                results.add("LDR: "+ teamLdr.getPoints());
+                results.add("Nr. de Turnos jogados: "+ turnCounter);
+                results.add("-----");
+                for (Creature c: creatures){
+                    results.add(c.getId() +" : " + c.getTypeName() + " : " + c.getGold() + " : " + c.getSilver() + " : " + c.getBronze() + " : " + c.getPoints());
+                }
             }
         }
-        System.out.println("ERRO: getCreatureIdByPosition não encontrou criatura na cordenada ("+x+","+y+") " + "- Pode ser problema em enchant");
-        return 0;
-    }*/ //Parece o mesmo que getElementId()...
 
-    // Feitiços:
+        return results;
 
-    // Feitiços:
-
-    /*Criatura está sendo enfeitiçada mesmo que o feitiço não tenha tido sucesso.
-
-     * Em enchant os feitiços não estão sendo aplicados, exceto no caso pushEast
-     * * Sobreposição de criaturas
-     * * Feitiços estão sendo aplicados apenas direto sem o usuário parar a jogada. -- Parece que o propósito é este. Não?
-     * As moedas ainda não estão sendo removidas
-
-     * */
+    }
 
     // Save e Load Game:
     public boolean saveGame (File fich){
@@ -816,124 +825,4 @@ public class FandeisiaGameManager{
     public List<String> getAuthors(){
         return Collections.singletonList("Allyson Rodrigues");
     }
-
-
-/* Grupo 373 on leaderboard
-------------------------------------------------------------
-    JUnit Summary (Teacher Tests)
-    Tests run: 24, Failures: 21, Errors: 0, Time elapsed: 0.108 sec
--------------------------------------------------------------------
-
-FAILURE: pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_002_Elfo
-java.lang.AssertionError: getElementId() expected:<0> but was:<3>
-	at pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_002_Elfo(TestTeacherSimuladorP2.java:700)
-
-
-FAILURE: pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_004_JogoCompletoEmpate
-java.lang.AssertionError: getCurrentTeamId() expected:<20> but was:<10>
-	at pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_004_JogoCompletoEmpate(TestTeacherSimuladorP2.java:1013)
-
-
-
-FAILURE: pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_010_HumanoBasico
-java.lang.AssertionError: expected:<0> but was:<1>
-	at pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_010_HumanoBasico(TestTeacherSimuladorP2.java:804)
-
-
-FAILURE: pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_011_AnaoEHumano
-java.lang.AssertionError: getElementId() expected:<3> but was:<0>
-	at pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_011_AnaoEHumano(TestTeacherSimuladorP2.java:888)
-
-
-FAILURE: pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_012_DuplicaAlcanceBasico
-java.lang.AssertionError: expected:<DuplicaAlcance> but was:<null>
-	at pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_012_DuplicaAlcanceBasico(TestTeacherSimuladorP2.java:953)
-
-
-FAILURE: pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_012_TooManyTurnsWithoutTreasuresBeingFoundAfterOneCaptureIsDone
-java.lang.AssertionError: expected:<3> but was:<0>
-	at pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_012_TooManyTurnsWithoutTreasuresBeingFoundAfterOneCaptureIsDone(TestTeacherSimuladorP2.java:378)
-
-
-
-FAILURE: pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_014_JogoCompletoSoComAnoesESemFeiticos
-java.lang.AssertionError: getElementId() expected:<1> but was:<0>
-	at pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_014_JogoCompletoSoComAnoesESemFeiticos(TestTeacherSimuladorP2.java:447)
-
-
-FAILURE: pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_015_JogoCompleto_2
-java.lang.AssertionError: getElementId() expected:<1> but was:<0>
-	at pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_015_JogoCompleto_2(TestTeacherSimuladorP2.java:580)
-
-
-FAILURE: pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_018_enfeiticarComCongelaEDescongela
-java.lang.AssertionError: getSpell() expected:<Congela4Ever> but was:<null>
-	at pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_018_enfeiticarComCongelaEDescongela(TestTeacherSimuladorP2.java:1611)
-
-
-FAILURE: pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_019_Gigante
-java.lang.AssertionError: expected:<0> but was:<4>
-	at pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_019_Gigante(TestTeacherSimuladorP2.java:1320)
-
-
-
-FAILURE: pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_01_Leitura_Escrita_Ficheiro1
-java.lang.AssertionError: Não criou o ficheiro
-	at pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_01_Leitura_Escrita_Ficheiro1(TestTeacherSimuladorP2.java:43)
-
-
-FAILURE: pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_020_enfeiticarComEmpurrasHorizontais
-java.lang.AssertionError: getCoinTotal() expected:<36> but was:<37>
-	at pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_020_enfeiticarComEmpurrasHorizontais(TestTeacherSimuladorP2.java:1514)
-
-
-FAILURE: pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_021_enfeiticarComEmpurrasVerticais
-java.lang.AssertionError: getCoinTotal() expected:<36> but was:<37>
-	at pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_021_enfeiticarComEmpurrasVerticais(TestTeacherSimuladorP2.java:1438)
-
-
-FAILURE: pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_023_ProcessTurnDaMoedas
-java.lang.AssertionError: expected:<0> but was:<1>
-	at pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_023_ProcessTurnDaMoedas(TestTeacherSimuladorP2.java:1369)
-
-
-
-FAILURE: pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_02_Anao_EscapeTheCornerTest
-java.lang.AssertionError: A fn getElementId() devolveu o valor errado. expected:<1> but was:<0>
-	at pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_02_Anao_EscapeTheCornerTest(TestTeacherSimuladorP2.java:279)
-
-
-
-FAILURE: pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_02_GetCreatureTypes
-java.lang.AssertionError: A fn getCreatureTypes() nao devolveu o tipo de criatura:Anão
-	at pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_02_GetCreatureTypes(TestTeacherSimuladorP2.java:102)
-
-
-
-FAILURE: pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_04_StartGameAndToString
-java.lang.AssertionError: A fn getCreatures() devolveu o nr errado de elementos. expected:<5> but was:<3>
-	at pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_04_StartGameAndToString(TestTeacherSimuladorP2.java:148)
-
-
-FAILURE: pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_05_IniciaJogoDuasVezes
-java.lang.AssertionError: A fn getCreatures() devolveu o nr errado de criaturas. expected:<2> but was:<0>
-	at pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_05_IniciaJogoDuasVezes(TestTeacherSimuladorP2.java:185)
-
-
-FAILURE: pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_06_GetSpellTypes
-java.lang.AssertionError: A fn getSpellTypes() nao devolveu todos os feiticos existentes. expected:<9> but was:<2>
-	at pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_06_GetSpellTypes(TestTeacherSimuladorP2.java:253)
-
-
-FAILURE: pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_08_DragaoBasico
-java.lang.AssertionError: getElementId() expected:<1> but was:<0>
-	at pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_08_DragaoBasico(TestTeacherSimuladorP2.java:1131)
-
-
-
-FAILURE: pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_09_JogoCompletoComFeiticos
-java.lang.AssertionError: getCoinTotal(10) expected:<38> but was:<47>
-	at pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_09_JogoCompletoComFeiticos(TestTeacherSimuladorP2.java:1196)
-
-*/
 }
