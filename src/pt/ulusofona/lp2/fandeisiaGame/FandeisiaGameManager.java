@@ -527,7 +527,8 @@ public class FandeisiaGameManager{
         for (Creature creature: creatures){
             if (creature.getX() == x && creature.getY()==y){
                 switch (creature.getTypeName()){
-                    case ("dwarf"): {
+                    case ("dwarf"):
+                    case ("dwarfNegate"): {
                         switch (creature.getOrientation()){
                             case ("Norte"):{
                                 creature.setNextX(creature.getX());
