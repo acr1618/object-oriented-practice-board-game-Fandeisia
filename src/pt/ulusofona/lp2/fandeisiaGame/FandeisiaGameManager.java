@@ -73,7 +73,7 @@ public class FandeisiaGameManager{
         //computerArmy.put("Elfo", new Random().nextInt(4));
         //computerArmy.put("Gigante", new Random().nextInt(4));
         //computerArmy.put("Humano", new Random().nextInt(4));
-        //computerArmy.put("Dragao", 1);
+        computerArmy.put("Dragao", 1);
         return computerArmy;
         /*
         Deve devolver o exército escolhido pelo
@@ -186,9 +186,9 @@ public class FandeisiaGameManager{
         /* Subtrai moedas para cada criatura de cada time*/
         for (Creature c: creatures){
             switch (c.getTeamId()) {
-                case 10: teamLdr.removeCoins(c.cost);
+                case 10: teamLdr.removeCoins(c.getCost());
                     break;
-                case 20: teamRes.removeCoins(c.cost);
+                case 20: teamRes.removeCoins(c.getCost());
                     break;
             }
         }
@@ -551,34 +551,33 @@ public class FandeisiaGameManager{
         for (Creature creature : creatures){
 
             if (creature.getId() == id){
-                //creature.setItSpellName(spell); Não precisa. Já foi set antes.
+
                 switch(spell){
                     case ("unfreezes"): {
-                        creature.setFrozen4Ever(false); // nos movimentos por o if isFrozen
+                        creature.unfreezes();
                         creature.setImage(creature.getTypeName()+"-"+ creature.getOrientation()+".png");
-                        creature.setItSpellName(null); // Já foi executado o feitiço, então passa a ficar em estado desencantado (já pode receber outros feitiços) Como vai ficar isso? Por enquanto parece ok.
+                        creature.setItSpellName(null);
                         break;
                     }
 
                     case ("freezes"): {
-                        creature.setFrozen(true); // nos movimentos por o if isFrozen
-                        creature.setFrozenTime(0);
+                        creature.freezes();
                         creature.setImage(creature.getTypeName() + "-Frozen.png");
-                        creature.setItSpellName(null); // Já foi executado o feitiço, então passa a ficar em estado desencantado (já pode receber outros feitiços) Como vai ficar isso? Por enquanto parece ok.
+                        creature.setItSpellName(null);
                         break;
                     }
 
                     case ("freezes4Ever") : {
-                        creature.setFrozen4Ever(true); // nos movimentos por o if isFrozen4Ever
+                        creature.freezes4Ever();
                         creature.setImage(creature.getTypeName() + "-Frozen4Ever.png");
-                        creature.setItSpellName(null); // Já foi executado o feitiço, então passa a ficar em estado desencantado (já pode receber outros feitiços - no caso, apenas o descongela!). TODO
+                        creature.setItSpellName(null);
                         break;
                     }
 
                     case ("pushNorth"): {
                         if (!creature.isFrozen() && !creature.isFrozen4Ever()){
                             if (validateMovement(creature.getX(), creature.getY(), creature.getX(),creature.getY()-1)) {
-                                creature.setY(creature.getY()-1);
+                                creature.pushNorth();
                                 creature.setItSpellName(null);
                                 creature.setOrientation("Norte");
                                 creature.setImage(creature.getTypeName()+"-Norte.png");
@@ -590,7 +589,7 @@ public class FandeisiaGameManager{
                     case ("pushEast"): {
                         if (!creature.isFrozen() && !creature.isFrozen4Ever()){
                             if (validateMovement(creature.getX(), creature.getY(), creature.getX()+1,creature.getY())) {
-                                creature.setX(creature.getX()+1);
+                                creature.pushEast();
                                 creature.setItSpellName(null); // Já foi executado o feitiço, então passa a ficar em estado desencantado.
                                 creature.setOrientation("East");
                                 creature.setImage(creature.getTypeName()+"-Este.png");
@@ -602,7 +601,7 @@ public class FandeisiaGameManager{
                     case ("pushSouth"): {
                         if (!creature.isFrozen() && !creature.isFrozen4Ever()){
                             if (validateMovement(creature.getX(), creature.getY(), creature.getX(),creature.getY()+1)) {
-                                creature.setY(creature.getY() + 1);
+                                creature.pushSouth();
                                 creature.setItSpellName(null); // Já foi executado o feitiço, então passa a ficar em estado desencantado.
                                 creature.setOrientation("Sul");
                                 creature.setImage(creature.getTypeName()+"-Sul.png");
@@ -614,7 +613,7 @@ public class FandeisiaGameManager{
                     case ("pushWest"): {
                         if (!creature.isFrozen() && !creature.isFrozen4Ever()){
                             if (validateMovement(creature.getX(), creature.getY(), creature.getX()-1,creature.getY())) {
-                                creature.setX(creature.getX() - 1);
+                                creature.pushWest();
                                 creature.setItSpellName(null); // Já foi executado o feitiço, então passa a ficar em estado desencantado.
                                 creature.setOrientation("Oeste");
                                 creature.setImage(creature.getTypeName()+"-Oeste.png");
@@ -624,13 +623,13 @@ public class FandeisiaGameManager{
                     }
 
                     case ("reducesRange"): {
-                        creature.setRange(1);
+                        creature.reducesRange();
                         creature.setItSpellName(null);
                         break;
                     }
 
                     case ("doubleRange"): {
-                        creature.setRange(creature.getRange()*2);
+                        creature.doubleRange();
                         creature.setItSpellName(null);
                         break;
                     }

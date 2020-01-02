@@ -11,10 +11,4 @@ public class Human extends Creature {
     @Override
     public void move() {
     }
-
-    @Override
-    public boolean spin() {
-        return false;
-    }
-
 }

@@ -15,7 +15,23 @@ public class Elf extends Creature {
     }
 
     @Override
-    public boolean spin() {
-        return false;
+    public void spin(){
+        switch (this.orientation){
+            case ("Norte"): this.orientation = "NE";
+                break;
+            case ("NE"): this.orientation = "Este";
+                break;
+            case("Este"): this.orientation = "SE";
+                break;
+            case ("SE"): this.orientation = "Sul";
+                break;
+            case ("Sul"): this.orientation = "SO";
+                break;
+            case ("SO"): this.orientation = "Oeste";
+                break;
+            case ("Oeste"): this.orientation = "NO";
+                break;
+            case ("NO"): this.orientation = "Norte";
+        }
     }
 }

@@ -19,7 +19,6 @@ public abstract class Creature extends Element {
     protected int nextX;
     protected int nextY;
 
-
     // Variáveis para guardar o mundo:
     protected int rows;
     protected int columns;
@@ -35,7 +34,7 @@ public abstract class Creature extends Element {
         this.isEnchant = false;
         this.isFrozen = false;
         this.isFrozen4Ever = false;
-        //this.itSpellName = null;
+        this.points = 0;
     }
 
     public String getImagePNG(){
@@ -59,9 +58,18 @@ public abstract class Creature extends Element {
         //return true;
      //} Talvez deixe de ser abstrato e passe a ter a implementação básica (anão) e sobrescrita nas outras classes de criatura. todo
 
-    public boolean spin(){
-        return true;
-    } // Talvez deixe de ser abstrata e passe a ter implementação básica (90º) e será sobrescrita em Dragão e Elfo. todo
+    public void spin(){
+            switch (this.orientation){
+                case ("Norte"): this.orientation = "Este";
+                    break;
+                case ("Este"): this.orientation = "Sul";
+                    break;
+                case ("Sul"): this.orientation = "Oeste";
+                    break;
+                case ("Oeste"): this.orientation = "Norte";
+                    break;
+            }
+    }
 
     public int getTeamId() {
         return teamId;
@@ -89,10 +97,6 @@ public abstract class Creature extends Element {
 
     public int getRange() {
         return range;
-    }
-
-    public void setRange(int range) {
-        this.range = range;
     }
 
     public boolean isEnchant() {
@@ -131,14 +135,6 @@ public abstract class Creature extends Element {
         return isFrozen4Ever;
     }
 
-    public void setFrozen4Ever(boolean frozen4Ever) {
-        isFrozen4Ever = frozen4Ever;
-    }
-
-    public void congela4Ever(boolean isCongelada4Ever) {
-        this.isFrozen4Ever = isCongelada4Ever;
-    }
-
     public void setTypeName(String typeName) {
         this.typeName = typeName;
     }
@@ -159,9 +155,12 @@ public abstract class Creature extends Element {
         this.nextY = nextY;
     }
 
-    public void pushNorth(){
+
+    /* Feitiços! */
+
+    public void pushNorth() {
         this.y = this.y -1;
-         // Custa 1 Move 1 para Norte
+        // Custa 1 Move 1 para Norte
     }
     public void pushEast(){
         this.x = this.x +1;
@@ -178,12 +177,20 @@ public abstract class Creature extends Element {
     public void reducesRange(){
         this.range = 1; // Custa 2 Reduz o alcance para
     }
-    public void doubleRange(int range){
+    public void doubleRange(){
         this.range = range *2;
          // Custa 3 Aumenta alcance para o dobro
     }
-    public boolean unfreezes(){
-        return true; // Custa 8 Inverte aplicação do Freezes4Ever.
+    public void unfreezes(){
+        this.isFrozen4Ever =false; // Custa 8 Inverte aplicação do Freezes4Ever.
     }
 
+    public void freezes() {
+        this.isFrozen = true;
+        this.frozenTime = 0;
+    }
+
+    public void freezes4Ever() {
+        isFrozen4Ever= true;
+    }
 }

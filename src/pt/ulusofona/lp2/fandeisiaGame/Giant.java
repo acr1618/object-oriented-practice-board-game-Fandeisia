@@ -13,9 +13,4 @@ public class Giant extends Creature {
     public void move() {
 
     }
-
-    @Override
-    public boolean spin() {
-        return false;
-    }
 }

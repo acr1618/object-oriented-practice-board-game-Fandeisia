@@ -30,15 +30,7 @@ public class Dwarf extends Creature {
                 this.x = x-this.range;
                 break;
             }
-
-
         }
-
-    }
-
-    @Override
-    public boolean spin() {
-        return false;
     }
 }
 
