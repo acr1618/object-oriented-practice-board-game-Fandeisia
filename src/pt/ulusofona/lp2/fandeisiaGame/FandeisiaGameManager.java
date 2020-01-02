@@ -485,34 +485,34 @@ public class FandeisiaGameManager{
 
     } // ok 01/01
 
-    public void processTurn(){ // TODO
+    public void giveCoins(){
+        //TODO
+    }
+
+    public void processTurn(){ // still todo
         if (!gameIsOver()){
             switchCurrentTeam();
         }
         turnCounter ++;
         turnsWithoutTreasure ++; // zera toda vez que encontra um tesouro
         for (Creature creature: creatures){
-
             // Timer para descongelar
             if (creature.isFrozen()){
                 creature.setFrozenTime(1);
             }
-
             // Se atingir timer descongela e troca figura
             if (creature.isFrozen() && creature.getFrozenTime() == 1){
                 creature.setFrozen(false);
                 creature.setImage(creature.getTypeName()+"-"+ creature.getOrientation()+".png");
             }
-
             // Se tem feitiço pra aplicar, aplique.
             if (creature.isEnchant()){
                 executeSpell(creature.getId(), creature.getItSpellName());
                 if(matchTreasure(creature.getX(), creature.getY(), creature.getId(), creature.getTeamId())){
-                    turnsWithoutTreasure =0;
+                    turnsWithoutTreasure = 0;
                 }
                 creature.setEnchant(false);
             }
-
             /* Movimento normal das criaturas */
             // Se não tá congelada ou congelada4Ever não movimenta. Se não, bota pra movimentar.
             if (!creature.isFrozen4Ever() && !creature.isFrozen()){
@@ -534,7 +534,7 @@ public class FandeisiaGameManager{
             if (creature.getX() == x && creature.getY()==y){
                 switch (creature.getTypeName()){
 
-                    case ("Anao"):case("AnaoNegate"):case("Humano"):case("HumanoNegate") : {
+                    case ("Anao"):case("AnaoNegate"): {
                         switch (creature.getOrientation()){
                             case ("Norte"):{
                                 creature.setNextX(creature.getX());
@@ -818,7 +818,6 @@ public class FandeisiaGameManager{
 
     }
 
-    // Save e Load Game:
     public boolean saveGame (File fich){
         System.out.println("Estou em saveGame");
         return true;
@@ -829,7 +828,6 @@ public class FandeisiaGameManager{
         return true;
     }
 
-    //Não tem que mexer mais:
     public String whoIsLordEder(){
         System.out.println("Estou em whoIsLordEder");
 
