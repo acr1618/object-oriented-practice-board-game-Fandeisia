@@ -55,10 +55,6 @@ public class Team{
         this.points = points;
     }
 
-    @Override
-    public String toString() {
-        return null;
-    }
 
     public boolean checkBalanceToSpell(int spellCost) {
         return this.coins >= spellCost;

@@ -9,16 +9,16 @@ public class FandeisiaGameManager{
 
     public FandeisiaGameManager(){
     }
-     List<Treasure> treasures = new ArrayList<>(); // Quando for 0 gameIsOver = true.
+     List<Treasure> treasures = new ArrayList<>();
      List<Hole> holes = new ArrayList<>();
      List<Creature> creatures = new ArrayList<>();
      Team teamLdr = new Team (10, "LDR");
      Team teamRes = new Team (20, "RESISTENCIA");
-     Team currentTeam = new Team(0,"0"); // uma espécie de cópia...? mas funciona.
+     Team currentTeam = new Team(0,"0");
      int rows;
      int columns;
-     int turnsWithoutTreasure; // Será usado no gameIsOver. Quando for for >= 15 gameIsOver = true;
-     long logCounter = 0; // usado como contador do meu log de execução do jogo
+     int turnsWithoutTreasure;
+     long logCounter = 0;
      void setRows(int rows){
         this.rows = rows;
      }
@@ -26,7 +26,7 @@ public class FandeisiaGameManager{
         this.columns = columns;
      }
      int turnCounter = 0;
-     boolean iaActive;
+     boolean iAactive;
 
     // Dado binário (0 ou 1)
     int rollDiceBinary(){ return ThreadLocalRandom.current().nextInt(1 );
@@ -44,11 +44,7 @@ public class FandeisiaGameManager{
     }
 
     public void toggleAI(boolean active){
-        if (active){
-            active =false;
-        } else {
-            active = true;
-        }
+        iAactive = !active;
     }
 
     public String[][] getCreatureTypes(){
@@ -69,16 +65,17 @@ public class FandeisiaGameManager{
 
         // Criando 1 apenas para teste.
         computerArmy.put("Anao", new Random().nextInt(4)); // criar um random entre 0 e 3.
-        computerArmy.put("Dragao", new Random().nextInt(4));
+        computerArmy.put("Dragao", new Random().nextInt(1));
         computerArmy.put("Elfo", new Random().nextInt(4));
-        computerArmy.put("Gigante", new Random().nextInt(4));
-        computerArmy.put("Humano", new Random().nextInt(4));
+        computerArmy.put("Gigante", new Random().nextInt(2));
+        computerArmy.put("Humano", new Random().nextInt(3));
         //computerArmy.put("Dragao", 1);
         return computerArmy;
-    } //OK 29-12
+    }
 
     public int startGame(String[] content, int rows, int columns){
         //System.out.println( iterate(logCounter) + " - "+"IN startGame\n -----------------------------------\n");
+
         teamLdr = new Team (10,"LDR");
         teamRes = new Team (20, "RESISTENCIA");
 
@@ -242,7 +239,7 @@ public class FandeisiaGameManager{
          }else {
              currentTeam = teamRes;
          }
-    } //OK 29-12 -- TODO WTF is to do here?
+    } //OK 29-12 -- TODO o que tem que fazer aqui?
 
     public int getCurrentTeamId(){
         //System.out.println(iterate(logCounter) + " - "+"IN currentTeamId\n -----------------------------------\n");
@@ -483,8 +480,7 @@ public class FandeisiaGameManager{
     } // ok 01/01
 
     public void processTurn(){ // TODO
-        System.out.println("Entrou em  processTurn\n");
-        //switchCurrentTeam();
+        switchCurrentTeam();
         turnCounter = turnCounter +1;
         System.out.println(turnCounter);
         turnsWithoutTreasure =+turnsWithoutTreasure; // zera toda vez que encontra um tesouro

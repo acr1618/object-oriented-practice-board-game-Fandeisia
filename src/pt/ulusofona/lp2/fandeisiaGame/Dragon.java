@@ -11,7 +11,7 @@ public class Dragon extends Creature {
 
     @Override
     public void move() {
-            }
+    }
 
     @Override
     public void spin(){

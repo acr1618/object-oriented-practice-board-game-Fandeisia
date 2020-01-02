@@ -1,8 +1,6 @@
 package pt.ulusofona.lp2.fandeisiaGame;
 
 import java.util.List;
-
-
 public abstract class Creature extends Element {
 
     protected int teamId;
@@ -183,7 +181,7 @@ public abstract class Creature extends Element {
     }
 
 
-    /* Feitiços! */
+    /* Feitiços */
 
     public void pushNorth() {
         this.y = this.y -1;
@@ -211,12 +209,10 @@ public abstract class Creature extends Element {
     public void unfreezes(){
         this.isFrozen4Ever =false; // Custa 8 Inverte aplicação do Freezes4Ever.
     }
-
     public void freezes() {
         this.isFrozen = true;
         this.frozenTime = 0;
     }
-
     public void freezes4Ever() {
         isFrozen4Ever= true;
     }
@@ -230,15 +226,12 @@ public abstract class Creature extends Element {
     public void addBronze() {
         bronze = bronze +1;
     }
-
     public int getGold() {
         return gold;
     }
-
     public int getSilver() {
         return silver;
     }
-
     public int getBronze() {
         return bronze;
     }
