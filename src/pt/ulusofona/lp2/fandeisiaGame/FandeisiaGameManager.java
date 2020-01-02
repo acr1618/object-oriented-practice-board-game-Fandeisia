@@ -493,8 +493,6 @@ public class FandeisiaGameManager{
 
     } // ok 01/01
 
-     // ok 01/01
-
     public void processTurn(){
         System.out.println("Entrou em  processTurn\n");
         for (Creature creature: creatures){
@@ -509,6 +507,7 @@ public class FandeisiaGameManager{
 
             if (creature.isEnchant()){
                 executeSpell(creature.getId(), creature.getItSpellName());
+                matchTreasure(creature.getX(), creature.getY(), creature.getId(), creature.getTeamId());
                 creature.setEnchant(false);
             }
             /*executeStandardMovement(creature.getX(), creature.getY(), creature.getOrientation(),
@@ -547,11 +546,8 @@ public class FandeisiaGameManager{
     }
 
     private void executeSpell(int id,String spell) {
-
         for (Creature creature : creatures){
-
             if (creature.getId() == id){
-
                 switch(spell){
                     case ("unfreezes"): {
                         creature.unfreezes();
@@ -559,21 +555,18 @@ public class FandeisiaGameManager{
                         creature.setItSpellName(null);
                         break;
                     }
-
                     case ("freezes"): {
                         creature.freezes();
                         creature.setImage(creature.getTypeName() + "-Frozen.png");
                         creature.setItSpellName(null);
                         break;
                     }
-
                     case ("freezes4Ever") : {
                         creature.freezes4Ever();
                         creature.setImage(creature.getTypeName() + "-Frozen4Ever.png");
                         creature.setItSpellName(null);
                         break;
                     }
-
                     case ("pushNorth"): {
                         if (!creature.isFrozen() && !creature.isFrozen4Ever()){
                             if (validateMovement(creature.getX(), creature.getY(), creature.getX(),creature.getY()-1)) {
@@ -585,7 +578,6 @@ public class FandeisiaGameManager{
                         }
                         break;
                     }
-
                     case ("pushEast"): {
                         if (!creature.isFrozen() && !creature.isFrozen4Ever()){
                             if (validateMovement(creature.getX(), creature.getY(), creature.getX()+1,creature.getY())) {
@@ -597,7 +589,6 @@ public class FandeisiaGameManager{
                         }
                         break;
                     }
-
                     case ("pushSouth"): {
                         if (!creature.isFrozen() && !creature.isFrozen4Ever()){
                             if (validateMovement(creature.getX(), creature.getY(), creature.getX(),creature.getY()+1)) {
@@ -609,7 +600,6 @@ public class FandeisiaGameManager{
                         }
                         break;
                     }
-
                     case ("pushWest"): {
                         if (!creature.isFrozen() && !creature.isFrozen4Ever()){
                             if (validateMovement(creature.getX(), creature.getY(), creature.getX()-1,creature.getY())) {
@@ -621,13 +611,11 @@ public class FandeisiaGameManager{
                         }
                         break;
                     }
-
                     case ("reducesRange"): {
                         creature.reducesRange();
                         creature.setItSpellName(null);
                         break;
                     }
-
                     case ("doubleRange"): {
                         creature.doubleRange();
                         creature.setItSpellName(null);
