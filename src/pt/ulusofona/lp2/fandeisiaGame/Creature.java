@@ -122,6 +122,9 @@ public abstract class Creature extends Element {
         this.isFrozen4Ever = isCongelada4Ever;
     }
 
+    public void setTypeName(String typeName) {
+        this.typeName = typeName;
+    }
 
     public int getNextX() {
         return nextX;

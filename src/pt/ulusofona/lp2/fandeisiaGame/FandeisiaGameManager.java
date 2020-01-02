@@ -71,12 +71,12 @@ public class FandeisiaGameManager{
         Map<String, Integer> computerArmy = new HashMap<>();
 
         // Criando 1 apenas para teste.
-        //computerArmy.put("Anao", new Random().nextInt(4)); // criar um random entre 0 e 3.
-        //computerArmy.put("Dragao", new Random().nextInt(4));
-        //computerArmy.put("Elfo", new Random().nextInt(4));
-        //computerArmy.put("Gigante", new Random().nextInt(4));
-        //computerArmy.put("Humano", new Random().nextInt(4));
-        //computerArmy.put("Humano", new Random().nextInt(4));
+        computerArmy.put("Anao", new Random().nextInt(4)); // criar um random entre 0 e 3.
+        computerArmy.put("Dragao", new Random().nextInt(4));
+        computerArmy.put("Elfo", new Random().nextInt(4));
+        computerArmy.put("Gigante", new Random().nextInt(4));
+        computerArmy.put("Humano", new Random().nextInt(4));
+        computerArmy.put("Humano", new Random().nextInt(4));
         computerArmy.put("Dragao", 1);
         return computerArmy;
         /*
@@ -168,21 +168,22 @@ public class FandeisiaGameManager{
             }
         }
 
-        // Gerar imagens diferentes para criaturas da Resistencia! :)
         for (Creature creature: creatures){
-            if (creature.getTeamId() == 20){
-                creature.setImage("bird.png"); // make function outside startGame and call it here! todo
-            }
+
         }
 
-        /* set initial orientation image */
+        /* Set initial orientation and team image
+        * Gera imagens diferentes para criaturas da Resistencia! :)
+        * */
         for (Creature creature: creatures){
+            if (creature.getTeamId() == 20){
+                creature.setTypeName(creature.getTypeName()+"Negate"); // Change filter to a better later. Like sobel filter! :)
+            }
             creature.setImage(creature.getTypeName()+"-"+creature.getOrientation()+".png");
         }
 
 
-
-        // Prints de fluxo dos elementos fatiados e separados.
+       /* Prints de fluxo dos elementos fatiados e separados. */
         System.out.println(iterate(logCounter) + " - "+"  LISTA DE CRIATURAS IN START GAME: "+ creatures + "\n");
         System.out.println(iterate(logCounter) + " - "+"  LISTA DE BURACOS IN START GAME: " + holes + "\n");
         System.out.println(iterate(logCounter) + " - "+"  LISTA DE TESOUROS IN START GAME: " + treasures + "\n");
@@ -190,7 +191,7 @@ public class FandeisiaGameManager{
         System.out.println(iterate(logCounter) + " - "+"  ID DE LDR IN START GAME:" + teamLdr.getId() + "\n");
         System.out.println(iterate(logCounter) + " - "+"  HASH DE COMPUTER ARMY IN START GAME: " + createComputerArmy() + "\n\n");
 
-        //Subtrai moedas para cada criatura de cada time
+        /* Subtrai moedas para cada criatura de cada time*/
         for (Creature c: creatures){
             switch (c.getTeamId()) {
                 case 10: teamLdr.removeCoins(c.cost);
