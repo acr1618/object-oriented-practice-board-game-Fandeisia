@@ -73,7 +73,7 @@ public class FandeisiaGameManager{
         //computerArmy.put("Elfo", new Random().nextInt(4));
         //computerArmy.put("Gigante", new Random().nextInt(4));
         //computerArmy.put("Humano", new Random().nextInt(4));
-        computerArmy.put("Dragao", 1);
+        //computerArmy.put("Dragao", 1);
         return computerArmy;
         /*
         Deve devolver o exército escolhido pelo
@@ -314,7 +314,7 @@ public class FandeisiaGameManager{
     } // ok 01/01
 
     public boolean enchant (int x, int y, String spellName){
-        System.out.println(iterate(logCounter) + " - "+"Estou em enchant");
+        System.out.println(iterate(logCounter) + " - "+"Entrou em enchant");
         int nextX, nextY; // provisório TODO - mudar para get e set nextX e Y
         for (Creature c: creatures){
             if (c.getX() == x && c.getY() == y) {
