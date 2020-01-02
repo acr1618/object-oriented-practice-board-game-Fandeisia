@@ -72,6 +72,10 @@ public abstract class Creature extends Element {
         return orientation;
     }
 
+    public void setOrientation(String orientation){
+        this.orientation = orientation;
+    }
+
     public int getPoints(){
         return points;
     }

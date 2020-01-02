@@ -492,6 +492,7 @@ public class FandeisiaGameManager{
             if (creature.isEnchant()){
                 executeSpell(creature.getId(), creature.getItSpellName());
                 matchTreasure(creature.getX(), creature.getY(), creature.getId(), creature.getTeamId());
+                creature.setEnchant(false);
             }
             // executeSpell(creature.getItSpellName());
             /*executeStandartMovement(creature.getX(), creature.getY(), creature.getOrientation(),
@@ -540,7 +541,6 @@ public class FandeisiaGameManager{
     }
 
 
-
     private void executeSpell(int id,String spell) {
 
         for (Creature creature : creatures){
@@ -550,26 +550,25 @@ public class FandeisiaGameManager{
                 switch(spell){
                     case ("freezes"): {
                         creature.setFrozen(true); // nos movimentos por o if isFrozen
-                        creature.setEnchant(false);
-                        creature.setImage(creature.getTypeName() + "-Frozen.png"); //todo
+                        creature.setImage(creature.getTypeName() + "-Frozen.png");
                         creature.setItSpellName(null); // Já foi executado o feitiço, então passa a ficar em estado desencantado (já pode receber outros feitiços) Como vai ficar isso? Por enquanto parece ok.
                         break;
                     }
 
                     case ("freezes4Ever") : {
                         creature.setFrozen4Ever(true); // nos movimentos por o if isFrozen4Ever
-                        creature.setEnchant(false); //todo
                         creature.setImage(creature.getTypeName() + "-Frozen4Ever.png");
-                        creature.setItSpellName(null); // Já foi executado o feitiço, então passa a ficar em estado desencantado (já pode receber outros feitiços - no caso, apenas o descongela!). todo
+                        creature.setItSpellName(null); // Já foi executado o feitiço, então passa a ficar em estado desencantado (já pode receber outros feitiços - no caso, apenas o descongela!). TODO
                         break;
                     }
 
                     case ("pushNorth"): {
                         if (validateMovement(creature.getX(), creature.getY(), creature.getX(),creature.getY()-1)) {
                             creature.setY(creature.getY()-1);
-                            //captureTreasure(creature.getId()); // TODO DOING
-                            creature.setItSpellName(null); // Já foi executado o feitiço, então passa a ficar em estado desencantado.
-                            creature.setEnchant(false);
+                            creature.setItSpellName(null);
+                            creature.setOrientation("Norte");
+                            creature.setImage(creature.getTypeName()+"-Norte.png");
+
                             break;
                         }
                         break;
@@ -579,7 +578,8 @@ public class FandeisiaGameManager{
                         if (validateMovement(creature.getX(), creature.getY(), creature.getX()+1,creature.getY())) {
                             creature.setX(creature.getX()+1);
                             creature.setItSpellName(null); // Já foi executado o feitiço, então passa a ficar em estado desencantado.
-                            creature.setEnchant(false);
+                            creature.setOrientation("East");
+                            creature.setImage(creature.getTypeName()+"-Este.png");
                             break;
                         }
                         break;
@@ -589,7 +589,8 @@ public class FandeisiaGameManager{
                         if (validateMovement(creature.getX(), creature.getY(), creature.getX(),creature.getY()+1)) {
                             creature.setY(creature.getY() + 1);
                             creature.setItSpellName(null); // Já foi executado o feitiço, então passa a ficar em estado desencantado.
-                            creature.setEnchant(false);
+                            creature.setOrientation("Sul");
+                            creature.setImage(creature.getTypeName()+"-Sul.png");
                             break;
                         }
                         break;
@@ -599,7 +600,8 @@ public class FandeisiaGameManager{
                         if (validateMovement(creature.getX(), creature.getY(), creature.getX()-1,creature.getY())) {
                             creature.setX(creature.getX() - 1);
                             creature.setItSpellName(null); // Já foi executado o feitiço, então passa a ficar em estado desencantado.
-                            creature.setEnchant(false);
+                            creature.setOrientation("Oeste");
+                            creature.setImage(creature.getTypeName()+"-Oeste.png");
                             break;
                         }
                         break;
@@ -608,14 +610,12 @@ public class FandeisiaGameManager{
                     case ("reducesRange"): {
                         creature.setRange(1);
                         creature.setItSpellName(null);
-                        creature.setEnchant(false);
                         break;
                     }
 
                     case ("doubleRange"): {
                         creature.setRange(creature.getRange()*2);
                         creature.setItSpellName(null);
-                        creature.setEnchant(false);
                         break;
                     }
                 }
