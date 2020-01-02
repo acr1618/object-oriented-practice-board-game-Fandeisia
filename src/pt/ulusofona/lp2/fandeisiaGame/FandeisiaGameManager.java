@@ -233,12 +233,18 @@ public class FandeisiaGameManager{
             currentTeam = teamRes;
         }*/
         // Seleção aleatória com dado
-         int resultDice = rollDiceBinary();
+         /*int resultDice = rollDiceBinary();
          if (resultDice == 0){
              currentTeam = teamLdr;
          }else {
              currentTeam = teamRes;
-         }
+         }*/
+
+        if (teamId == teamLdr.getId()){
+            currentTeam = teamLdr;
+        } else {
+            currentTeam = teamRes;
+        }
     } //OK 29-12 -- TODO o que tem que fazer aqui?
 
     public int getCurrentTeamId(){
@@ -480,10 +486,11 @@ public class FandeisiaGameManager{
     } // ok 01/01
 
     public void processTurn(){ // TODO
-        switchCurrentTeam();
-        turnCounter = turnCounter +1;
-        System.out.println(turnCounter);
-        turnsWithoutTreasure =+turnsWithoutTreasure; // zera toda vez que encontra um tesouro
+        if (!gameIsOver()){
+            switchCurrentTeam();
+        }
+        turnCounter ++;
+        turnsWithoutTreasure ++; // zera toda vez que encontra um tesouro
         for (Creature creature: creatures){
 
             // Timer para descongelar
