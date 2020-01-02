@@ -27,6 +27,9 @@ public class FandeisiaGameManager{
         this.columns = columns;
     }
     private int turnCounter = 0;
+    private boolean iaActive;
+
+
 
     // Dado binário (0 ou 1)
     int rollDiceBinary(){ return ThreadLocalRandom.current().nextInt(1 );
@@ -40,6 +43,14 @@ public class FandeisiaGameManager{
         }else {
             logCounter = -2000000000;
         return logCounter;
+        }
+    }
+
+    public void toggleAI(boolean active){
+        if (active){
+            active =false;
+        } else {
+            active = true;
         }
     }
 
