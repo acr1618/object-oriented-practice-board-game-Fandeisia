@@ -36,7 +36,7 @@ public class Team{
     }
 
     public void addCoins(int coins){
-        this.coins = coins;
+        this.coins = this.coins + coins;
     }
 
     public void removeCoins(int cost){
@@ -48,7 +48,7 @@ public class Team{
     }
 
     public void addPoints(int points){
-        this.points = points;
+        this.points = this.points + points;
     }
 
     public void removePoints(int points){

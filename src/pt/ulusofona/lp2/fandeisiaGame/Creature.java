@@ -76,6 +76,10 @@ public abstract class Creature extends Element {
         return points;
     }
 
+    public void addPoints(int points) {
+        this.points = this.points + points;
+    }
+
     //public void lookAtTheWorld(int rows, int columns, List<Hole> holes, List<Treasure> treasures, List<Creature> creatures) {} -----> NOT YET!
 
     public int getRange() {

@@ -71,12 +71,11 @@ public class FandeisiaGameManager{
         Map<String, Integer> computerArmy = new HashMap<>();
 
         // Criando 1 apenas para teste.
-        computerArmy.put("Anao", new Random().nextInt(4)); // criar um random entre 0 e 3.
-        computerArmy.put("Dragao", new Random().nextInt(4));
-        computerArmy.put("Elfo", new Random().nextInt(4));
-        computerArmy.put("Gigante", new Random().nextInt(4));
-        computerArmy.put("Humano", new Random().nextInt(4));
-        computerArmy.put("Humano", new Random().nextInt(4));
+        //computerArmy.put("Anao", new Random().nextInt(4)); // criar um random entre 0 e 3.
+        //computerArmy.put("Dragao", new Random().nextInt(4));
+        //computerArmy.put("Elfo", new Random().nextInt(4));
+        //computerArmy.put("Gigante", new Random().nextInt(4));
+        //computerArmy.put("Humano", new Random().nextInt(4));
         computerArmy.put("Dragao", 1);
         return computerArmy;
         /*
@@ -166,10 +165,6 @@ public class FandeisiaGameManager{
                     }
                 }
             }
-        }
-
-        for (Creature creature: creatures){
-
         }
 
         /* Set initial orientation and team image
@@ -369,7 +364,6 @@ public class FandeisiaGameManager{
                                     //c.setItSpellName("unfreezes");
                                     taxSpell(getCurrentTeamId(), 8);
                                     c.setItSpellName(spellName);
-
                                     return true;
                                 } else {
                                     return false; // Neste caso não se faz unfreeze porque se tivesse mesmo frozen4Ever teria unfrozed lá em cima!
@@ -405,7 +399,6 @@ public class FandeisiaGameManager{
                                         //c.pushEast();
                                         taxSpell(getCurrentTeamId(),1);
                                         c.setItSpellName(spellName);
-                                        // if(getElementId(nextX))matchTreasure() -- TODO --> pegar tesouro. Método de creature ou FGM ou Treasure?
                                         return true;
                                     } else {
                                         return false;
@@ -474,7 +467,6 @@ public class FandeisiaGameManager{
                                     //c.doubleRange(c.getRange());
                                     //c.setItSpellName("doubleRange");
                                 }
-
                                 return true;
                             }
                         }
@@ -492,14 +484,14 @@ public class FandeisiaGameManager{
 
         } return false; // Porque nesse x e y não há criatura.
 
-    }
-
+    } // ok 01/01
 
     public void processTurn(){
         System.out.println("Entrou em  processTurn\n");
         for (Creature creature: creatures){
             if (creature.isEnchant()){
                 executeSpell(creature.getId(), creature.getItSpellName());
+                matchTreasure(creature.getX(), creature.getY(), creature.getId(), creature.getTeamId());
             }
             // executeSpell(creature.getItSpellName());
             /*executeStandartMovement(creature.getX(), creature.getY(), creature.getOrientation(),
@@ -527,6 +519,28 @@ public class FandeisiaGameManager{
 
     }
 
+    private void matchTreasure(int x, int y, int id, int teamId) {
+        for (Creature creature: creatures){
+            if (creature.getId() == id){
+                //for (Treasure treasure: treasures){
+                for (Iterator<Treasure> i = treasures.iterator(); i.hasNext();){ // Artifício muito louco para passar do ERRO ConcurrentModificationException
+                    Treasure treasure = i.next();
+                    if (x == treasure.getX() && y == treasure.getY()){ // MATCH
+                        creature.addPoints(treasure.getPoints()); // Add pontos criatura
+                        if (teamId == 10){
+                            teamLdr.addPoints(treasure.getPoints()); // Add pontos time
+                        } else {
+                            teamRes.addPoints(treasure.getPoints()); // Add pontos time
+                        }
+                        i.remove();
+                    }
+                }
+            }
+        }
+    }
+
+
+
     private void executeSpell(int id,String spell) {
 
         for (Creature creature : creatures){
@@ -553,6 +567,7 @@ public class FandeisiaGameManager{
                     case ("pushNorth"): {
                         if (validateMovement(creature.getX(), creature.getY(), creature.getX(),creature.getY()-1)) {
                             creature.setY(creature.getY()-1);
+                            //captureTreasure(creature.getId()); // TODO DOING
                             creature.setItSpellName(null); // Já foi executado o feitiço, então passa a ficar em estado desencantado.
                             creature.setEnchant(false);
                             break;
@@ -607,6 +622,8 @@ public class FandeisiaGameManager{
             }
         }
     }
+
+
 
     private void executeStandartMovement(int x, int y, String orientation, boolean frozen,
                                          boolean frozen4Ever, String typeName) {
