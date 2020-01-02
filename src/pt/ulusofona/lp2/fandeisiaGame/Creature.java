@@ -60,13 +60,21 @@ public abstract class Creature extends Element {
 
     public void spin(){
             switch (this.orientation){
-                case ("Norte"): this.orientation = "Este";
+                case ("Norte"):
+                    this.orientation = "Este";
+                    this.image = this.typeName+"-"+this.orientation+".png";
                     break;
-                case ("Este"): this.orientation = "Sul";
+                case ("Este"):
+                    this.orientation = "Sul";
+                    this.image = this.typeName+"-"+this.orientation+".png";
                     break;
-                case ("Sul"): this.orientation = "Oeste";
+                case ("Sul"):
+                    this.orientation = "Oeste";
+                    this.image = this.typeName+"-"+this.orientation+".png";
                     break;
-                case ("Oeste"): this.orientation = "Norte";
+                case ("Oeste"):
+                    this.orientation = "Norte";
+                    this.image = this.typeName+"-"+this.orientation+".png";
                     break;
             }
     }

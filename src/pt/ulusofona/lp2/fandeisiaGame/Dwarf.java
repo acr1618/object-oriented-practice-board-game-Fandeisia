@@ -20,12 +20,10 @@ public class Dwarf extends Creature {
                 this.x = x+this.range;
                 break;
             }
-
             case ("Sul"): {
                 this.y = y+this.range;
                 break;
             }
-
             case ("Oeste"): {
                 this.x = x-this.range;
                 break;

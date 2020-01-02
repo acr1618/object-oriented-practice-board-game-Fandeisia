@@ -35,6 +35,8 @@ public class FandeisiaGameManager{
     private int getColumns(){
         return columns;
     }
+    private int nextX;
+    private int nextY;
 
     // Dado binário (0 ou 1)
     int rollDiceBinary(){ return ThreadLocalRandom.current().nextInt(1 );
@@ -52,7 +54,7 @@ public class FandeisiaGameManager{
     }
 
     public String[][] getCreatureTypes(){
-        System.out.println( iterate(logCounter) + " - "+ "IN getCreatureTypes\n -----------------------------------\n");
+        //System.out.println( iterate(logCounter) + " - "+ "IN getCreatureTypes\n -----------------------------------\n");
         return new String[][]{
                 {"Anao", "dwarf.png", "add description", String.valueOf(1)},
                 {"Dragao", "dragon.png", "add description", String.valueOf(9)},
@@ -60,20 +62,20 @@ public class FandeisiaGameManager{
                 {"Gigante", "giant.png", "add description", String.valueOf(5)},
                 {"Humano", "human.png", "add description", String.valueOf(3)},
         };
-    } //OK - 29-12
+    }
 
     public Map<String, Integer> createComputerArmy(){
-        System.out.println( iterate(logCounter) + " - "+"IN createComputerArmy\n -----------------------------------\n");
+        //System.out.println( iterate(logCounter) + " - "+"IN createComputerArmy\n -----------------------------------\n");
 
         Map<String, Integer> computerArmy = new HashMap<>();
 
         // Criando 1 apenas para teste.
-        //computerArmy.put("Anao", new Random().nextInt(4)); // criar um random entre 0 e 3.
+        computerArmy.put("Anao", new Random().nextInt(4)); // criar um random entre 0 e 3.
         //computerArmy.put("Dragao", new Random().nextInt(4));
         //computerArmy.put("Elfo", new Random().nextInt(4));
         //computerArmy.put("Gigante", new Random().nextInt(4));
         //computerArmy.put("Humano", new Random().nextInt(4));
-        computerArmy.put("Dragao", 1);
+        computerArmy.put("Dragao", 0);
         return computerArmy;
         /*
         Deve devolver o exército escolhido pelo
@@ -83,12 +85,11 @@ public class FandeisiaGameManager{
         criaturas desse tipo que o jogador
         automático pretende.
         */
-    } //OK 29-12
+    }
 
     public int startGame(String[] content, int rows, int columns){
-        System.out.println( iterate(logCounter) + " - "+"IN startGame\n -----------------------------------\n");
+        //System.out.println( iterate(logCounter) + " - "+"IN startGame\n -----------------------------------\n");
 
-        // Pega rowns e columns e 'seta' nossa rows e columns.
         setRows(rows);
         setColumns(columns);
 
@@ -164,24 +165,22 @@ public class FandeisiaGameManager{
             }
         }
 
-        /* Set initial orientation and team image
-        * Gera imagens diferentes para criaturas da Resistencia! :)
-        * */
+        /*IBAGENS*/
         for (Creature creature: creatures){
             if (creature.getTeamId() == 20){
-                creature.setTypeName(creature.getTypeName()+"Negate"); // Change filter to a better later. Like sobel filter! :)
+                creature.setTypeName(creature.getTypeName()+"Negate"); // Gera imagens diferentes para criaturas da Resistencia! :) -- 1 coelho ou 2? - Change filter to a better later. Like sobel filter! :)
             }
-            creature.setImage(creature.getTypeName()+"-"+creature.getOrientation()+".png");
+            creature.setImage(creature.getTypeName()+"-"+creature.getOrientation()+".png"); // Set initial orientation and team image
         }
 
 
-       /* Prints de fluxo dos elementos fatiados e separados. */
-        System.out.println(iterate(logCounter) + " - "+"  LISTA DE CRIATURAS IN START GAME: "+ creatures + "\n");
-        System.out.println(iterate(logCounter) + " - "+"  LISTA DE BURACOS IN START GAME: " + holes + "\n");
-        System.out.println(iterate(logCounter) + " - "+"  LISTA DE TESOUROS IN START GAME: " + treasures + "\n");
-        System.out.println(iterate(logCounter) + " - "+"  ID DE RESISTENCIA IN START GAME: " + teamRes.getId() + "\n");
-        System.out.println(iterate(logCounter) + " - "+"  ID DE LDR IN START GAME:" + teamLdr.getId() + "\n");
-        System.out.println(iterate(logCounter) + " - "+"  HASH DE COMPUTER ARMY IN START GAME: " + createComputerArmy() + "\n\n");
+       /* Prints dos elementos fatiados e separados. */
+        //System.out.println(iterate(logCounter) + " - "+"  LISTA DE CRIATURAS IN START GAME: "+ creatures + "\n");
+        //System.out.println(iterate(logCounter) + " - "+"  LISTA DE BURACOS IN START GAME: " + holes + "\n");
+        //System.out.println(iterate(logCounter) + " - "+"  LISTA DE TESOUROS IN START GAME: " + treasures + "\n");
+        //System.out.println(iterate(logCounter) + " - "+"  ID DE RESISTENCIA IN START GAME: " + teamRes.getId() + "\n");
+        //System.out.println(iterate(logCounter) + " - "+"  ID DE LDR IN START GAME:" + teamLdr.getId() + "\n");
+        //System.out.println(iterate(logCounter) + " - "+"  HASH DE COMPUTER ARMY IN START GAME: " + createComputerArmy() + "\n\n");
 
         /* Subtrai moedas para cada criatura de cada time*/
         for (Creature c: creatures){
@@ -202,35 +201,34 @@ public class FandeisiaGameManager{
         }
         return 0;
 
-    } //OK 29-12
+    }
 
     public int getCurrentScore(int teamId){
-        System.out.println(iterate(logCounter) + " - "+"IN getCurrentScore\n -----------------------------------\n");
-        System.out.println(iterate(logCounter) + " - "+"  teamLdr.getId() in CUURRENTSCORE: " +teamLdr.getId());
-        System.out.println(iterate(logCounter) + " - "+"  teamRes.getId() in CUURRENTSCORE: " +teamRes.getId() + "\n");
+        //System.out.println(iterate(logCounter) + " - "+"IN getCurrentScore\n -----------------------------------\n");
+        //System.out.println(iterate(logCounter) + " - "+"  teamLdr.getId() in CUURRENTSCORE: " +teamLdr.getId());
+        //System.out.println(iterate(logCounter) + " - "+"  teamRes.getId() in CUURRENTSCORE: " +teamRes.getId() + "\n");
 
         if (teamId == teamLdr.getId()){
             return teamLdr.getPoints();
         }else {
             return teamRes.getPoints();
         }
-    } //OK 29-12 Está sendo chamada duas vezes seguidas no Visualizador. Depois é chamadas mais 2 vezes.
+    } // Está sendo chamada duas vezes seguidas no Visualizador. Depois é chamadas mais 2 vezes.
 
     public int getCoinTotal(int teamId){
-        System.out.println(iterate(logCounter) + " - "+"IN getCoinTotal\n -----------------------------------\n");
+        //System.out.println(iterate(logCounter) + " - "+"IN getCoinTotal\n -----------------------------------\n");
 
         if (teamId == 10){
-            System.out.println(iterate(logCounter) + " - "+"teamLdr.getCoins(): "  + teamLdr.getCoins() + "\n");
+            //System.out.println(iterate(logCounter) + " - "+"teamLdr.getCoins(): "  + teamLdr.getCoins() + "\n");
             return teamLdr.getCoins();
         } else{
-            System.out.println(iterate(logCounter) + " - "+"  teamRes.getCoins() " + teamRes.getCoins() + "\n");
-
+            //System.out.println(iterate(logCounter) + " - "+"  teamRes.getCoins() " + teamRes.getCoins() + "\n");
             return teamRes.getCoins();
         }
     } //OK 29-12 Também se repete depois de escolher exercito
 
-    public void setInitialTeam(int teamId){ // todo QUE TEM QUE FAZER COM ISSO? "OS FGM DOS ALUNOS TEM DE CONSEGUIR COMEÇAR COM UMA OU OUTRA EQUIPE"
-        System.out.println(iterate(logCounter) + " - "+"Entrou em setInitialTeam\n -----------------------------------\n\n");
+    public void setInitialTeam(int teamId){
+        //System.out.println(iterate(logCounter) + " - "+"Entrou em setInitialTeam\n -----------------------------------\n\n");
 
         /*System.out.println(" \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n############################## BEM VINDO AO FANDEISIA GAME ##############################\n\n");
         System.out.println("ESCOLHA QUAL TIME IRÁ COMEÇAR JOGANDO.");
@@ -249,23 +247,22 @@ public class FandeisiaGameManager{
          }else {
              currentTeam = teamRes;
          }
-    }
-    //OK 29-12
+    } //OK 29-12 -- TODO WTF is to do here?
 
     public int getCurrentTeamId(){
-        System.out.println(iterate(logCounter) + " - "+"IN currentTeamId\n -----------------------------------\n");
-        System.out.println(iterate(logCounter) + " - "+"  currentTeam.getId(): "+ currentTeam.getId() + "\n");
+        //System.out.println(iterate(logCounter) + " - "+"IN currentTeamId\n -----------------------------------\n");
+        //System.out.println(iterate(logCounter) + " - "+"  currentTeam.getId(): "+ currentTeam.getId() + "\n");
         return currentTeam.getId();
     } //OK 29-12
 
     public List<Creature> getCreatures(){
-        System.out.println(iterate(logCounter) + " - "+"IN getCreatures");
+        //System.out.println(iterate(logCounter) + " - "+"IN getCreatures");
         System.out.println(iterate(logCounter) + " - "+"    Lista de criaturas do mundo: "+ creatures);
         return creatures;
     } // OK 29-12
 
     public int getElementId(int x, int y){
-        System.out.println(iterate(logCounter) + " - "+"IN getElementId("+x+","+y+")");
+        //System.out.println(iterate(logCounter) + " - "+"IN getElementId("+x+","+y+")");
 
         //System.out.println("    Dimensões do mundo (rows e columns): " + ROWS + " e " + COLUMNS);
 
@@ -284,7 +281,7 @@ public class FandeisiaGameManager{
     } //OK 29-12 percorre tabuleiro e quando acha uma criatura chama o getSpell();
 
     public String[][] getSpellTypes(){
-        System.out.println(iterate(logCounter) + " - "+"IN getSpellTypes");
+        //System.out.println(iterate(logCounter) + " - "+"IN getSpellTypes");
         return new String[][]{
                 {"pushNorth", "Descrição do feitiço", String.valueOf(1)},
                 {"pushEast", "Descrição do feitiço", String.valueOf(1)},
@@ -296,11 +293,10 @@ public class FandeisiaGameManager{
                 {"freezes4Ever", "Descrição do feitiço", String.valueOf(10)},
                 {"unfreezes", "Descrição do feitiço", String.valueOf(8)},
         };
-    } //ok 01/01
+    }
 
-    public String getSpell (int x, int y){ // Scanner dos spells de todas as criaturas presentes. Ela que marca a varinha na criatura que retornou true para enchant! ok.
-        System.out.println(iterate(logCounter) + " - "+"IN getSpell");
-        //int creatureId = getCreatureIdByPosition(x, y); // Seria o mesmo que getElementId??????! Provavelmente simm...
+    public String getSpell (int x, int y){
+        // System.out.println(iterate(logCounter) + " - "+"IN getSpell");
         for(Creature creature: creatures){
             if(creature.getX() == x && creature.getY() == y){
                 String spellName = creature.getItSpellName();
@@ -309,15 +305,15 @@ public class FandeisiaGameManager{
                 }
             }
         }
-        System.out.println("ERRO - retornou null em GetSpell()");
+        //System.out.println("ERRO - retornou null em GetSpell()");
         return null; // É suposto que o simulador chame apenas quando há criatura na coordenada.
-    } // ok 01/01
+    } //Scanner dos spells de todas as criaturas presentes. Ela que marca a varinha na criatura que retornou true para enchant! ok.
 
     public boolean enchant (int x, int y, String spellName){
-        System.out.println(iterate(logCounter) + " - "+"Entrou em enchant");
-        int nextX, nextY; // provisório TODO - mudar para get e set nextX e Y
+        //System.out.println(iterate(logCounter) + " - "+"Entrou em enchant");
         for (Creature c: creatures){
             if (c.getX() == x && c.getY() == y) {
+                assert spellName != null;
                 if (c.isFrozen4Ever() && spellName.equals("unfreezes")){
                     if (checkBalanceToSpell(getCurrentTeamId(),8)){
                         c.setEnchant(true);
@@ -326,155 +322,153 @@ public class FandeisiaGameManager{
                         return true;
                     }
                 } else {
-                    if (spellName != null){
-                        switch (spellName){
-                            case ("freezes"): {
-                                if (checkBalanceToSpell(getCurrentTeamId(),3)){
-                                    c.setEnchant(true);
-                                    taxSpell(getCurrentTeamId(), 3);
-                                    c.setItSpellName(spellName);
-                                    //c.freezes();
-                                    //c.setItSpellName("freezes");
-                                    return true;
-                                } else {
-                                    return false;
-                                }
+                    switch (spellName){
+                        case ("freezes"): {
+                            if (checkBalanceToSpell(getCurrentTeamId(),3)){
+                                c.setEnchant(true);
+                                taxSpell(getCurrentTeamId(), 3);
+                                c.setItSpellName(spellName);
+                                //c.freezes();
+                                //c.setItSpellName("freezes");
+                                return true;
+                            } else {
+                                return false;
                             }
+                        }
 
-                            case ("freezes4Ever"):{
-                                if (checkBalanceToSpell(getCurrentTeamId(),10)){
-                                    c.setEnchant(true);
-                                    //c.freezes4Ever();
-                                    //c.setItSpellName("freezes4Ever");
-                                    taxSpell(getCurrentTeamId(), 10);
-                                    c.setItSpellName(spellName);
-                                    return true;
-                                } else {
-                                    return false;
-                                }
+                        case ("freezes4Ever"):{
+                            if (checkBalanceToSpell(getCurrentTeamId(),10)){
+                                c.setEnchant(true);
+                                //c.freezes4Ever();
+                                //c.setItSpellName("freezes4Ever");
+                                taxSpell(getCurrentTeamId(), 10);
+                                c.setItSpellName(spellName);
+                                return true;
+                            } else {
+                                return false;
                             }
+                        }
 
-                            case ("unfreezes"):{
-                                if (checkBalanceToSpell(getCurrentTeamId(),8)){
-                                    c.setEnchant(true);
-                                    //c.freezes();
-                                    //c.setItSpellName("unfreezes");
-                                    taxSpell(getCurrentTeamId(), 8);
-                                    c.setItSpellName(spellName);
-                                    return true;
-                                } else {
-                                    return false; // Neste caso não se faz unfreeze porque se tivesse mesmo frozen4Ever teria unfrozed lá em cima!
-                                }
+                        case ("unfreezes"):{
+                            if (checkBalanceToSpell(getCurrentTeamId(),8)){
+                                c.setEnchant(true);
+                                //c.freezes();
+                                //c.setItSpellName("unfreezes");
+                                taxSpell(getCurrentTeamId(), 8);
+                                c.setItSpellName(spellName);
+                                return true;
+                            } else {
+                                return false; // Neste caso não se faz unfreeze porque se tivesse mesmo frozen4Ever teria unfrozed lá em cima!
                             }
+                        }
 
-                            case ("pushNorth"): {
-                                if (!c.isFrozen() && !c.isFrozen4Ever()){
-                                    c.setNextX(x);
-                                    c.setNextY(y-1);
-                                    if (validateMovement(x, y, c.getNextX(), c.getNextY())){ // movimento é valido
-                                        if (checkBalanceToSpell(getCurrentTeamId(),1)){
-                                            c.setEnchant(true);
-                                            //c.freezes();
-                                            //c.setItSpellName("pushNorth");
-                                            taxSpell(getCurrentTeamId(), 1);
-                                            c.setItSpellName(spellName);
-                                            return true;
-                                        } else {
-                                            return false;
-                                        }
-                                    } else {
-                                        return false; // Se não entrar nesse if tem erro!
-                                    }
-                                } return false;
-                            }
-
-                            case ("pushEast"): {
-                                if (!c.isFrozen() && !c.isFrozen4Ever()){
-                                    c.setNextX(x+1);
-                                    c.setNextY(y);
-                                    if (validateMovement(x, y, c.getNextX(), c.getNextY())){ // movimento é valido
-                                        if (checkBalanceToSpell(getCurrentTeamId(),1)){
-                                            c.setEnchant(true);
-                                            //c.setItSpellName("pushEast");
-                                            //c.pushEast();
-                                            taxSpell(getCurrentTeamId(),1);
-                                            c.setItSpellName(spellName);
-                                            return true;
-                                        } else {
-                                            return false;
-                                        }
-                                    } else {
-                                        return false; // Se não entrar nesse if tem erro!
-                                    }
-                                } return false;
-                            }
-
-                            case ("pushSouth"): {
-                                if (!c.isFrozen() && !c.isFrozen4Ever()){
-                                    c.setNextX(x);
-                                    c.setNextY(y+1);
-                                    if (validateMovement(x, y, c.getNextX(), c.getNextY())){ // movimento é valido
-                                        if (checkBalanceToSpell(getCurrentTeamId(),1)){
-                                            c.setEnchant(true);
-                                            //c.freezes();
-                                            //c.setItSpellName("pushSouth");
-                                            taxSpell(getCurrentTeamId(), 1);
-                                            c.setItSpellName(spellName);
-                                            return true;
-                                        } else {
-                                            return false;
-                                        }
+                        case ("pushNorth"): {
+                            if (!c.isFrozen() && !c.isFrozen4Ever()){
+                                c.setNextX(x);
+                                c.setNextY(y-1);
+                                if (validateMovement(x, y, c.getNextX(), c.getNextY())){ // movimento é valido
+                                    if (checkBalanceToSpell(getCurrentTeamId(),1)){
+                                        c.setEnchant(true);
+                                        //c.freezes();
+                                        //c.setItSpellName("pushNorth");
+                                        taxSpell(getCurrentTeamId(), 1);
+                                        c.setItSpellName(spellName);
+                                        return true;
                                     } else {
                                         return false;
                                     }
-                                } return false;
-                            }
+                                } else {
+                                    return false; // Se não entrar nesse if tem erro!
+                                }
+                            } return false;
+                        }
 
-                            case ("pushWest"): {
-                                if (!c.isFrozen() && !c.isFrozen4Ever()){
-                                    c.setNextX(x-1);
-                                    c.setNextY(y);
-                                    if (validateMovement(x, y, c.getNextX(), c.getNextY())){ // movimento é valido
-                                        if (checkBalanceToSpell(getCurrentTeamId(),1)){
-                                            c.setEnchant(true);
-                                            //c.freezes();
-                                            //c.setItSpellName("pushWest");
-                                            taxSpell(getCurrentTeamId(), 1);
-                                            c.setItSpellName(spellName);
-                                            return true;
-                                        } else {
-                                            return false;
-                                        }
+                        case ("pushEast"): {
+                            if (!c.isFrozen() && !c.isFrozen4Ever()){
+                                c.setNextX(x+1);
+                                c.setNextY(y);
+                                if (validateMovement(x, y, c.getNextX(), c.getNextY())){ // movimento é valido
+                                    if (checkBalanceToSpell(getCurrentTeamId(),1)){
+                                        c.setEnchant(true);
+                                        //c.setItSpellName("pushEast");
+                                        //c.pushEast();
+                                        taxSpell(getCurrentTeamId(),1);
+                                        c.setItSpellName(spellName);
+                                        return true;
                                     } else {
                                         return false;
                                     }
-                                } return false;
-                            }
+                                } else {
+                                    return false; // Se não entrar nesse if tem erro!
+                                }
+                            } return false;
+                        }
 
-                            case ("reducesRange"): {
-                                if (checkBalanceToSpell(getCurrentTeamId(),1)){
-                                    c.setEnchant(true);
-                                    taxSpell(getCurrentTeamId(), 2);
-                                    c.setItSpellName(spellName);
-                                    //c.reducesRange();
-                                    //c.setItSpellName("reducesRange");
-                                    return true;
+                        case ("pushSouth"): {
+                            if (!c.isFrozen() && !c.isFrozen4Ever()){
+                                c.setNextX(x);
+                                c.setNextY(y+1);
+                                if (validateMovement(x, y, c.getNextX(), c.getNextY())){ // movimento é valido
+                                    if (checkBalanceToSpell(getCurrentTeamId(),1)){
+                                        c.setEnchant(true);
+                                        //c.freezes();
+                                        //c.setItSpellName("pushSouth");
+                                        taxSpell(getCurrentTeamId(), 1);
+                                        c.setItSpellName(spellName);
+                                        return true;
+                                    } else {
+                                        return false;
+                                    }
                                 } else {
                                     return false;
                                 }
-                            }
+                            } return false;
+                        }
 
-                            case ("doubleRange"): {
-                                if (checkBalanceToSpell(getCurrentTeamId(),1)){
-                                    c.setEnchant(true);
-                                    taxSpell(getCurrentTeamId(), 3);
-                                    c.setItSpellName(spellName);
-                                    //c.doubleRange(c.getRange());
-                                    //c.setItSpellName("doubleRange");
-                                    return true;
+                        case ("pushWest"): {
+                            if (!c.isFrozen() && !c.isFrozen4Ever()){
+                                c.setNextX(x-1);
+                                c.setNextY(y);
+                                if (validateMovement(x, y, c.getNextX(), c.getNextY())){ // movimento é valido
+                                    if (checkBalanceToSpell(getCurrentTeamId(),1)){
+                                        c.setEnchant(true);
+                                        //c.freezes();
+                                        //c.setItSpellName("pushWest");
+                                        taxSpell(getCurrentTeamId(), 1);
+                                        c.setItSpellName(spellName);
+                                        return true;
+                                    } else {
+                                        return false;
+                                    }
                                 } else {
                                     return false;
                                 }
+                            } return false;
+                        }
+
+                        case ("reducesRange"): {
+                            if (checkBalanceToSpell(getCurrentTeamId(),1)){
+                                c.setEnchant(true);
+                                taxSpell(getCurrentTeamId(), 2);
+                                c.setItSpellName(spellName);
+                                //c.reducesRange();
+                                //c.setItSpellName("reducesRange");
+                                return true;
+                            } else {
+                                return false;
+                            }
+                        }
+
+                        case ("doubleRange"): {
+                            if (checkBalanceToSpell(getCurrentTeamId(),1)){
+                                c.setEnchant(true);
+                                taxSpell(getCurrentTeamId(), 3);
+                                c.setItSpellName(spellName);
+                                //c.doubleRange(c.getRange());
+                                //c.setItSpellName("doubleRange");
+                                return true;
+                            } else {
+                                return false;
                             }
                         }
                     }
@@ -496,36 +490,91 @@ public class FandeisiaGameManager{
     public void processTurn(){
         System.out.println("Entrou em  processTurn\n");
         for (Creature creature: creatures){
+
+            // Timer para descongelar
             if (creature.isFrozen()){
                 creature.setFrozenTime(1);
             }
 
+            // Se atingir timer descongela e troca figura
             if (creature.isFrozen() && creature.getFrozenTime() == 1){
                 creature.setFrozen(false);
                 creature.setImage(creature.getTypeName()+"-"+ creature.getOrientation()+".png");
             }
 
+            // Se tem feitiço pra aplicar, aplique.
             if (creature.isEnchant()){
                 executeSpell(creature.getId(), creature.getItSpellName());
                 matchTreasure(creature.getX(), creature.getY(), creature.getId(), creature.getTeamId());
                 creature.setEnchant(false);
             }
-            /*executeStandardMovement(creature.getX(), creature.getY(), creature.getOrientation(),
-                                    creature.getTypeName(), creature.isFrozen(),creature.isFrozen4Ever());*/
-            /*switch (creature.getTypeName()){
-                case ("Dwarf"): {
-                    if(validateMovement(creature.getX(),creature.getY(),nextX,nextY)){
-                        creature.move();
-                    }
+
+            /* Movimento normal das criaturas */
+            // Se não tá congelada ou congelada4Ever não movimenta. Se não, bota pra movimentar.
+            if (!creature.isFrozen4Ever() && !creature.isFrozen()){
+                if (executeStandardMovement(creature.getX(), creature.getY(), creature.getOrientation(), creature.getTypeName())){
+                    creature.move();
+                    matchTreasure(creature.getX(), creature.getY(), creature.getId(), creature.getTeamId());
+                } else {
+                    creature.spin();
                 }
-            }*/
-
-            //Fazer os outros switchs! TODO
-
+            }
         }
     }
 
+    private boolean executeStandardMovement(int x, int y, String orientation, String typeName) {
+        System.out.println("Entrou em executeStandardMovement");
+        for (Creature creature: creatures){
+            if (creature.getX() == x && creature.getY()==y){
+                switch (creature.getTypeName()){
+                    case ("dwarf"): {
+                        switch (creature.getOrientation()){
+                            case ("Norte"):{
+                                creature.setNextX(creature.getX());
+                                creature.setNextY(creature.getY() - creature.getRange());
+                                if (validateMovement(x,y,creature.getNextX(),creature.getNextY())){
+                                    return true;
+                                } else {
+                                    return false;
+                                }
+                            }
+                            case ("Sul"):{
+                                creature.setNextX(creature.getX());
+                                creature.setNextY(creature.getY() + creature.getRange());
+                                if (validateMovement(x,y,creature.getNextX(),creature.getNextY())){
+                                    return true;
+                                } else {
+                                    return false;
+                                }
+                            }
+                            case ("Este"):{
+                                creature.setNextX(creature.getX() + creature.getRange());
+                                creature.setNextY(creature.getY());
+                                if (validateMovement(x,y,creature.getNextX(),creature.getNextY())){
+                                    return true;
+                                } else {
+                                    return false;
+                                }
+                            }
+                            case ("Oeste"):{
+                                creature.setNextX(creature.getX() - creature.getRange());
+                                creature.setNextY(creature.getY());
+                                if (validateMovement(x,y,creature.getNextX(),creature.getNextY())){
+                                    return true;
+                                } else {
+                                    return false;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
     private void matchTreasure(int x, int y, int id, int teamId) {
+        System.out.println("Entrou em matchTreasure");
         for (Creature creature: creatures){
             if (creature.getId() == id){
                 //for (Treasure treasure: treasures){
@@ -626,61 +675,8 @@ public class FandeisiaGameManager{
         }
     }
 
-    private void executeStandardMovement(int x, int y, String orientation, String typeName,
-                                         boolean isFrozen, boolean isFrozen4Ever) {
-        for (Creature creature: creatures){
-            if (!creature.isFrozen() && !creature.isFrozen4Ever()){
-
-                switch (creature.getTypeName()){
-                    case ("dwarf"): {
-                        switch (creature.getOrientation()){
-                            case ("Norte"):{
-                                creature.setNextX(creature.getX());
-                                creature.setNextY(creature.getY() - creature.getRange());
-                                if (validateMovement(x,y,creature.getNextX(),creature.getNextY())){
-                                    //creature.move();
-                                    break;
-                                }
-
-                            }
-                            case ("Sul"):{
-                                creature.setNextX(creature.getX());
-                                creature.setNextY(creature.getY() + creature.getRange());
-                                if (validateMovement(x,y,creature.getNextX(),creature.getNextY())){
-                                    //creature.move();
-                                    break;
-                                }
-                            }
-                            case ("Este"):{
-                                creature.setNextX(creature.getX() + creature.getRange());
-                                creature.setNextY(creature.getY());
-                                if (validateMovement(x,y,creature.getNextX(),creature.getNextY())){
-                                    //creature.move();
-                                    break;
-                                }
-                            }
-
-                            case ("Oeste"):{
-                                creature.setNextX(creature.getX() - creature.getRange());
-                                creature.setNextY(creature.getY());
-                                if (validateMovement(x,y,creature.getNextX(),creature.getNextY())){
-                                    //creature.move();
-                                    break;
-                                }
-                            }
-
-                        }
-                    }
-                }
-
-            } else {
-                creature.setFrozen(false);
-            }
-        }
-
-    }
     public boolean gameIsOver(){
-        System.out.println("Estou em gameIsOver");
+        System.out.println("Entrou em gameIsOver");
 
         return false;
         /*Deve devolver ​true​ caso já tenha sido
