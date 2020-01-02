@@ -13,6 +13,7 @@ public abstract class Creature extends Element {
     protected int range;
     protected boolean isEnchant;
     protected boolean isFrozen;
+    protected int frozenTime;
     protected boolean isFrozen4Ever;
     protected String itSpellName;
     protected int nextX;
@@ -112,6 +113,14 @@ public abstract class Creature extends Element {
 
     public boolean isFrozen() {
         return isFrozen;
+    }
+
+    public int getFrozenTime() {
+        return frozenTime;
+    }
+
+    public void setFrozenTime(int frozenTime) {
+        this.frozenTime = frozenTime;
     }
 
     public void setFrozen(boolean frozen) {
