@@ -9,11 +9,11 @@ public class Team{
     protected int coins;
 
 
-    public Team(int id, String name, int points, int coins){
-        this.id =id;
+    public Team(int id, String name){
+        this.id = id;
         this.name = name;
-        this.points = points;
-        this.coins = coins;
+        this.coins = 50;
+        this.points = 0;
     }
     public boolean isActive(){
         return true;

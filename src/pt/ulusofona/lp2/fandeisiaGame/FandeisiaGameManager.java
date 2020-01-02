@@ -9,27 +9,24 @@ public class FandeisiaGameManager{
 
     public FandeisiaGameManager(){
     }
-
-    private List<Treasure> treasures = new ArrayList<>(); // Quando for 0 gameIsOver = true.
-    private List<Hole> holes = new ArrayList<>();
-    private List<Creature> creatures = new ArrayList<>();
-    private Team teamLdr = new Team (10, "LDR", 0, 50);
-    private Team teamRes = new Team (20, "RESISTENCIA", 0, 50);
-    private Team currentTeam = new Team(0,"0",0,0); // uma espécie de cópia...? mas funciona.
-    private int rows;
-    private int columns;
-    private int turnsWithoutTreasure; // Será usado no gameIsOver. Quando for for >= 15 gameIsOver = true;
-    private long logCounter = 0; // usado como contador do meu log de execução do jogo
-    private void setRows(int rows){
+     List<Treasure> treasures = new ArrayList<>(); // Quando for 0 gameIsOver = true.
+     List<Hole> holes = new ArrayList<>();
+     List<Creature> creatures = new ArrayList<>();
+     Team teamLdr = new Team (10, "LDR");
+     Team teamRes = new Team (20, "RESISTENCIA");
+     Team currentTeam = new Team(0,"0"); // uma espécie de cópia...? mas funciona.
+     int rows;
+     int columns;
+     int turnsWithoutTreasure; // Será usado no gameIsOver. Quando for for >= 15 gameIsOver = true;
+     long logCounter = 0; // usado como contador do meu log de execução do jogo
+     void setRows(int rows){
         this.rows = rows;
-    }
-    private void setColumns(int columns){
+     }
+     void setColumns(int columns){
         this.columns = columns;
-    }
-    private int turnCounter = 0;
-    private boolean iaActive;
-
-
+     }
+     int turnCounter = 0;
+     boolean iaActive;
 
     // Dado binário (0 ou 1)
     int rollDiceBinary(){ return ThreadLocalRandom.current().nextInt(1 );
@@ -82,6 +79,8 @@ public class FandeisiaGameManager{
 
     public int startGame(String[] content, int rows, int columns){
         //System.out.println( iterate(logCounter) + " - "+"IN startGame\n -----------------------------------\n");
+        teamLdr = new Team (10,"LDR");
+        teamRes = new Team (20, "RESISTENCIA");
 
         setRows(rows);
         setColumns(columns);
@@ -279,15 +278,15 @@ public class FandeisiaGameManager{
     public String[][] getSpellTypes(){
         //System.out.println(iterate(logCounter) + " - "+"IN getSpellTypes");
         return new String[][]{
-                {"pushNorth", "Descrição do feitiço", String.valueOf(1)},
-                {"pushEast", "Descrição do feitiço", String.valueOf(1)},
-                {"pushSouth", "Descrição do feitiço", String.valueOf(1)},
-                {"pushWest", "Descrição do feitiço", String.valueOf(1)},
-                {"reducesRange", "Descrição do feitiço", String.valueOf(2)},
-                {"doubleRange", "Descrição do feitiço", String.valueOf(3)},
-                {"freezes", "Descrição do feitiço", String.valueOf(3)},
-                {"freezes4Ever", "Descrição do feitiço", String.valueOf(10)},
-                {"unfreezes", "Descrição do feitiço", String.valueOf(8)},
+                {"EmpurraParaNorte", "Descrição do feitiço", String.valueOf(1)},
+                {"EmpurraParaEste", "Descrição do feitiço", String.valueOf(1)},
+                {"EmpurraParaSul", "Descrição do feitiço", String.valueOf(1)},
+                {"EmpurraParaOeste", "Descrição do feitiço", String.valueOf(1)},
+                {"ReduzAlcance", "Descrição do feitiço", String.valueOf(2)},
+                {"DuplicaAlcance", "Descrição do feitiço", String.valueOf(3)},
+                {"Congela", "Descrição do feitiço", String.valueOf(3)},
+                {"Congela4Ever", "Descrição do feitiço", String.valueOf(10)},
+                {"Descongela", "Descrição do feitiço", String.valueOf(8)},
         };
     }
 
@@ -485,7 +484,7 @@ public class FandeisiaGameManager{
 
     public void processTurn(){ // TODO
         System.out.println("Entrou em  processTurn\n");
-        switchCurrentTeam();
+        //switchCurrentTeam();
         turnCounter = turnCounter +1;
         System.out.println(turnCounter);
         turnsWithoutTreasure =+turnsWithoutTreasure; // zera toda vez que encontra um tesouro
