@@ -4,8 +4,8 @@ public class Dragon extends Creature {
 
     public Dragon (int id, int x, int y, int teamId, int cost, String orientation){
         super(id, x, y, teamId, cost, orientation);
-        image = "dragon.png";
-        typeName = "dragon";
+        image = "Dragao.png";
+        typeName = "Dragao";
         range = 3;
     }
 

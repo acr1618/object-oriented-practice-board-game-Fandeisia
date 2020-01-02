@@ -18,7 +18,6 @@ public class FandeisiaGameManager{
     private Team currentTeam = new Team(0,"0",0,0); // uma espécie de cópia...? mas funciona.
     private int rows;
     private int columns;
-    private int currentTurnCounter;
     private int turnsWithoutTreasure; // Será usado no gameIsOver. Quando for for >= 15 gameIsOver = true;
     private long logCounter = 0; // usado como contador do meu log de execução do jogo
     private void setRows(int rows){
@@ -27,14 +26,7 @@ public class FandeisiaGameManager{
     private void setColumns(int columns){
         this.columns = columns;
     }
-    private int getRows(){
-        return rows;
-    }
-    private int getColumns(){
-        return columns;
-    }
-    private int nextX;
-    private int nextY;
+    private int turnCounter = 1;
 
     // Dado binário (0 ou 1)
     int rollDiceBinary(){ return ThreadLocalRandom.current().nextInt(1 );
@@ -54,11 +46,11 @@ public class FandeisiaGameManager{
     public String[][] getCreatureTypes(){
         //System.out.println( iterate(logCounter) + " - "+ "IN getCreatureTypes\n -----------------------------------\n");
         return new String[][]{
-                {"Anao", "dwarf.png", "add description", String.valueOf(1)},
-                {"Dragao", "dragon.png", "add description", String.valueOf(9)},
-                {"Elfo", "elf.png", "add description", String.valueOf(5)},
-                {"Gigante", "giant.png", "add description", String.valueOf(5)},
-                {"Humano", "human.png", "add description", String.valueOf(3)},
+                {"Anao", "Anao.png", "add description", String.valueOf(1)},
+                {"Dragao", "Dragao.png", "add description", String.valueOf(9)},
+                {"Elfo", "Elfo.png", "add description", String.valueOf(5)},
+                {"Gigante", "Gigante.png", "add description", String.valueOf(5)},
+                {"Humano", "Humano.png", "add description", String.valueOf(3)},
         };
     }
 
@@ -156,11 +148,14 @@ public class FandeisiaGameManager{
         }
 
         /*IBAGENS*/
+        // Set initial orientation and team image
+        // Gera imagens diferentes para criaturas da Resistencia.  -- 1 coelho ou 2? - Change filter to a better later. mmaybe sobel filter
         for (Creature creature: creatures){
             if (creature.getTeamId() == 20){
-                creature.setTypeName(creature.getTypeName()+"Negate"); // Gera imagens diferentes para criaturas da Resistencia! :) -- 1 coelho ou 2? - Change filter to a better later. Like sobel filter! :)
+                creature.setImage(creature.getTypeName()+"Negate-"+creature.getOrientation()+".png");
+            } else {
+                creature.setImage(creature.getTypeName()+"-"+creature.getOrientation()+".png");
             }
-            creature.setImage(creature.getTypeName()+"-"+creature.getOrientation()+".png"); // Set initial orientation and team image
         }
 
 
@@ -477,12 +472,11 @@ public class FandeisiaGameManager{
 
     } // ok 01/01
 
-    public void processTurn(){
+    public void processTurn(){ // TODO
         System.out.println("Entrou em  processTurn\n");
-        int turn = 0;
-        turn += turn;
-        changeCurrentTeam();
-
+        //changeCurrentTeam();
+        turnCounter =+ turnCounter;
+        turnsWithoutTreasure =+turnsWithoutTreasure; // zera toda vez que encontra um tesouro
         for (Creature creature: creatures){
 
             // Timer para descongelar
@@ -499,7 +493,9 @@ public class FandeisiaGameManager{
             // Se tem feitiço pra aplicar, aplique.
             if (creature.isEnchant()){
                 executeSpell(creature.getId(), creature.getItSpellName());
-                matchTreasure(creature.getX(), creature.getY(), creature.getId(), creature.getTeamId());
+                if(matchTreasure(creature.getX(), creature.getY(), creature.getId(), creature.getTeamId())){
+                    turnsWithoutTreasure =0;
+                }
                 creature.setEnchant(false);
             }
 
@@ -508,7 +504,9 @@ public class FandeisiaGameManager{
             if (!creature.isFrozen4Ever() && !creature.isFrozen()){
                 if (executeStandardMovement(creature.getX(), creature.getY(), creature.getOrientation(), creature.getTypeName())){
                     creature.move();
-                    matchTreasure(creature.getX(), creature.getY(), creature.getId(), creature.getTeamId());
+                    if(matchTreasure(creature.getX(), creature.getY(), creature.getId(), creature.getTeamId())){
+                        turnsWithoutTreasure =0;
+                    }
                 } else {
                     creature.spin();
                 }
@@ -530,7 +528,7 @@ public class FandeisiaGameManager{
             if (creature.getX() == x && creature.getY()==y){
                 switch (creature.getTypeName()){
 
-                    case ("dwarf"):case("dwarfNegate"):case("human"):case("humanNegate") : {
+                    case ("Anao"):case("AnaoNegate"):case("Humano"):case("HumanoNegate") : {
                         switch (creature.getOrientation()){
                             case ("Norte"):{
                                 creature.setNextX(creature.getX());
@@ -576,7 +574,7 @@ public class FandeisiaGameManager{
         return false;
     }
 
-    private void matchTreasure(int x, int y, int id, int teamId) {
+    private boolean matchTreasure(int x, int y, int id, int teamId) {
         System.out.println("Entrou em matchTreasure");
         for (Creature creature: creatures){
             if (creature.getId() == id){
@@ -591,10 +589,12 @@ public class FandeisiaGameManager{
                             teamRes.addPoints(treasure.getPoints()); // Add pontos time
                         }
                         i.remove();
+                        return true;
                     }
                 }
             }
         }
+        return false;
     }
 
     private void executeSpell(int id,String spell) {
@@ -681,13 +681,33 @@ public class FandeisiaGameManager{
     public boolean gameIsOver(){
         System.out.println("Entrou em gameIsOver");
 
+        if (treasures.size() == 0 || turnsWithoutTreasure >=15){
+            return true;
+        }
 
-
+        if (impossibleToWin(teamLdr.getPoints(),teamRes.getPoints(), sumPointsTreasuresNotFounds())){
+            return true;
+        }
         return false;
-        /*Deve devolver ​true​ caso já tenha sido
-        alcançada uma das condições de paragem
-        do jogo e ​false​ em caso contrário.
-        */
+
+    }
+
+    private boolean impossibleToWin(int pointsLdr, int pointsRes, int sum) {
+        if (pointsLdr + sum < pointsRes){
+            return true;
+        }
+        if (pointsRes + sum < pointsLdr){
+            return true;
+        }
+        return false;
+    }
+
+    private int sumPointsTreasuresNotFounds() {
+        int sum = 0;
+        for (Treasure treasure: treasures){
+            sum = sum + treasure.getPoints();
+        }
+        return sum;
     }
 
     public List<String> getResults(){
