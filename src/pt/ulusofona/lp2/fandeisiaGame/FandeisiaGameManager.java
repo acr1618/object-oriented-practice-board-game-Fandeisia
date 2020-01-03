@@ -478,13 +478,14 @@ public class FandeisiaGameManager{
     }
 
     public void processTurn(){ // still todo
-        if (!gameIsOver()){
-            switchCurrentTeam();
-        }
+
         turnCounter ++;
         turnsWithoutTreasure ++; // zera toda vez que encontra um tesouro
         teamLdr.setTreasuresFoundInThisTurn(0);// Zera em todos turnos e incrementa quando acha tesouro
         teamRes.setTreasuresFoundInThisTurn(0);
+        boolean ldrJaAdicionou = false;
+        boolean resJaAdicionou = false; //auxiliares pra me ajudar porque tá foda
+
         for (Creature creature: creatures){
             // Timer para descongelar
             if (creature.isFrozen()){
@@ -500,6 +501,13 @@ public class FandeisiaGameManager{
                 executeSpell(creature.getId(), creature.getItSpellName());
                 if(matchTreasure(creature.getX(), creature.getY(), creature.getId(), creature.getTeamId())){
                     turnsWithoutTreasure = 0;
+                    if (creature.getTeamId() ==10){
+                        teamLdr.setTreasuresFoundInThisTurn(1);
+                        ldrJaAdicionou = true; // auxiliar...
+                    } else {
+                        teamRes.setTreasuresFoundInThisTurn(1);
+                        resJaAdicionou = true;
+                    }
                 }
                 creature.setEnchant(false);
             }
@@ -510,12 +518,28 @@ public class FandeisiaGameManager{
                     creature.move();
                     if(matchTreasure(creature.getX(), creature.getY(), creature.getId(), creature.getTeamId())){
                         turnsWithoutTreasure =0;
+                        if (creature.getTeamId() ==10){
+                            if (!ldrJaAdicionou){
+                                teamLdr.setTreasuresFoundInThisTurn(1);
+                            }
+                        }
+                        if (creature.getTeamId() ==20){
+                            if (!resJaAdicionou){
+                                teamRes.setTreasuresFoundInThisTurn(1);
+                            }
+                        }
+
                     }
                 } else {
                     creature.spin();
                 }
             }
         }
+        if (!gameIsOver()){
+            switchCurrentTeam();
+            giveCoins();
+        }
+         // 1 se não achou tesouro neste turno e 2 se achou.
     }
 
     private boolean executeStandardMovement(int x, int y, String orientation, String typeName) {
@@ -524,7 +548,7 @@ public class FandeisiaGameManager{
             if (creature.getX() == x && creature.getY()==y){
                 switch (creature.getTypeName()){
 
-                    case ("Anão"): {
+                    case ("Anao"): {
                         switch (creature.getOrientation()){
                             case ("Norte"):{
                                 creature.setNextX(creature.getX());
@@ -564,7 +588,7 @@ public class FandeisiaGameManager{
                             }
                         }
                     }
-
+                    // fazer ifs para verificar o time e trocar imagem, devido à restrição nominal dos tipos das craituras! TODO
                     //case ("Humano"): TODO
                     //case ("Elfo"): TODO
                     //case ("Gigante"): TODO
@@ -595,10 +619,8 @@ public class FandeisiaGameManager{
                         }
                         if (teamId == 10){
                             teamLdr.addPoints(treasure.getPoints()); // Add pontos time
-                            teamLdr.setTreasuresFoundInThisTurn(1);
                         } else {
                             teamRes.addPoints(treasure.getPoints()); // Add pontos time
-                            teamRes.setTreasuresFoundInThisTurn(1);
                         }
                         i.remove();
                         return true;
