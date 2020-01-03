@@ -331,6 +331,7 @@ public class FandeisiaGameManager{
                         } else {
                             return false;
                         }
+
                     } else {
                         switch (spellName) {
                             case ("Congela4Ever"): {
@@ -542,7 +543,6 @@ public class FandeisiaGameManager{
         for (Creature creature: creatures){
             if (creature.getX() == x && creature.getY()==y){
                 switch (creature.getTypeName()){
-
                     case ("Anão"): {
                         switch (creature.getOrientation()){
                             case ("Norte"):{
@@ -876,81 +876,3 @@ public class FandeisiaGameManager{
         return Collections.singletonList("Allyson Rodrigues");
     }
 }
-/*
-
-
-
-
-
-FAILURE: pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_014_JogoCompletoSoComAnoesESemFeiticos
-java.lang.AssertionError: A fn getElementId() devolveu o valor errado. expected:<0> but was:<10>
-	at pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_014_JogoCompletoSoComAnoesESemFeiticos(TestTeacherSimuladorP2.java:496)
-
-
-
-FAILURE: pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_015_JogoCompleto_2
-org.junit.ComparisonFailure: expected:<1 | An[ã]o | 10 | 0 @ (0, 0) ...> but was:<1 | An[a]o | 10 | 0 @ (0, 0) ...>
-	at pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_015_JogoCompleto_2(TestTeacherSimuladorP2.java:608)
-
-
-FAILURE: pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_018_enfeiticarComCongelaEDescongela
-java.lang.AssertionError
-	at pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_018_enfeiticarComCongelaEDescongela(TestTeacherSimuladorP2.java:1629)
-
-
-
-FAILURE: pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_019_Gigante
-java.lang.AssertionError: getElementId() expected:<0> but was:<4>
-	at pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_019_Gigante(TestTeacherSimuladorP2.java:1335)
-
-
-FAILURE: pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_01_Leitura_Escrita_Ficheiro1
-java.lang.AssertionError: Não criou o ficheiro
-	at pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_01_Leitura_Escrita_Ficheiro1(TestTeacherSimuladorP2.java:44)
-
-
-
-FAILURE: pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_020_enfeiticarComEmpurrasHorizontais
-java.lang.AssertionError
-	at pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_020_enfeiticarComEmpurrasHorizontais(TestTeacherSimuladorP2.java:1572)
-
-
-
-FAILURE: pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_021_enfeiticarComEmpurrasVerticais
-java.lang.AssertionError
-	at pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_021_enfeiticarComEmpurrasVerticais(TestTeacherSimuladorP2.java:1495)
-
-
-
-FAILURE: pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_023_ProcessTurnDaMoedas
-java.lang.AssertionError: expected:<0> but was:<1>
-	at pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_023_ProcessTurnDaMoedas(TestTeacherSimuladorP2.java:1385)
-
-
-
-FAILURE: pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_02_Anao_EscapeTheCornerTest
-org.junit.ComparisonFailure: expected:<1 | An[ã]o | 10 | 0 @ (0, 0) ...> but was:<1 | An[a]o | 10 | 0 @ (0, 0) ...>
-	at pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_02_Anao_EscapeTheCornerTest(TestTeacherSimuladorP2.java:297)
-
-
-
-FAILURE: pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_04_StartGameAndToString
-org.junit.ComparisonFailure: expected:<1 | An[ã]o | 10 | 0 @ (0, 0) ...> but was:<1 | An[a]o | 10 | 0 @ (0, 0) ...>
-	at pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_04_StartGameAndToString(TestTeacherSimuladorP2.java:177)
-
-
-
-FAILURE: pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_05_IniciaJogoDuasVezes
-java.lang.AssertionError: A fn getCreatures() devolveu o nr errado de criaturas. expected:<6> but was:<8>
-	at pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_05_IniciaJogoDuasVezes(TestTeacherSimuladorP2.java:191)
-
-
-FAILURE: pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_08_DragaoBasico
-java.lang.AssertionError: getElementId() expected:<0> but was:<1>
-	at pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_08_DragaoBasico(TestTeacherSimuladorP2.java:1143)
-
-
-
-FAILURE: pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_09_JogoCompletoComFeiticos
-java.lang.AssertionError: enchant()
-	at pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_09_JogoCompletoComFeiticos(TestTeacherSimuladorP2.java:1218)*/
