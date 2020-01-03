@@ -23,9 +23,4 @@ public class Giant extends Creature {
         this.nextX=0;
         this.nextY=0;
     }
-
-    @Override
-    public void move() {
-
-    }
 }

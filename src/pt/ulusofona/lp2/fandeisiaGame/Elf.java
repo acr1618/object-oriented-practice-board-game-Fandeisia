@@ -26,10 +26,6 @@ public class Elf extends Creature {
     }
 
     @Override
-    public void move(){
-    }
-
-    @Override
     public void spin(){
         switch (this.orientation){
             case ("Norte"): this.orientation = "Nordeste";

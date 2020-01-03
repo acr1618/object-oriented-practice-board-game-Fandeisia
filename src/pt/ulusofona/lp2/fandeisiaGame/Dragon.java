@@ -24,9 +24,6 @@ public class Dragon extends Creature {
         this.nextY=0;
     }
 
-    @Override
-    public void move() {
-    }
 
     @Override
     public void spin(){
