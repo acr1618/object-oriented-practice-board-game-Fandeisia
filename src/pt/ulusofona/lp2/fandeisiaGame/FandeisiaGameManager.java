@@ -306,8 +306,7 @@ public class FandeisiaGameManager{
         //System.out.println(iterate(logCounter) + " - "+"IN getSpell");
         for(Creature creatureS: creatures){
             if(creatureS.getX() == x && creatureS.getY() == y){
-                String spellName = creatureS.getItSpellName();
-                return spellName;
+                return creatureS.getItSpellName();
             }
         }
         return null;
@@ -615,38 +614,22 @@ public class FandeisiaGameManager{
                     case ("Norte"):{
                         creature.setNextX(creature.getX());
                         creature.setNextY(creature.getY() - creature.getRange());
-                        if (validateMovement(creature.getX(), creature.getY(),creature.getNextX(), creature.getNextY())){
-                            return true;
-                        } else {
-                            return false;
-                        }
+                        return validateMovement(creature.getX(), creature.getY(), creature.getNextX(), creature.getNextY());
                     }
                     case ("Sul"):{
                         creature.setNextX(creature.getX());
                         creature.setNextY(creature.getY() + creature.getRange());
-                        if (validateMovement(creature.getX(), creature.getY(),creature.getNextX(), creature.getNextY())){
-                            return true;
-                        } else {
-                            return false;
-                        }
+                        return validateMovement(creature.getX(), creature.getY(), creature.getNextX(), creature.getNextY());
                     }
                     case ("Este"):{
                         creature.setNextX(creature.getX() + creature.getRange());
                         creature.setNextY(creature.getY());
-                        if (validateMovement(creature.getX(), creature.getY(),creature.getNextX(), creature.getNextY())){
-                            return true;
-                        } else {
-                            return false;
-                        }
+                        return validateMovement(creature.getX(), creature.getY(), creature.getNextX(), creature.getNextY());
                     }
                     case ("Oeste"):{
                         creature.setNextX(creature.getX() - creature.getRange());
                         creature.setNextY(creature.getY());
-                        if (validateMovement(creature.getX(), creature.getY(),creature.getNextX(), creature.getNextY())){
-                            return true;
-                        } else {
-                            return false;
-                        }
+                        return validateMovement(creature.getX(), creature.getY(), creature.getNextX(), creature.getNextY());
                     }
                 }
             }
@@ -656,38 +639,22 @@ public class FandeisiaGameManager{
                     case ("Norte"):{
                         creature.setNextX(creature.getX());
                         creature.setNextY(creature.getY() - creature.getRange());
-                        if (validateMovement(creature.getX(), creature.getY(),creature.getNextX(), creature.getNextY())){
-                            return true;
-                        } else {
-                            return false;
-                        }
+                        return validateMovement(creature.getX(), creature.getY(), creature.getNextX(), creature.getNextY());
                     }
                     case ("Sul"):{
                         creature.setNextX(creature.getX());
                         creature.setNextY(creature.getY() + creature.getRange());
-                        if (validateMovement(creature.getX(), creature.getY(),creature.getNextX(), creature.getNextY())){
-                            return true;
-                        } else {
-                            return false;
-                        }
+                        return validateMovement(creature.getX(), creature.getY(), creature.getNextX(), creature.getNextY());
                     }
                     case ("Este"):{
                         creature.setNextX(creature.getX() + creature.getRange());
                         creature.setNextY(creature.getY());
-                        if (validateMovement(creature.getX(), creature.getY(),creature.getNextX(), creature.getNextY())){
-                            return true;
-                        } else {
-                            return false;
-                        }
+                        return validateMovement(creature.getX(), creature.getY(), creature.getNextX(), creature.getNextY());
                     }
                     case ("Oeste"):{
                         creature.setNextX(creature.getX() - creature.getRange());
                         creature.setNextY(creature.getY());
-                        if (validateMovement(creature.getX(), creature.getY(),creature.getNextX(), creature.getNextY())){
-                            return true;
-                        } else {
-                            return false;
-                        }
+                        return validateMovement(creature.getX(), creature.getY(), creature.getNextX(), creature.getNextY());
                     }
                 }
             }
@@ -696,38 +663,22 @@ public class FandeisiaGameManager{
                     case ("Norte"):{
                         creature.setNextX(creature.getX());
                         creature.setNextY(creature.getY() - creature.getRange());
-                        if (validateMovement(creature.getX(), creature.getY(),creature.getNextX(), creature.getNextY())){
-                            return true;
-                        } else {
-                            return false;
-                        }
+                        return validateMovement(creature.getX(), creature.getY(), creature.getNextX(), creature.getNextY());
                     }
                     case ("Sul"):{
                         creature.setNextX(creature.getX());
                         creature.setNextY(creature.getY() + creature.getRange());
-                        if (validateMovement(creature.getX(), creature.getY(),creature.getNextX(), creature.getNextY())){
-                            return true;
-                        } else {
-                            return false;
-                        }
+                        return validateMovement(creature.getX(), creature.getY(), creature.getNextX(), creature.getNextY());
                     }
                     case ("Este"):{
                         creature.setNextX(creature.getX() + creature.getRange());
                         creature.setNextY(creature.getY());
-                        if (validateMovement(creature.getX(), creature.getY(),creature.getNextX(), creature.getNextY())){
-                            return true;
-                        } else {
-                            return false;
-                        }
+                        return validateMovement(creature.getX(), creature.getY(), creature.getNextX(), creature.getNextY());
                     }
                     case ("Oeste"):{
                         creature.setNextX(creature.getX() - creature.getRange());
                         creature.setNextY(creature.getY());
-                        if (validateMovement(creature.getX(), creature.getY(),creature.getNextX(), creature.getNextY())){
-                            return true;
-                        } else {
-                            return false;
-                        }
+                        return validateMovement(creature.getX(), creature.getY(), creature.getNextX(), creature.getNextY());
                     }
                 }
             }
@@ -736,38 +687,22 @@ public class FandeisiaGameManager{
                     case ("Norte"):{
                         creature.setNextX(creature.getX());
                         creature.setNextY(creature.getY() - creature.getRange());
-                        if (validateMovement(creature.getX(), creature.getY(),creature.getNextX(), creature.getNextY())){
-                            return true;
-                        } else {
-                            return false;
-                        }
+                        return validateMovement(creature.getX(), creature.getY(), creature.getNextX(), creature.getNextY());
                     }
                     case ("Sul"):{
                         creature.setNextX(creature.getX());
                         creature.setNextY(creature.getY() + creature.getRange());
-                        if (validateMovement(creature.getX(), creature.getY(),creature.getNextX(), creature.getNextY())){
-                            return true;
-                        } else {
-                            return false;
-                        }
+                        return validateMovement(creature.getX(), creature.getY(), creature.getNextX(), creature.getNextY());
                     }
                     case ("Este"):{
                         creature.setNextX(creature.getX() + creature.getRange());
                         creature.setNextY(creature.getY());
-                        if (validateMovement(creature.getX(), creature.getY(),creature.getNextX(), creature.getNextY())){
-                            return true;
-                        } else {
-                            return false;
-                        }
+                        return validateMovement(creature.getX(), creature.getY(), creature.getNextX(), creature.getNextY());
                     }
                     case ("Oeste"):{
                         creature.setNextX(creature.getX() - creature.getRange());
                         creature.setNextY(creature.getY());
-                        if (validateMovement(creature.getX(), creature.getY(),creature.getNextX(), creature.getNextY())){
-                            return true;
-                        } else {
-                            return false;
-                        }
+                        return validateMovement(creature.getX(), creature.getY(), creature.getNextX(), creature.getNextY());
                     }
                 }
             }
@@ -776,38 +711,22 @@ public class FandeisiaGameManager{
                     case ("Norte"):{
                         creature.setNextX(creature.getX());
                         creature.setNextY(creature.getY() - creature.getRange());
-                        if (validateMovement(creature.getX(), creature.getY(),creature.getNextX(), creature.getNextY())){
-                            return true;
-                        } else {
-                            return false;
-                        }
+                        return validateMovement(creature.getX(), creature.getY(), creature.getNextX(), creature.getNextY());
                     }
                     case ("Sul"):{
                         creature.setNextX(creature.getX());
                         creature.setNextY(creature.getY() + creature.getRange());
-                        if (validateMovement(creature.getX(), creature.getY(),creature.getNextX(), creature.getNextY())){
-                            return true;
-                        } else {
-                            return false;
-                        }
+                        return validateMovement(creature.getX(), creature.getY(), creature.getNextX(), creature.getNextY());
                     }
                     case ("Este"):{
                         creature.setNextX(creature.getX() + creature.getRange());
                         creature.setNextY(creature.getY());
-                        if (validateMovement(creature.getX(), creature.getY(),creature.getNextX(), creature.getNextY())){
-                            return true;
-                        } else {
-                            return false;
-                        }
+                        return validateMovement(creature.getX(), creature.getY(), creature.getNextX(), creature.getNextY());
                     }
                     case ("Oeste"):{
                         creature.setNextX(creature.getX() - creature.getRange());
                         creature.setNextY(creature.getY());
-                        if (validateMovement(creature.getX(), creature.getY(),creature.getNextX(), creature.getNextY())){
-                            return true;
-                        } else {
-                            return false;
-                        }
+                        return validateMovement(creature.getX(), creature.getY(), creature.getNextX(), creature.getNextY());
                     }
                 }
             }
@@ -912,10 +831,8 @@ return false;
             return true;
         }
 
-        if (teamLdr.getPoints() > teamRes.getPoints() + sumTreasuresLeft || teamRes.getPoints() > teamLdr.getPoints() + sumTreasuresLeft){ //sumTreasuresLeft é zerada em startGame e incrementada em matchTreasure
-            return true;
-        }
-        return false;
+        //sumTreasuresLeft é zerada em startGame e incrementada em matchTreasure
+        return teamLdr.getPoints() > teamRes.getPoints() + sumTreasuresLeft || teamRes.getPoints() > teamLdr.getPoints() + sumTreasuresLeft;
     }
 
     public List<String> getResults(){
@@ -942,6 +859,7 @@ return false;
                 for (Creature cR: creatures){
                     results.add(cR.getId() +" : " + cR.getTypeName() + " : " + cR.getGold() + " : " + cR.getSilver() + " : " + cR.getBronze() + " : " + cR.getPoints());
                 }
+
             }else {
                 results.add("Welcome to FANDEISIA");
                 results.add("Resultado: Vitória da equipa " + teamRes.getName());
