@@ -155,15 +155,15 @@ public class FandeisiaGameManager{
             }
         }
 
-        /*IBAGENS*/
+        /*imagens*/
         // Set initial orientation and team image
         // Gera imagens diferentes para criaturas da Resistencia.  -- 1 coelho ou 2? - Change filter to a better later. mmaybe sobel filter
         for (Creature creature: creatures){
             if (creature.getTeamId() == 20){
-                creature.setTypeName(creature.getTypeName()+"Negate");
-                creature.setImage(creature.getTypeName()+"-"+creature.getOrientation()+".png");
+                creature.setOutroTypeName(creature.getOutroTypeName()+"Negate");
+                creature.setImage(creature.getOutroTypeName()+"-"+creature.getOrientation()+".png");
             } else {
-                creature.setImage(creature.getTypeName()+"-"+creature.getOrientation()+".png");
+                creature.setImage(creature.getOutroTypeName()+"-"+creature.getOrientation()+".png");
             }
         }
 
@@ -495,7 +495,7 @@ public class FandeisiaGameManager{
             // Se atingir timer descongela e troca figura
             if (creature.isFrozen() && creature.getFrozenTime() == 1){
                 creature.setFrozen(false);
-                creature.setImage(creature.getTypeName()+"-"+ creature.getOrientation()+".png");
+                creature.setImage(creature.getOutroTypeName()+"-"+ creature.getOrientation()+".png");
             }
             // Se tem feitiço pra aplicar, aplica-se.
             if (creature.isEnchant()){
@@ -549,7 +549,7 @@ public class FandeisiaGameManager{
             if (creature.getX() == x && creature.getY()==y){
                 switch (creature.getTypeName()){
 
-                    case ("Anao"): case ("AnaoNegate"): {
+                    case ("Anão"): {
                         switch (creature.getOrientation()){
                             case ("Norte"):{
                                 creature.setNextX(creature.getX());
@@ -639,9 +639,9 @@ public class FandeisiaGameManager{
                     case ("unfreezes"): {
                         creature.unfreezes();
                         if (creature.getTeamId() ==10){
-                            creature.setImage(creature.getTypeName()+"-"+ creature.getOrientation()+".png");
+                            creature.setImage(creature.getOutroTypeName()+"-"+ creature.getOrientation()+".png");
                         } else {
-                            creature.setImage(creature.getTypeName()+"Negate-"+ creature.getOrientation()+".png");
+                            creature.setImage(creature.getOutroTypeName()+"Negate-"+ creature.getOrientation()+".png");
                         }
                         creature.setItSpellName(null);
                         break;
@@ -649,9 +649,9 @@ public class FandeisiaGameManager{
                     case ("freezes"): {
                         creature.freezes();
                         if(creature.getTeamId() ==10){
-                            creature.setImage(creature.getTypeName() + "-Frozen.png");
+                            creature.setImage(creature.getOutroTypeName() + "-Frozen.png");
                         } else {
-                            creature.setImage(creature.getTypeName() + "Negate-Frozen.png");
+                            creature.setImage(creature.getOutroTypeName() + "Negate-Frozen.png");
                         }
                         creature.setItSpellName(null);
                         break;
@@ -659,9 +659,9 @@ public class FandeisiaGameManager{
                     case ("freezes4Ever") : {
                         creature.freezes4Ever();
                         if(creature.getTeamId() ==10){
-                            creature.setImage(creature.getTypeName() + "-Frozen4Ever.png");
+                            creature.setImage(creature.getOutroTypeName() + "-Frozen4Ever.png");
                         } else {
-                            creature.setImage(creature.getTypeName() + "Negate-Frozen4Ever.png");
+                            creature.setImage(creature.getOutroTypeName() + "Negate-Frozen4Ever.png");
                         }
                         creature.setItSpellName(null);
                         break;
@@ -673,9 +673,9 @@ public class FandeisiaGameManager{
                                 creature.setItSpellName(null);
                                 creature.setOrientation("Norte");
                                 if (creature.getTeamId() ==10){
-                                    creature.setImage(creature.getTypeName()+"-Norte.png");
+                                    creature.setImage(creature.getOutroTypeName()+"-Norte.png");
                                 } else {
-                                    creature.setImage(creature.getTypeName()+"Negate-Norte.png");
+                                    creature.setImage(creature.getOutroTypeName()+"Negate-Norte.png");
                                 }
                             }
                         }
@@ -688,9 +688,9 @@ public class FandeisiaGameManager{
                                 creature.setItSpellName(null); // Já foi executado o feitiço, então passa a ficar em estado desencantado.
                                 creature.setOrientation("East");
                                 if (creature.getTeamId() ==10){
-                                    creature.setImage(creature.getTypeName()+"-Este.png");
+                                    creature.setImage(creature.getOutroTypeName()+"-Este.png");
                                 } else {
-                                    creature.setImage(creature.getTypeName()+"Negate-Este.png");
+                                    creature.setImage(creature.getOutroTypeName()+"Negate-Este.png");
                                 }                            }
                         }
                         break;
@@ -702,9 +702,9 @@ public class FandeisiaGameManager{
                                 creature.setItSpellName(null); // Já foi executado o feitiço, então passa a ficar em estado desencantado.
                                 creature.setOrientation("Sul");
                                 if (creature.getTeamId() ==10){
-                                    creature.setImage(creature.getTypeName()+"-Sul.png");
+                                    creature.setImage(creature.getOutroTypeName()+"-Sul.png");
                                 } else {
-                                    creature.setImage(creature.getTypeName()+"Negate-Sul.png");
+                                    creature.setImage(creature.getOutroTypeName()+"Negate-Sul.png");
                                 }                            }
                         }
                         break;
@@ -716,9 +716,9 @@ public class FandeisiaGameManager{
                                 creature.setItSpellName(null); // Já foi executado o feitiço, então passa a ficar em estado desencantado.
                                 creature.setOrientation("Oeste");
                                 if (creature.getTeamId() ==10){
-                                    creature.setImage(creature.getTypeName()+"-Oeste.png");
+                                    creature.setImage(creature.getOutroTypeName()+"-Oeste.png");
                                 } else {
-                                    creature.setImage(creature.getTypeName()+"Oeste-Norte.png");
+                                    creature.setImage(creature.getOutroTypeName()+"Oeste-Norte.png");
                                 }                            }
                         }
                         break;
@@ -833,7 +833,7 @@ public class FandeisiaGameManager{
             results.add("Nr. de Turnos jogados: "+ turnCounter);
             results.add("-----");
             for (Creature c: creatures){
-                results.add(c.getId() +" : " + c.getOutroTypeName() + " : " + c.getGold() + " : " + c.getSilver() + " : " + c.getBronze() + " : " + c.getPoints());
+                results.add(c.getId() +" : " + c.getTypeName() + " : " + c.getGold() + " : " + c.getSilver() + " : " + c.getBronze() + " : " + c.getPoints());
             }
         } else {
             if (teamRes.getPoints() == teamLdr.getPoints()){
@@ -844,7 +844,7 @@ public class FandeisiaGameManager{
                 results.add("Nr. de Turnos jogados: "+ turnCounter);
                 results.add("-----");
                 for (Creature c: creatures){
-                    results.add(c.getId() +" : " + c.getOutroTypeName() + " : " + c.getGold() + " : " + c.getSilver() + " : " + c.getBronze() + " : " + c.getPoints());
+                    results.add(c.getId() +" : " + c.getTypeName() + " : " + c.getGold() + " : " + c.getSilver() + " : " + c.getBronze() + " : " + c.getPoints());
                 }
             }else {
                 results.add("Welcome to FANDEISIA");
@@ -854,7 +854,7 @@ public class FandeisiaGameManager{
                 results.add("Nr. de Turnos jogados: "+ turnCounter);
                 results.add("-----");
                 for (Creature c: creatures){
-                    results.add(c.getId() +" : " + c.getOutroTypeName() + " : " + c.getGold() + " : " + c.getSilver() + " : " + c.getBronze() + " : " + c.getPoints());
+                    results.add(c.getId() +" : " + c.getTypeName() + " : " + c.getGold() + " : " + c.getSilver() + " : " + c.getBronze() + " : " + c.getPoints());
                 }
             }
         }
@@ -882,3 +882,102 @@ public class FandeisiaGameManager{
         return Collections.singletonList("Allyson Rodrigues");
     }
 }
+/*FAILURE: pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_002_Elfo
+org.junit.ComparisonFailure: expected:<2 | Elfo[] | 20 | 0 @ (3, 3) S...> but was:<2 | Elfo[Negate] | 20 | 0 @ (3, 3) S...>
+	at pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_002_Elfo(TestTeacherSimuladorP2.java:695)
+
+
+
+FAILURE: pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_004_JogoCompletoEmpate
+java.lang.AssertionError: expected:<0> but was:<1>
+	at pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_004_JogoCompletoEmpate(TestTeacherSimuladorP2.java:1032)
+
+
+
+FAILURE: pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_010_HumanoBasico
+java.lang.AssertionError: expected:<0> but was:<1>
+	at pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_010_HumanoBasico(TestTeacherSimuladorP2.java:813)
+
+
+FAILURE: pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_011_AnaoEHumano
+java.lang.AssertionError: getElementId() expected:<0> but was:<1>
+	at pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_011_AnaoEHumano(TestTeacherSimuladorP2.java:905)
+
+
+FAILURE: pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_012_DuplicaAlcanceBasico
+java.lang.AssertionError: enchant() retornou false erradamente
+	at pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_012_DuplicaAlcanceBasico(TestTeacherSimuladorP2.java:963)
+
+
+FAILURE: pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_014_JogoCompletoSoComAnoesESemFeiticos
+java.lang.AssertionError: A fn getElementId() devolveu o valor errado. expected:<0> but was:<10>
+	at pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_014_JogoCompletoSoComAnoesESemFeiticos(TestTeacherSimuladorP2.java:496)
+
+
+
+FAILURE: pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_015_JogoCompleto_2
+org.junit.ComparisonFailure: expected:<1 | An[ã]o | 10 | 0 @ (0, 0) ...> but was:<1 | An[a]o | 10 | 0 @ (0, 0) ...>
+	at pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_015_JogoCompleto_2(TestTeacherSimuladorP2.java:608)
+
+
+FAILURE: pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_018_enfeiticarComCongelaEDescongela
+java.lang.AssertionError
+	at pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_018_enfeiticarComCongelaEDescongela(TestTeacherSimuladorP2.java:1629)
+
+
+
+FAILURE: pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_019_Gigante
+java.lang.AssertionError: getElementId() expected:<0> but was:<4>
+	at pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_019_Gigante(TestTeacherSimuladorP2.java:1335)
+
+
+FAILURE: pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_01_Leitura_Escrita_Ficheiro1
+java.lang.AssertionError: Não criou o ficheiro
+	at pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_01_Leitura_Escrita_Ficheiro1(TestTeacherSimuladorP2.java:44)
+
+
+
+FAILURE: pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_020_enfeiticarComEmpurrasHorizontais
+java.lang.AssertionError
+	at pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_020_enfeiticarComEmpurrasHorizontais(TestTeacherSimuladorP2.java:1572)
+
+
+
+FAILURE: pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_021_enfeiticarComEmpurrasVerticais
+java.lang.AssertionError
+	at pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_021_enfeiticarComEmpurrasVerticais(TestTeacherSimuladorP2.java:1495)
+
+
+
+FAILURE: pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_023_ProcessTurnDaMoedas
+java.lang.AssertionError: expected:<0> but was:<1>
+	at pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_023_ProcessTurnDaMoedas(TestTeacherSimuladorP2.java:1385)
+
+
+
+FAILURE: pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_02_Anao_EscapeTheCornerTest
+org.junit.ComparisonFailure: expected:<1 | An[ã]o | 10 | 0 @ (0, 0) ...> but was:<1 | An[a]o | 10 | 0 @ (0, 0) ...>
+	at pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_02_Anao_EscapeTheCornerTest(TestTeacherSimuladorP2.java:297)
+
+
+
+FAILURE: pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_04_StartGameAndToString
+org.junit.ComparisonFailure: expected:<1 | An[ã]o | 10 | 0 @ (0, 0) ...> but was:<1 | An[a]o | 10 | 0 @ (0, 0) ...>
+	at pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_04_StartGameAndToString(TestTeacherSimuladorP2.java:177)
+
+
+
+FAILURE: pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_05_IniciaJogoDuasVezes
+java.lang.AssertionError: A fn getCreatures() devolveu o nr errado de criaturas. expected:<6> but was:<8>
+	at pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_05_IniciaJogoDuasVezes(TestTeacherSimuladorP2.java:191)
+
+
+FAILURE: pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_08_DragaoBasico
+java.lang.AssertionError: getElementId() expected:<0> but was:<1>
+	at pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_08_DragaoBasico(TestTeacherSimuladorP2.java:1143)
+
+
+
+FAILURE: pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_09_JogoCompletoComFeiticos
+java.lang.AssertionError: enchant()
+	at pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_09_JogoCompletoComFeiticos(TestTeacherSimuladorP2.java:1218)*/

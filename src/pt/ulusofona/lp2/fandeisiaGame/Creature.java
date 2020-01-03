@@ -88,19 +88,19 @@ public abstract class Creature extends Element {
             switch (this.orientation){
                 case ("Norte"):
                     this.orientation = "Este";
-                    this.image = this.typeName+"-"+this.orientation+".png";
+                    this.image = this.outroTypeName+"-"+this.orientation+".png";
                     break;
                 case ("Este"):
                     this.orientation = "Sul";
-                    this.image = this.typeName+"-"+this.orientation+".png";
+                    this.image = this.outroTypeName+"-"+this.orientation+".png";
                     break;
                 case ("Sul"):
                     this.orientation = "Oeste";
-                    this.image = this.typeName+"-"+this.orientation+".png";
+                    this.image = this.outroTypeName+"-"+this.orientation+".png";
                     break;
                 case ("Oeste"):
                     this.orientation = "Norte";
-                    this.image = this.typeName+"-"+this.orientation+".png";
+                    this.image = this.outroTypeName+"-"+this.orientation+".png";
                     break;
             }
     }
