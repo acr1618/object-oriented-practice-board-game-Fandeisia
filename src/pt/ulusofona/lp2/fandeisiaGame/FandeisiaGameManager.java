@@ -70,25 +70,20 @@ public class FandeisiaGameManager{
         int spent =0;
         Map<String, Integer> computerArmy = new HashMap<>();
 
-        do {
-            //System.out.println("aqui os spent: "+spent);
+        /*do {
             computerArmy.put("Anão", new Random().nextInt(4));
             spent = spent + computerArmy.get("Anão");// criar um random entre 0 e 3.
             computerArmy.put("Dragão", new Random().nextInt(4));
             spent = spent + computerArmy.get("Dragão")*9;
-            //System.out.println("aqui os spent: "+spent);
             computerArmy.put("Elfo", new Random().nextInt(4));
             spent = spent + computerArmy.get("Elfo")*5;
-            //System.out.println("aqui os spent: "+spent);
             computerArmy.put("Gigante", new Random().nextInt(4));
             spent = spent + computerArmy.get("Gigante")*5;
-            //System.out.println("aqui os spent: "+spent);
             computerArmy.put("Humano", new Random().nextInt(4));
             spent = spent + computerArmy.get("Humano") *3;
-            //System.out.println("aqui os spent: "+spent);
 
-        } while (spent >50 || computerArmy.isEmpty());
-        System.out.println("aqui os spent total: "+spent);
+        } while (spent >50 || computerArmy.isEmpty());*/
+        computerArmy.put("Dragão", 1);
         return computerArmy;
     }
 
@@ -476,7 +471,7 @@ public class FandeisiaGameManager{
 
         teamLdr.setTreasuresFoundInThisTurn(false);// Zera em todos turnos e incrementa quando acha tesouro
         teamRes.setTreasuresFoundInThisTurn(false);
-
+        int teste = treasures.size();
         for (Creature creature: creatures){
             // Timer para descongelar
             if (creature.isFrozen()){
@@ -491,7 +486,7 @@ public class FandeisiaGameManager{
             if (creature.isEnchant()){
                 executeSpell(creature.getId(), creature.getItSpellName());
                 if(matchTreasure(creature.getX(), creature.getY(), creature.getId(), creature.getTeamId())){
-                    turnsWithoutTreasure = 0;
+                    // turnsWithoutTreasure = 0;
                     if (creature.getTeamId() ==10){
                         teamLdr.setTreasuresFoundInThisTurn(true);
                     } else {
@@ -506,14 +501,13 @@ public class FandeisiaGameManager{
                 if (executeStandardMovement(creature.getX(), creature.getY(), creature.getOrientation(), creature.getTypeName())){
                     creature.move();
                     if(matchTreasure(creature.getX(), creature.getY(), creature.getId(), creature.getTeamId())){
-                        turnsWithoutTreasure =0;
+                        // turnsWithoutTreasure =0;
                         if (creature.getTeamId() ==10){
                                 teamLdr.setTreasuresFoundInThisTurn(true);
                         }
                         if (creature.getTeamId() ==20){
                                 teamRes.setTreasuresFoundInThisTurn(true);
                         }
-
                     }
                 } else {
                     creature.spin();
@@ -521,12 +515,16 @@ public class FandeisiaGameManager{
             }
         }
         if (!gameIsOver()){
-            switchCurrentTeam();
+            if(teste == treasures.size()){
+                turnsWithoutTreasure ++;
+            } else {
+                turnsWithoutTreasure = 0;
+            }
+            //turnsWithoutTreasure ++; // zera toda vez que encontra um tesouro
             turnCounter ++;
-            turnsWithoutTreasure ++;
-            giveCoins();// zera toda vez que encontra um tesouro
+            switchCurrentTeam();
+            giveCoins(); // 1 se não achou tesouro neste turno e 2 se achou.
         }
-         // 1 se não achou tesouro neste turno e 2 se achou.
     }
 
     private boolean executeStandardMovement(int x, int y, String orientation, String typeName) {
@@ -754,7 +752,7 @@ public class FandeisiaGameManager{
     public boolean gameIsOver(){
         System.out.println("Entrou em gameIsOver");
 
-        if (treasures.size() == 0 || turnsWithoutTreasure >=15){
+        if (treasures.size() == 0 || turnsWithoutTreasure == 15){
             return true;
         }
 
@@ -762,7 +760,6 @@ public class FandeisiaGameManager{
             return true;
         }
         return false;
-
     }
 
     public List<String> getResults(){
