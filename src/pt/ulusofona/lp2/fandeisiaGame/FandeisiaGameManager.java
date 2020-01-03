@@ -160,7 +160,8 @@ public class FandeisiaGameManager{
         // Gera imagens diferentes para criaturas da Resistencia.  -- 1 coelho ou 2? - Change filter to a better later. mmaybe sobel filter
         for (Creature creature: creatures){
             if (creature.getTeamId() == 20){
-                creature.setImage(creature.getTypeName()+"Negate-"+creature.getOrientation()+".png");
+                creature.setTypeName(creature.getTypeName()+"Negate");
+                creature.setImage(creature.getTypeName()+"-"+creature.getOrientation()+".png");
             } else {
                 creature.setImage(creature.getTypeName()+"-"+creature.getOrientation()+".png");
             }
@@ -536,7 +537,7 @@ public class FandeisiaGameManager{
             }
         }
         if (!gameIsOver()){
-            switchCurrentTeam();
+            //switchCurrentTeam();
             giveCoins();
         }
          // 1 se não achou tesouro neste turno e 2 se achou.
@@ -548,7 +549,7 @@ public class FandeisiaGameManager{
             if (creature.getX() == x && creature.getY()==y){
                 switch (creature.getTypeName()){
 
-                    case ("Anao"): {
+                    case ("Anao"): case ("AnaoNegate"): {
                         switch (creature.getOrientation()){
                             case ("Norte"):{
                                 creature.setNextX(creature.getX());
@@ -637,19 +638,31 @@ public class FandeisiaGameManager{
                 switch(spell){
                     case ("unfreezes"): {
                         creature.unfreezes();
-                        creature.setImage(creature.getTypeName()+"-"+ creature.getOrientation()+".png");
+                        if (creature.getTeamId() ==10){
+                            creature.setImage(creature.getTypeName()+"-"+ creature.getOrientation()+".png");
+                        } else {
+                            creature.setImage(creature.getTypeName()+"Negate-"+ creature.getOrientation()+".png");
+                        }
                         creature.setItSpellName(null);
                         break;
                     }
                     case ("freezes"): {
                         creature.freezes();
-                        creature.setImage(creature.getTypeName() + "-Frozen.png");
+                        if(creature.getTeamId() ==10){
+                            creature.setImage(creature.getTypeName() + "-Frozen.png");
+                        } else {
+                            creature.setImage(creature.getTypeName() + "Negate-Frozen.png");
+                        }
                         creature.setItSpellName(null);
                         break;
                     }
                     case ("freezes4Ever") : {
                         creature.freezes4Ever();
-                        creature.setImage(creature.getTypeName() + "-Frozen4Ever.png");
+                        if(creature.getTeamId() ==10){
+                            creature.setImage(creature.getTypeName() + "-Frozen4Ever.png");
+                        } else {
+                            creature.setImage(creature.getTypeName() + "Negate-Frozen4Ever.png");
+                        }
                         creature.setItSpellName(null);
                         break;
                     }
@@ -659,7 +672,11 @@ public class FandeisiaGameManager{
                                 creature.pushNorth();
                                 creature.setItSpellName(null);
                                 creature.setOrientation("Norte");
-                                creature.setImage(creature.getTypeName()+"-Norte.png");
+                                if (creature.getTeamId() ==10){
+                                    creature.setImage(creature.getTypeName()+"-Norte.png");
+                                } else {
+                                    creature.setImage(creature.getTypeName()+"Negate-Norte.png");
+                                }
                             }
                         }
                         break;
@@ -670,8 +687,11 @@ public class FandeisiaGameManager{
                                 creature.pushEast();
                                 creature.setItSpellName(null); // Já foi executado o feitiço, então passa a ficar em estado desencantado.
                                 creature.setOrientation("East");
-                                creature.setImage(creature.getTypeName()+"-Este.png");
-                            }
+                                if (creature.getTeamId() ==10){
+                                    creature.setImage(creature.getTypeName()+"-Este.png");
+                                } else {
+                                    creature.setImage(creature.getTypeName()+"Negate-Este.png");
+                                }                            }
                         }
                         break;
                     }
@@ -681,8 +701,11 @@ public class FandeisiaGameManager{
                                 creature.pushSouth();
                                 creature.setItSpellName(null); // Já foi executado o feitiço, então passa a ficar em estado desencantado.
                                 creature.setOrientation("Sul");
-                                creature.setImage(creature.getTypeName()+"-Sul.png");
-                            }
+                                if (creature.getTeamId() ==10){
+                                    creature.setImage(creature.getTypeName()+"-Sul.png");
+                                } else {
+                                    creature.setImage(creature.getTypeName()+"Negate-Sul.png");
+                                }                            }
                         }
                         break;
                     }
@@ -692,8 +715,11 @@ public class FandeisiaGameManager{
                                 creature.pushWest();
                                 creature.setItSpellName(null); // Já foi executado o feitiço, então passa a ficar em estado desencantado.
                                 creature.setOrientation("Oeste");
-                                creature.setImage(creature.getTypeName()+"-Oeste.png");
-                            }
+                                if (creature.getTeamId() ==10){
+                                    creature.setImage(creature.getTypeName()+"-Oeste.png");
+                                } else {
+                                    creature.setImage(creature.getTypeName()+"Oeste-Norte.png");
+                                }                            }
                         }
                         break;
                     }
@@ -807,7 +833,7 @@ public class FandeisiaGameManager{
             results.add("Nr. de Turnos jogados: "+ turnCounter);
             results.add("-----");
             for (Creature c: creatures){
-                results.add(c.getId() +" : " + c.getTypeName() + " : " + c.getGold() + " : " + c.getSilver() + " : " + c.getBronze() + " : " + c.getPoints());
+                results.add(c.getId() +" : " + c.getOutroTypeName() + " : " + c.getGold() + " : " + c.getSilver() + " : " + c.getBronze() + " : " + c.getPoints());
             }
         } else {
             if (teamRes.getPoints() == teamLdr.getPoints()){
@@ -818,7 +844,7 @@ public class FandeisiaGameManager{
                 results.add("Nr. de Turnos jogados: "+ turnCounter);
                 results.add("-----");
                 for (Creature c: creatures){
-                    results.add(c.getId() +" : " + c.getTypeName() + " : " + c.getGold() + " : " + c.getSilver() + " : " + c.getBronze() + " : " + c.getPoints());
+                    results.add(c.getId() +" : " + c.getOutroTypeName() + " : " + c.getGold() + " : " + c.getSilver() + " : " + c.getBronze() + " : " + c.getPoints());
                 }
             }else {
                 results.add("Welcome to FANDEISIA");
@@ -828,7 +854,7 @@ public class FandeisiaGameManager{
                 results.add("Nr. de Turnos jogados: "+ turnCounter);
                 results.add("-----");
                 for (Creature c: creatures){
-                    results.add(c.getId() +" : " + c.getTypeName() + " : " + c.getGold() + " : " + c.getSilver() + " : " + c.getBronze() + " : " + c.getPoints());
+                    results.add(c.getId() +" : " + c.getOutroTypeName() + " : " + c.getGold() + " : " + c.getSilver() + " : " + c.getBronze() + " : " + c.getPoints());
                 }
             }
         }

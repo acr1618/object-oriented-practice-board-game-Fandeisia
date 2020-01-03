@@ -6,6 +6,7 @@ public class Dragon extends Creature {
         super(id, x, y, teamId, cost, orientation);
         image = "Dragao.png";
         typeName = "Dragao";
+        outroTypeName = "Dragão";
         range = 3;
     }
 
@@ -16,19 +17,19 @@ public class Dragon extends Creature {
     @Override
     public void spin(){
         switch (this.orientation){
-            case ("Norte"): this.orientation = "NE";
+            case ("Norte"): this.orientation = "Nordeste";
                 break;
             case ("NE"): this.orientation = "Este";
                 break;
-            case("Este"): this.orientation = "SE";
+            case("Este"): this.orientation = "Sudeste";
                 break;
             case ("SE"): this.orientation = "Sul";
                 break;
-            case ("Sul"): this.orientation = "SO";
+            case ("Sul"): this.orientation = "Sudoeste";
                 break;
             case ("SO"): this.orientation = "Oeste";
                 break;
-            case ("Oeste"): this.orientation = "NO";
+            case ("Oeste"): this.orientation = "Noroeste";
                 break;
             case ("NO"): this.orientation = "Norte";
         }

@@ -6,6 +6,7 @@ public class Giant extends Creature {
         super(id, x, y, teamId, cost, orientation);
         image = "Gigante.png";
         typeName = "Gigante";
+        outroTypeName = "Gigante";
         range = 3;
     }
 

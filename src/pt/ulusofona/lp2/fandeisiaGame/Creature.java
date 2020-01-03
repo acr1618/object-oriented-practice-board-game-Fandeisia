@@ -16,6 +16,15 @@ public abstract class Creature extends Element {
     protected String itSpellName;
     protected int nextX, nextY;
     protected int gold =0, silver =0, bronze =0;
+    protected String outroTypeName;
+
+    public String getOutroTypeName() {
+        return outroTypeName;
+    }
+
+    public void setOutroTypeName(String outroTypeName) {
+        this.outroTypeName = outroTypeName;
+    }
 
     /*// Variáveis para guardar o mundo:
     protected int rows;

@@ -6,6 +6,7 @@ public class Elf extends Creature {
         super(id, x, y, teamId, cost, orientation);
         image = "Elfo.png";
         typeName = "Elfo";
+        outroTypeName = "Elfo";
         range = 2;
 
     }
@@ -17,19 +18,19 @@ public class Elf extends Creature {
     @Override
     public void spin(){
         switch (this.orientation){
-            case ("Norte"): this.orientation = "NE";
+            case ("Norte"): this.orientation = "Nordeste";
                 break;
             case ("NE"): this.orientation = "Este";
                 break;
-            case("Este"): this.orientation = "SE";
+            case("Este"): this.orientation = "Sudeste";
                 break;
             case ("SE"): this.orientation = "Sul";
                 break;
-            case ("Sul"): this.orientation = "SO";
+            case ("Sul"): this.orientation = "Sudoeste";
                 break;
             case ("SO"): this.orientation = "Oeste";
                 break;
-            case ("Oeste"): this.orientation = "NO";
+            case ("Oeste"): this.orientation = "Noroeste";
                 break;
             case ("NO"): this.orientation = "Norte";
         }
