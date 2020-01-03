@@ -90,8 +90,7 @@ public class FandeisiaGameManager{
         holes = new ArrayList<>();
         creatures = new ArrayList<>();
         turnsWithoutTreasure = 0;
-        logCounter = 0;
-        turnCounter = 0;
+        turnCounter = 1;
         iAactive = false;
 
         for(String line: content){
@@ -212,7 +211,7 @@ public class FandeisiaGameManager{
             //System.out.println(iterate(logCounter) + " - "+"  teamRes.getCoins() " + teamRes.getCoins() + "\n");
             return teamRes.getCoins();
         }
-    } //OK 29-12 Também se repete depois de escolher exercito
+    } //OK 29-12 Também se repete depois de escolher exército
 
     public void setInitialTeam(int teamId){
         System.out.println(iterate(logCounter) + " - "+"Entrou em setInitialTeam\n -----------------------------------\n\n");
@@ -251,7 +250,7 @@ public class FandeisiaGameManager{
     public List<Creature> getCreatures(){
         System.out.println(iterate(logCounter) + " - "+"IN getCreatures");
         System.out.println(iterate(logCounter) + " - "+"    Lista de criaturas do mundo: "+ creatures);
-        System.out.print(iterate(logCounter) + " - "+"Depois entra em getElementId e percorre tabuleiro. Está ok");
+        System.out.println(iterate(logCounter) + " - "+"Depois entra em getElementId e percorre tabuleiro. Parece ok. ");
         return creatures;
     }
 
@@ -276,31 +275,27 @@ public class FandeisiaGameManager{
     public String[][] getSpellTypes(){
         System.out.println(iterate(logCounter) + " - "+"IN getSpellTypes");
         return new String[][]{
-                {"EmpurraParaNorte", "Descrição do feitiço", String.valueOf(1)},
-                {"EmpurraParaEste", "Descrição do feitiço", String.valueOf(1)},
-                {"EmpurraParaSul", "Descrição do feitiço", String.valueOf(1)},
-                {"EmpurraParaOeste", "Descrição do feitiço", String.valueOf(1)},
-                {"ReduzAlcance", "Descrição do feitiço", String.valueOf(2)},
-                {"DuplicaAlcance", "Descrição do feitiço", String.valueOf(3)},
-                {"Congela", "Descrição do feitiço", String.valueOf(3)},
-                {"Congela4Ever", "Descrição do feitiço", String.valueOf(10)},
-                {"Descongela", "Descrição do feitiço", String.valueOf(8)},
+                {"EmpurraParaNorte", "Descrição do EmpurraParaNorte", String.valueOf(1)},
+                {"EmpurraParaEste", "Descrição do EmpurraParaEste", String.valueOf(1)},
+                {"EmpurraParaSul", "Descrição do EmpurraParaSul", String.valueOf(1)},
+                {"EmpurraParaOeste", "Descrição do EmpurraParaOeste", String.valueOf(1)},
+                {"ReduzAlcance", "Descrição do ReduzAlcance", String.valueOf(2)},
+                {"DuplicaAlcance", "Descrição do DuplicaAlcance", String.valueOf(3)},
+                {"Congela", "Descrição do Congela", String.valueOf(3)},
+                {"Congela4Ever", "Descrição do Congela4Ever", String.valueOf(10)},
+                {"Descongela", "Descrição do Descongela", String.valueOf(8)},
         };
     }
-
     public String getSpell (int x, int y){
         System.out.println(iterate(logCounter) + " - "+"IN getSpell");
         for(Creature creature: creatures){
             if(creature.getX() == x && creature.getY() == y){
                 String spellName = creature.getItSpellName();
-                if (spellName != null){
-                    return spellName;
-                }
+                return spellName;
             }
         }
-        //System.out.println("ERRO - retornou null em GetSpell()");
-        return null; // É suposto que o simulador chame apenas quando há criatura na coordenada.
-    } //Scanner dos spells de todas as criaturas presentes. Ela que marca a varinha na criatura que retornou true para enchant! ok.
+        return null;
+    }
 
     public boolean enchant (int x, int y, String spellName) {
         System.out.println(iterate(logCounter) + " - "+"Entrou em enchant");
@@ -626,7 +621,7 @@ public class FandeisiaGameManager{
             if (creature.getId() == id){
                 switch(spell){
                     case ("Descongela"): {
-                        creature.Descongela();
+                        creature.descongela();
                         if (creature.getTeamId() ==10){
                             creature.setImage(creature.getOutroTypeName()+"-"+ creature.getOrientation()+".png");
                         } else {
@@ -636,7 +631,7 @@ public class FandeisiaGameManager{
                         break;
                     }
                     case ("Congela"): {
-                        creature.Congela();
+                        creature.congela();
                         if(creature.getTeamId() ==10){
                             creature.setImage(creature.getOutroTypeName() + "-Frozen.png");
                         } else {
@@ -646,7 +641,7 @@ public class FandeisiaGameManager{
                         break;
                     }
                     case ("Congela4Ever") : {
-                        creature.Congela4Ever();
+                        creature.congela4Ever();
                         if(creature.getTeamId() ==10){
                             creature.setImage(creature.getOutroTypeName() + "-Frozen4Ever.png");
                         } else {
