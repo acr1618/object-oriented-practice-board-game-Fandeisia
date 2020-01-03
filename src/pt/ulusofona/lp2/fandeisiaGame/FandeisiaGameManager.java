@@ -20,7 +20,8 @@ public class FandeisiaGameManager{
     int rowsFgm = 0;
     int columnsFgm = 0;
     int turnsWithoutTreasure = 0;
-    int sumTL = 0; //Soma tesouros restantes
+    int sumTreasuresLeft = 0; //Soma tesouros restantes
+    int sumTreasuresTotal =0;
     long logCounter = 0;
     int turnCounter = 0;
     boolean iAactive = false; // Altera para true se quiser IA
@@ -66,15 +67,28 @@ public class FandeisiaGameManager{
     public Map<String, Integer> createComputerArmy(){
         System.out.println( iterate(logCounter) + " - "+"IN createComputerArmy\n -----------------------------------\n");
 
+        int spent =0;
         Map<String, Integer> computerArmy = new HashMap<>();
 
-        // Criando 1 apenas para teste.
-        computerArmy.put("Anão", 1); // criar um random entre 0 e 3.
-        computerArmy.put("Dragão", 1);
-        computerArmy.put("Elfo", 1);
-        computerArmy.put("Gigante", 1);
-        computerArmy.put("Humano", 1);
-        //computerArmy.put("Dragao", 1);
+        do {
+            //System.out.println("aqui os spent: "+spent);
+            computerArmy.put("Anão", new Random().nextInt(4));
+            spent = spent + computerArmy.get("Anão");// criar um random entre 0 e 3.
+            computerArmy.put("Dragão", new Random().nextInt(4));
+            spent = spent + computerArmy.get("Dragão")*9;
+            //System.out.println("aqui os spent: "+spent);
+            computerArmy.put("Elfo", new Random().nextInt(4));
+            spent = spent + computerArmy.get("Elfo")*5;
+            //System.out.println("aqui os spent: "+spent);
+            computerArmy.put("Gigante", new Random().nextInt(4));
+            spent = spent + computerArmy.get("Gigante")*5;
+            //System.out.println("aqui os spent: "+spent);
+            computerArmy.put("Humano", new Random().nextInt(4));
+            spent = spent + computerArmy.get("Humano") *3;
+            //System.out.println("aqui os spent: "+spent);
+
+        } while (spent >50 || computerArmy.isEmpty());
+        System.out.println("aqui os spent total: "+spent);
         return computerArmy;
     }
 
@@ -91,8 +105,9 @@ public class FandeisiaGameManager{
         holes = new ArrayList<>();
         creatures = new ArrayList<>();
         turnsWithoutTreasure = 0;
-        sumTL = 0;
-        turnCounter = 1;
+        sumTreasuresLeft = 0;
+        sumTreasuresTotal =0;
+        turnCounter = 0;
         iAactive = false;
 
         for(String line: content){
@@ -142,15 +157,19 @@ public class FandeisiaGameManager{
                 } else {
                     if(type.equals("gold")){
                         treasures.add(new Treasure (id, x, y, 3));
+                        sumTreasuresTotal += 3;
                     }
                     if(type.equals("silver")){
                         treasures.add(new Treasure (id, x, y, 2));
+                        sumTreasuresTotal += 2;
                     }
                     if(type.equals("bronze")){
                         treasures.add(new Treasure (id, x, y, 1));
+                        sumTreasuresTotal += 1;
                     }
                 }
             }
+            sumTreasuresLeft = sumTreasuresTotal;
         }
         /*imagens*/
         // Set initial orientation and team image
@@ -288,6 +307,7 @@ public class FandeisiaGameManager{
                 {"Descongela", "Descrição do Descongela", String.valueOf(8)},
         };
     }
+
     public String getSpell (int x, int y){
         System.out.println(iterate(logCounter) + " - "+"IN getSpell");
         for(Creature creature: creatures){
@@ -456,8 +476,6 @@ public class FandeisiaGameManager{
 
         teamLdr.setTreasuresFoundInThisTurn(false);// Zera em todos turnos e incrementa quando acha tesouro
         teamRes.setTreasuresFoundInThisTurn(false);
-        boolean ldrJaAdicionou = false;
-        boolean resJaAdicionou = false; //auxiliares pra me ajudar porque tá foda
 
         for (Creature creature: creatures){
             // Timer para descongelar
@@ -576,7 +594,7 @@ public class FandeisiaGameManager{
                     Treasure treasure = i.next();
                     if (x == treasure.getX() && y == treasure.getY()){ // MATCH
                         creature.addPoints(treasure.getValue()); // Add pontos criatura
-                        sumTL = sumTL + treasure.getValue();
+                        sumTreasuresLeft -= treasure.getValue();
                         if (treasure.getValue() ==3){
                             creature.addGold();
                         }
@@ -740,7 +758,7 @@ public class FandeisiaGameManager{
             return true;
         }
 
-        if (teamLdr.getPoints() > teamRes.getPoints() + sumTL || teamRes.getPoints() > teamLdr.getPoints() + sumTL){ //sumTL é zerada em startGame e incrementada em matchTreasure
+        if (teamLdr.getPoints() > teamRes.getPoints() + sumTreasuresLeft || teamRes.getPoints() > teamLdr.getPoints() + sumTreasuresLeft){ //sumTreasuresLeft é zerada em startGame e incrementada em matchTreasure
             return true;
         }
         return false;
