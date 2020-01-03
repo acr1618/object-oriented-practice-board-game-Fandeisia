@@ -143,9 +143,19 @@ public abstract class Creature extends Element {
     public boolean isFrozen() {
         return isFrozen;
     }
+    public void unfreezes(){
+        this.isFrozen4Ever =false; // Custa 8 Inverte aplicação do Freezes4Ever.
+    }
+    public void freezes() {
+        this.isFrozen = true;
+        this.frozenTime = 0;
+    }
 
     public int getFrozenTime() {
         return frozenTime;
+    }
+    public void freezes4Ever() {
+        isFrozen4Ever= true;
     }
 
     public void setFrozenTime(int frozenTime) {
@@ -159,6 +169,7 @@ public abstract class Creature extends Element {
     public boolean isFrozen4Ever() {
         return isFrozen4Ever;
     }
+
 
     public void setTypeName(String typeName) {
         this.typeName = typeName;
@@ -205,16 +216,6 @@ public abstract class Creature extends Element {
     public void doubleRange(){
         this.range = range *2;
          // Custa 3 Aumenta alcance para o dobro
-    }
-    public void unfreezes(){
-        this.isFrozen4Ever =false; // Custa 8 Inverte aplicação do Freezes4Ever.
-    }
-    public void freezes() {
-        this.isFrozen = true;
-        this.frozenTime = 0;
-    }
-    public void freezes4Ever() {
-        isFrozen4Ever= true;
     }
 
     public void addGold() {

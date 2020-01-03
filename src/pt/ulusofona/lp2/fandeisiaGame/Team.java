@@ -7,6 +7,7 @@ public class Team{
     protected String name;
     protected int points;
     protected int coins;
+    public int treasuresFoundInThisTurn;
 
 
     public Team(int id, String name){
@@ -58,5 +59,13 @@ public class Team{
 
     public boolean checkBalanceToSpell(int spellCost) {
         return this.coins >= spellCost;
+    }
+
+    public void setTreasuresFoundInThisTurn(int t) {
+        this.treasuresFoundInThisTurn = t;
+    }
+
+    public int getTreasuresFoundInThisTurn() {
+        return treasuresFoundInThisTurn;
     }
 }
