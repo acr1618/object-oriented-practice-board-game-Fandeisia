@@ -152,10 +152,10 @@ public abstract class Creature extends Element {
     public boolean isFrozen() {
         return isFrozen;
     }
-    public void unfreezes(){
+    public void Descongela(){
         this.isFrozen4Ever =false; // Custa 8 Inverte aplicação do Freezes4Ever.
     }
-    public void freezes() {
+    public void Congela() {
         this.isFrozen = true;
         this.frozenTime = 0;
     }
@@ -163,7 +163,7 @@ public abstract class Creature extends Element {
     public int getFrozenTime() {
         return frozenTime;
     }
-    public void freezes4Ever() {
+    public void Congela4Ever() {
         isFrozen4Ever= true;
     }
 
@@ -203,26 +203,26 @@ public abstract class Creature extends Element {
 
     /* Feitiços */
 
-    public void pushNorth() {
+    public void EmpurraParaNorte() {
         this.y = this.y -1;
         // Custa 1 Move 1 para Norte
     }
-    public void pushEast(){
+    public void EmpurraParaEste(){
         this.x = this.x +1;
          // Custa 1 Move 1 para Leste
     }
-    public void pushSouth(){
+    public void EmpurraParaSul(){
         this.y = this.y +1;
         // Custa 1 move para Sul
     }
-    public void pushWest(){
+    public void EmpurraParaOeste(){
         this.x = this.x -1;
          // Custa 1 Move 1 para Oeste
     }
-    public void reducesRange(){
+    public void ReduzAlcance(){
         this.range = 1; // Custa 2 Reduz o alcance para
     }
-    public void doubleRange(){
+    public void DuplicaAlcance(){
         this.range = range *2;
          // Custa 3 Aumenta alcance para o dobro
     }

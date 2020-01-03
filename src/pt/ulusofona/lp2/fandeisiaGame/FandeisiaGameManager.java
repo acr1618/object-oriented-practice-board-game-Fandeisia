@@ -312,7 +312,7 @@ public class FandeisiaGameManager{
         for (Creature c : creatures) {
             if (c.getX() == x && c.getY() == y) {
                 assert spellName != null;
-                if (c.isFrozen4Ever() && spellName.equals("unfreezes")) {
+                if (c.isFrozen4Ever() && spellName.equals("Descongela")) {
                     if (checkBalanceToSpell(getCurrentTeamId(), 8)) {
                         c.setEnchant(true);
                         c.setItSpellName(spellName);
@@ -320,24 +320,24 @@ public class FandeisiaGameManager{
                         return true;
                     }
                 } else {
-                    if (!c.isFrozen4Ever() && spellName.equals("freezes")) {
+                    if (!c.isFrozen4Ever() && spellName.equals("Congela")) {
                         if (checkBalanceToSpell(getCurrentTeamId(), 3)) {
                             c.setEnchant(true);
                             taxSpell(getCurrentTeamId(), 3);
                             c.setItSpellName(spellName);
-                            //c.freezes();
-                            //c.setItSpellName("freezes");
+                            //c.Congela();
+                            //c.setItSpellName("Congela");
                             return true;
                         } else {
                             return false;
                         }
                     } else {
                         switch (spellName) {
-                            case ("freezes4Ever"): {
+                            case ("Congela4Ever"): {
                                 if (checkBalanceToSpell(getCurrentTeamId(), 10)) {
                                     c.setEnchant(true);
-                                    //c.freezes4Ever();
-                                    //c.setItSpellName("freezes4Ever");
+                                    //c.Congela4Ever();
+                                    //c.setItSpellName("Congela4Ever");
                                     taxSpell(getCurrentTeamId(), 10);
                                     c.setItSpellName(spellName);
                                     return true;
@@ -345,15 +345,15 @@ public class FandeisiaGameManager{
                                     return false;
                                 }
                             }
-                            case ("pushNorth"): {
+                            case ("EmpurraParaNorte"): {
                                 if (!c.isFrozen() && !c.isFrozen4Ever()) {
                                     c.setNextX(x);
                                     c.setNextY(y - 1);
                                     if (validateMovement(x, y, c.getNextX(), c.getNextY())) { // movimento é valido
                                         if (checkBalanceToSpell(getCurrentTeamId(), 1)) {
                                             c.setEnchant(true);
-                                            //c.freezes();
-                                            //c.setItSpellName("pushNorth");
+                                            //c.Congela();
+                                            //c.setItSpellName("EmpurraParaNorte");
                                             taxSpell(getCurrentTeamId(), 1);
                                             c.setItSpellName(spellName);
                                             return true;
@@ -367,15 +367,15 @@ public class FandeisiaGameManager{
                                 return false;
                             }
 
-                            case ("pushEast"): {
+                            case ("EmpurraParaEste"): {
                                 if (!c.isFrozen() && !c.isFrozen4Ever()) {
                                     c.setNextX(x + 1);
                                     c.setNextY(y);
                                     if (validateMovement(x, y, c.getNextX(), c.getNextY())) { // movimento é valido
                                         if (checkBalanceToSpell(getCurrentTeamId(), 1)) {
                                             c.setEnchant(true);
-                                            //c.setItSpellName("pushEast");
-                                            //c.pushEast();
+                                            //c.setItSpellName("EmpurraParaEste");
+                                            //c.EmpurraParaEste();
                                             taxSpell(getCurrentTeamId(), 1);
                                             c.setItSpellName(spellName);
                                             return true;
@@ -389,15 +389,15 @@ public class FandeisiaGameManager{
                                 return false;
                             }
 
-                            case ("pushSouth"): {
+                            case ("EmpurraParaSul"): {
                                 if (!c.isFrozen() && !c.isFrozen4Ever()) {
                                     c.setNextX(x);
                                     c.setNextY(y + 1);
                                     if (validateMovement(x, y, c.getNextX(), c.getNextY())) { // movimento é valido
                                         if (checkBalanceToSpell(getCurrentTeamId(), 1)) {
                                             c.setEnchant(true);
-                                            //c.freezes();
-                                            //c.setItSpellName("pushSouth");
+                                            //c.Congela();
+                                            //c.setItSpellName("EmpurraParaSul");
                                             taxSpell(getCurrentTeamId(), 1);
                                             c.setItSpellName(spellName);
                                             return true;
@@ -411,15 +411,15 @@ public class FandeisiaGameManager{
                                 return false;
                             }
 
-                            case ("pushWest"): {
+                            case ("EmpurraParaOeste"): {
                                 if (!c.isFrozen() && !c.isFrozen4Ever()) {
                                     c.setNextX(x - 1);
                                     c.setNextY(y);
                                     if (validateMovement(x, y, c.getNextX(), c.getNextY())) { // movimento é valido
                                         if (checkBalanceToSpell(getCurrentTeamId(), 1)) {
                                             c.setEnchant(true);
-                                            //c.freezes();
-                                            //c.setItSpellName("pushWest");
+                                            //c.Congela();
+                                            //c.setItSpellName("EmpurraParaOeste");
                                             taxSpell(getCurrentTeamId(), 1);
                                             c.setItSpellName(spellName);
                                             return true;
@@ -433,26 +433,26 @@ public class FandeisiaGameManager{
                                 return false;
                             }
 
-                            case ("reducesRange"): {
+                            case ("ReduzAlcance"): {
                                 if (checkBalanceToSpell(getCurrentTeamId(), 1)) {
                                     c.setEnchant(true);
                                     taxSpell(getCurrentTeamId(), 2);
                                     c.setItSpellName(spellName);
-                                    //c.reducesRange();
-                                    //c.setItSpellName("reducesRange");
+                                    //c.ReduzAlcance();
+                                    //c.setItSpellName("ReduzAlcance");
                                     return true;
                                 } else {
                                     return false;
                                 }
                             }
 
-                            case ("doubleRange"): {
+                            case ("DuplicaAlcance"): {
                                 if (checkBalanceToSpell(getCurrentTeamId(), 1)) {
                                     c.setEnchant(true);
                                     taxSpell(getCurrentTeamId(), 3);
                                     c.setItSpellName(spellName);
-                                    //c.doubleRange(c.getRange());
-                                    //c.setItSpellName("doubleRange");
+                                    //c.DuplicaAlcance(c.getRange());
+                                    //c.setItSpellName("DuplicaAlcance");
                                     return true;
                                 } else {
                                     return false;
@@ -480,8 +480,6 @@ public class FandeisiaGameManager{
 
     public void processTurn(){ // still todo
 
-        turnCounter ++;
-        turnsWithoutTreasure ++; // zera toda vez que encontra um tesouro
         teamLdr.setTreasuresFoundInThisTurn(0);// Zera em todos turnos e incrementa quando acha tesouro
         teamRes.setTreasuresFoundInThisTurn(0);
         boolean ldrJaAdicionou = false;
@@ -539,6 +537,8 @@ public class FandeisiaGameManager{
         if (!gameIsOver()){
             //switchCurrentTeam();
             giveCoins();
+            turnCounter ++;
+            turnsWithoutTreasure ++; // zera toda vez que encontra um tesouro
         }
          // 1 se não achou tesouro neste turno e 2 se achou.
     }
@@ -636,8 +636,8 @@ public class FandeisiaGameManager{
         for (Creature creature : creatures){
             if (creature.getId() == id){
                 switch(spell){
-                    case ("unfreezes"): {
-                        creature.unfreezes();
+                    case ("Descongela"): {
+                        creature.Descongela();
                         if (creature.getTeamId() ==10){
                             creature.setImage(creature.getOutroTypeName()+"-"+ creature.getOrientation()+".png");
                         } else {
@@ -646,8 +646,8 @@ public class FandeisiaGameManager{
                         creature.setItSpellName(null);
                         break;
                     }
-                    case ("freezes"): {
-                        creature.freezes();
+                    case ("Congela"): {
+                        creature.Congela();
                         if(creature.getTeamId() ==10){
                             creature.setImage(creature.getOutroTypeName() + "-Frozen.png");
                         } else {
@@ -656,8 +656,8 @@ public class FandeisiaGameManager{
                         creature.setItSpellName(null);
                         break;
                     }
-                    case ("freezes4Ever") : {
-                        creature.freezes4Ever();
+                    case ("Congela4Ever") : {
+                        creature.Congela4Ever();
                         if(creature.getTeamId() ==10){
                             creature.setImage(creature.getOutroTypeName() + "-Frozen4Ever.png");
                         } else {
@@ -666,10 +666,10 @@ public class FandeisiaGameManager{
                         creature.setItSpellName(null);
                         break;
                     }
-                    case ("pushNorth"): {
+                    case ("EmpurraParaNorte"): {
                         if (!creature.isFrozen() && !creature.isFrozen4Ever()){
                             if (validateMovement(creature.getX(), creature.getY(), creature.getX(),creature.getY()-1)) {
-                                creature.pushNorth();
+                                creature.EmpurraParaNorte();
                                 creature.setItSpellName(null);
                                 creature.setOrientation("Norte");
                                 if (creature.getTeamId() ==10){
@@ -681,10 +681,10 @@ public class FandeisiaGameManager{
                         }
                         break;
                     }
-                    case ("pushEast"): {
+                    case ("EmpurraParaEste"): {
                         if (!creature.isFrozen() && !creature.isFrozen4Ever()){
                             if (validateMovement(creature.getX(), creature.getY(), creature.getX()+1,creature.getY())) {
-                                creature.pushEast();
+                                creature.EmpurraParaEste();
                                 creature.setItSpellName(null); // Já foi executado o feitiço, então passa a ficar em estado desencantado.
                                 creature.setOrientation("East");
                                 if (creature.getTeamId() ==10){
@@ -695,10 +695,10 @@ public class FandeisiaGameManager{
                         }
                         break;
                     }
-                    case ("pushSouth"): {
+                    case ("EmpurraParaSul"): {
                         if (!creature.isFrozen() && !creature.isFrozen4Ever()){
                             if (validateMovement(creature.getX(), creature.getY(), creature.getX(),creature.getY()+1)) {
-                                creature.pushSouth();
+                                creature.EmpurraParaSul();
                                 creature.setItSpellName(null); // Já foi executado o feitiço, então passa a ficar em estado desencantado.
                                 creature.setOrientation("Sul");
                                 if (creature.getTeamId() ==10){
@@ -709,10 +709,10 @@ public class FandeisiaGameManager{
                         }
                         break;
                     }
-                    case ("pushWest"): {
+                    case ("EmpurraParaOeste"): {
                         if (!creature.isFrozen() && !creature.isFrozen4Ever()){
                             if (validateMovement(creature.getX(), creature.getY(), creature.getX()-1,creature.getY())) {
-                                creature.pushWest();
+                                creature.EmpurraParaOeste();
                                 creature.setItSpellName(null); // Já foi executado o feitiço, então passa a ficar em estado desencantado.
                                 creature.setOrientation("Oeste");
                                 if (creature.getTeamId() ==10){
@@ -723,13 +723,13 @@ public class FandeisiaGameManager{
                         }
                         break;
                     }
-                    case ("reducesRange"): {
-                        creature.reducesRange();
+                    case ("ReduzAlcance"): {
+                        creature.ReduzAlcance();
                         creature.setItSpellName(null);
                         break;
                     }
-                    case ("doubleRange"): {
-                        creature.doubleRange();
+                    case ("DuplicaAlcance"): {
+                        creature.DuplicaAlcance();
                         creature.setItSpellName(null);
                         break;
                     }
@@ -882,31 +882,10 @@ public class FandeisiaGameManager{
         return Collections.singletonList("Allyson Rodrigues");
     }
 }
-/*FAILURE: pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_002_Elfo
-org.junit.ComparisonFailure: expected:<2 | Elfo[] | 20 | 0 @ (3, 3) S...> but was:<2 | Elfo[Negate] | 20 | 0 @ (3, 3) S...>
-	at pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_002_Elfo(TestTeacherSimuladorP2.java:695)
+/*
 
 
 
-FAILURE: pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_004_JogoCompletoEmpate
-java.lang.AssertionError: expected:<0> but was:<1>
-	at pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_004_JogoCompletoEmpate(TestTeacherSimuladorP2.java:1032)
-
-
-
-FAILURE: pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_010_HumanoBasico
-java.lang.AssertionError: expected:<0> but was:<1>
-	at pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_010_HumanoBasico(TestTeacherSimuladorP2.java:813)
-
-
-FAILURE: pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_011_AnaoEHumano
-java.lang.AssertionError: getElementId() expected:<0> but was:<1>
-	at pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_011_AnaoEHumano(TestTeacherSimuladorP2.java:905)
-
-
-FAILURE: pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_012_DuplicaAlcanceBasico
-java.lang.AssertionError: enchant() retornou false erradamente
-	at pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_012_DuplicaAlcanceBasico(TestTeacherSimuladorP2.java:963)
 
 
 FAILURE: pt.ulusofona.lp2.fandeisiaGame.TestTeacherSimuladorP2.test_014_JogoCompletoSoComAnoesESemFeiticos
