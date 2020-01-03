@@ -300,7 +300,7 @@ public class FandeisiaGameManager{
     }
 
     public boolean enchant (int x, int y, String spellName) {
-        System.out.println(iterate(logCounter) + " - "+"Entrou em enchant");
+        System.out.println(iterate(logCounter) + " - " + "Entrou em enchant");
         for (Creature c : creatures) {
             if (c.getX() == x && c.getY() == y) {
                 assert spellName != null;
@@ -310,152 +310,133 @@ public class FandeisiaGameManager{
                         c.setItSpellName(spellName);
                         taxSpell(getCurrentTeamId(), 8);
                         return true;
-                    }
-                } else {
-                    if (!c.isFrozen4Ever() && spellName.equals("Congela")) {
-                        if (checkBalanceToSpell(getCurrentTeamId(), 3)) {
-                            c.setEnchant(true);
-                            taxSpell(getCurrentTeamId(), 3);
-                            c.setItSpellName(spellName);
-                            //c.Congela();
-                            //c.setItSpellName("Congela");
-                            return true;
-                        } else {
-                            return false;
-                        }
-
                     } else {
-                        switch (spellName) {
-                            case ("Congela4Ever"): {
-                                if (checkBalanceToSpell(getCurrentTeamId(), 10)) {
-                                    c.setEnchant(true);
-                                    //c.Congela4Ever();
-                                    //c.setItSpellName("Congela4Ever");
-                                    taxSpell(getCurrentTeamId(), 10);
-                                    c.setItSpellName(spellName);
-                                    return true;
-                                } else {
-                                    return false;
-                                }
-                            }
-                            case ("EmpurraParaNorte"): {
-                                if (!c.isFrozen() && !c.isFrozen4Ever()) {
-                                    c.setNextX(x);
-                                    c.setNextY(y - 1);
-                                    if (validateMovement(x, y, c.getNextX(), c.getNextY())) { // movimento é valido
-                                        if (checkBalanceToSpell(getCurrentTeamId(), 1)) {
-                                            c.setEnchant(true);
-                                            //c.Congela();
-                                            //c.setItSpellName("EmpurraParaNorte");
-                                            taxSpell(getCurrentTeamId(), 1);
-                                            c.setItSpellName(spellName);
-                                            return true;
-                                        } else {
-                                            return false;
-                                        }
-                                    } else {
-                                        return false; // Se não entrar nesse if tem erro!
-                                    }
-                                }
+                        return false;
+                    }
+                }
+                if (!c.isFrozen4Ever() && spellName.equals("Congela")) {
+                    if (checkBalanceToSpell(getCurrentTeamId(), 3)) {
+                        c.setEnchant(true);
+                        taxSpell(getCurrentTeamId(), 3);
+                        c.setItSpellName(spellName);
+                        return true;
+                    } else {
+                        return false;
+                    }
+
+                } else {
+                    switch (spellName) {
+                        case ("Congela4Ever"): {
+                            if (checkBalanceToSpell(getCurrentTeamId(), 10) && !c.isFrozen()) {
+                                c.setEnchant(true);
+                                //c.Congela4Ever();
+                                //c.setItSpellName("Congela4Ever");
+                                taxSpell(getCurrentTeamId(), 10);
+                                c.setItSpellName(spellName);
+                                return true;
+                            } else {
                                 return false;
                             }
-
-                            case ("EmpurraParaEste"): {
-                                if (!c.isFrozen() && !c.isFrozen4Ever()) {
-                                    c.setNextX(x + 1);
-                                    c.setNextY(y);
-                                    if (validateMovement(x, y, c.getNextX(), c.getNextY())) { // movimento é valido
-                                        if (checkBalanceToSpell(getCurrentTeamId(), 1)) {
-                                            c.setEnchant(true);
-                                            //c.setItSpellName("EmpurraParaEste");
-                                            //c.EmpurraParaEste();
-                                            taxSpell(getCurrentTeamId(), 1);
-                                            c.setItSpellName(spellName);
-                                            return true;
-                                        } else {
-                                            return false;
-                                        }
-                                    } else {
-                                        return false; // Se não entrar nesse if tem erro!
-                                    }
-                                }
-                                return false;
-                            }
-
-                            case ("EmpurraParaSul"): {
-                                if (!c.isFrozen() && !c.isFrozen4Ever()) {
-                                    c.setNextX(x);
-                                    c.setNextY(y + 1);
-                                    if (validateMovement(x, y, c.getNextX(), c.getNextY())) { // movimento é valido
-                                        if (checkBalanceToSpell(getCurrentTeamId(), 1)) {
-                                            c.setEnchant(true);
-                                            //c.Congela();
-                                            //c.setItSpellName("EmpurraParaSul");
-                                            taxSpell(getCurrentTeamId(), 1);
-                                            c.setItSpellName(spellName);
-                                            return true;
-                                        } else {
-                                            return false;
-                                        }
-                                    } else {
-                                        return false;
-                                    }
-                                }
-                                return false;
-                            }
-
-                            case ("EmpurraParaOeste"): {
-                                if (!c.isFrozen() && !c.isFrozen4Ever()) {
-                                    c.setNextX(x - 1);
-                                    c.setNextY(y);
-                                    if (validateMovement(x, y, c.getNextX(), c.getNextY())) { // movimento é valido
-                                        if (checkBalanceToSpell(getCurrentTeamId(), 1)) {
-                                            c.setEnchant(true);
-                                            //c.Congela();
-                                            //c.setItSpellName("EmpurraParaOeste");
-                                            taxSpell(getCurrentTeamId(), 1);
-                                            c.setItSpellName(spellName);
-                                            return true;
-                                        } else {
-                                            return false;
-                                        }
-                                    } else {
-                                        return false;
-                                    }
-                                }
-                                return false;
-                            }
-
-                            case ("ReduzAlcance"): {
+                        }
+                        case ("EmpurraParaNorte"): {
+                            c.setNextX(x);
+                            c.setNextY(y - 1);
+                            if (validateMovement(x, y, c.getNextX(), c.getNextY()) && !c.isFrozen() && !c.isFrozen4Ever()) { // movimento é valido
                                 if (checkBalanceToSpell(getCurrentTeamId(), 1)) {
                                     c.setEnchant(true);
-                                    taxSpell(getCurrentTeamId(), 2);
+                                    //c.Congela();
+                                    //c.setItSpellName("EmpurraParaNorte");
+                                    taxSpell(getCurrentTeamId(), 1);
                                     c.setItSpellName(spellName);
-                                    //c.ReduzAlcance();
-                                    //c.setItSpellName("ReduzAlcance");
                                     return true;
                                 } else {
                                     return false;
                                 }
+                            } else {
+                                return false; // Se não entrar nesse if tem erro!
                             }
-
-                            case ("DuplicaAlcance"): {
+                        }
+                        case ("EmpurraParaEste"): {
+                            c.setNextX(x + 1);
+                            c.setNextY(y);
+                            if (validateMovement(x, y, c.getNextX(), c.getNextY()) && !c.isFrozen() && !c.isFrozen4Ever()) { // movimento é valido
                                 if (checkBalanceToSpell(getCurrentTeamId(), 1)) {
                                     c.setEnchant(true);
-                                    taxSpell(getCurrentTeamId(), 3);
+                                    //c.setItSpellName("EmpurraParaEste");
+                                    //c.EmpurraParaEste();
+                                    taxSpell(getCurrentTeamId(), 1);
                                     c.setItSpellName(spellName);
-                                    //c.DuplicaAlcance(c.getRange());
-                                    //c.setItSpellName("DuplicaAlcance");
                                     return true;
                                 } else {
                                     return false;
                                 }
+                            } else {
+                                return false; // Se não entrar nesse if tem erro!
+                            }
+                        }
+                        case ("EmpurraParaSul"): {
+                            c.setNextX(x);
+                            c.setNextY(y + 1);
+                            if (validateMovement(x, y, c.getNextX(), c.getNextY()) && !c.isFrozen() && !c.isFrozen4Ever()) { // movimento é valido
+                                if (checkBalanceToSpell(getCurrentTeamId(), 1)) {
+                                    c.setEnchant(true);
+                                    //c.Congela();
+                                    //c.setItSpellName("EmpurraParaSul");
+                                    taxSpell(getCurrentTeamId(), 1);
+                                    c.setItSpellName(spellName);
+                                    return true;
+                                } else {
+                                    return false;
+                                }
+                            } else {
+                                return false;
+                            }
+                        }
+                        case ("EmpurraParaOeste"): {
+                            c.setNextX(x - 1);
+                            c.setNextY(y);
+                            if (validateMovement(x, y, c.getNextX(), c.getNextY())) { // movimento é valido
+                                if (checkBalanceToSpell(getCurrentTeamId(), 1)) {
+                                    c.setEnchant(true);
+                                    taxSpell(getCurrentTeamId(), 1);
+                                    c.setItSpellName(spellName);
+                                    return true;
+                                } else {
+                                    return false;
+                                }
+                            } else {
+                                return false;
+                            }
+                        }
+                        case ("ReduzAlcance"): {
+                            if (checkBalanceToSpell(getCurrentTeamId(), 1)) {
+                                c.setEnchant(true);
+                                taxSpell(getCurrentTeamId(), 2);
+                                c.setItSpellName(spellName);
+                                //c.ReduzAlcance();
+                                //c.setItSpellName("ReduzAlcance");
+                                return true;
+                            } else {
+                                return false;
+                            }
+                        }
+                        case ("DuplicaAlcance"): {
+                            if (checkBalanceToSpell(getCurrentTeamId(), 1)) {
+                                c.setEnchant(true);
+                                taxSpell(getCurrentTeamId(), 3);
+                                c.setItSpellName(spellName);
+                                //c.DuplicaAlcance(c.getRange());
+                                //c.setItSpellName("DuplicaAlcance");
+                                return true;
+                            } else {
+                                return false;
                             }
                         }
                     }
                 }
             }
-        } return false; // Só se nesse x e y não há criatura!
+        }
+        return false;
     }
 
     public void giveCoins(){
