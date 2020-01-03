@@ -65,12 +65,10 @@ public class FandeisiaGameManager{
     }
 
     public Map<String, Integer> createComputerArmy(){
-        //System.out.println( iterate(logCounter) + " - "+"IN createComputerArmy\n -----------------------------------\n");
-
+        //System.out.println( iterate(logCounter) + " - "+"IN createComputerArmy\n --------------------\n");
         int spent =0;
         Map<String, Integer> computerArmy = new HashMap<>();
-
-        /*do {
+        do {
             computerArmy.put("Anão", new Random().nextInt(4));
             spent = spent + computerArmy.get("Anão");// criar um random entre 0 e 3.
             computerArmy.put("Dragão", new Random().nextInt(4));
@@ -82,8 +80,7 @@ public class FandeisiaGameManager{
             computerArmy.put("Humano", new Random().nextInt(4));
             spent = spent + computerArmy.get("Humano") *3;
 
-        } while (spent >50 || computerArmy.isEmpty());*/
-        computerArmy.put("Dragão", 1);
+        } while (spent >50 || computerArmy.isEmpty());
         return computerArmy;
     }
 
@@ -193,6 +190,9 @@ public class FandeisiaGameManager{
                     break;
             }
         }
+
+
+
         if (teamLdr.getCoins() < 0 && teamRes.getCoins() < 0){
             return 1;
         } else if(teamLdr.getCoins() < 0){
