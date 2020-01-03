@@ -356,7 +356,7 @@ public class FandeisiaGameManager{
                         case ("EmpurraParaNorte"): {
                             c.setNextX(x);
                             c.setNextY(y - 1);
-                            if (validateMovement(x, y, c.getNextX(), c.getNextY()) && !c.isFrozen() && !c.isFrozen4Ever()) { // movimento é valido
+                            if (validateMovement(c) && !c.isFrozen() && !c.isFrozen4Ever()) { // movimento é valido
                                 if (checkBalanceToSpell(getCurrentTeamId(), 1)) {
                                     c.setEnchant(true);
                                     //c.Congela();
@@ -374,7 +374,7 @@ public class FandeisiaGameManager{
                         case ("EmpurraParaEste"): {
                             c.setNextX(x + 1);
                             c.setNextY(y);
-                            if (validateMovement(x, y, c.getNextX(), c.getNextY()) && !c.isFrozen() && !c.isFrozen4Ever()) { // movimento é valido
+                            if (validateMovement(c) && !c.isFrozen() && !c.isFrozen4Ever()) { // movimento é valido
                                 if (checkBalanceToSpell(getCurrentTeamId(), 1)) {
                                     c.setEnchant(true);
                                     //c.setItSpellName("EmpurraParaEste");
@@ -392,7 +392,7 @@ public class FandeisiaGameManager{
                         case ("EmpurraParaSul"): {
                             c.setNextX(x);
                             c.setNextY(y + 1);
-                            if (validateMovement(x, y, c.getNextX(), c.getNextY()) && !c.isFrozen() && !c.isFrozen4Ever()) { // movimento é valido
+                            if (validateMovement(c) && !c.isFrozen() && !c.isFrozen4Ever()) { // movimento é valido
                                 if (checkBalanceToSpell(getCurrentTeamId(), 1)) {
                                     c.setEnchant(true);
                                     //c.Congela();
@@ -410,7 +410,7 @@ public class FandeisiaGameManager{
                         case ("EmpurraParaOeste"): {
                             c.setNextX(x - 1);
                             c.setNextY(y);
-                            if (validateMovement(x, y, c.getNextX(), c.getNextY())) { // movimento é valido
+                            if (validateMovement(c)) { // movimento é valido
                                 if (checkBalanceToSpell(getCurrentTeamId(), 1)) {
                                     c.setEnchant(true);
                                     taxSpell(getCurrentTeamId(), 1);
@@ -468,7 +468,7 @@ public class FandeisiaGameManager{
     }
 
     public void processTurn(){ // still todo
-
+        turnCounter ++;
         teamLdr.setTreasuresFoundInThisTurn(false);// Zera em todos turnos e incrementa quando acha tesouro
         teamRes.setTreasuresFoundInThisTurn(false);
         int teste = treasures.size();
@@ -484,7 +484,8 @@ public class FandeisiaGameManager{
             }
             // Se tem feitiço pra aplicar, aplica-se.
             if (creature.isEnchant()){
-                executeSpell(creature.getId(), creature.getItSpellName());
+                creature.setEnchant(false);
+                executeSpell(creature, creature.getItSpellName());
                 if(matchTreasure(creature.getX(), creature.getY(), creature.getId(), creature.getTeamId())){
                     // turnsWithoutTreasure = 0;
                     if (creature.getTeamId() ==10){
@@ -493,12 +494,12 @@ public class FandeisiaGameManager{
                         teamRes.setTreasuresFoundInThisTurn(true);
                     }
                 }
-                creature.setEnchant(false);
+
             }
             /* Movimento normal das criaturas */
             // Se não tá congelada ou congelada4Ever não se movimenta. Se não, bota pra movimentar.
             if (!creature.isFrozen4Ever() && !creature.isFrozen()){
-                if (executeStandardMovement(creature.getX(), creature.getY(), creature.getOrientation(), creature.getTypeName())){
+                if (executeStandardMovement(creature)){
                     creature.move();
                     if(matchTreasure(creature.getX(), creature.getY(), creature.getId(), creature.getTeamId())){
                         // turnsWithoutTreasure =0;
@@ -514,72 +515,307 @@ public class FandeisiaGameManager{
                 }
             }
         }
-        if (!gameIsOver()){
-            if(teste == treasures.size()){
-                turnsWithoutTreasure ++;
-            } else {
-                turnsWithoutTreasure = 0;
+        if(teste == treasures.size()){
+            turnsWithoutTreasure ++;
+        } else {
+            turnsWithoutTreasure = 0;
+        }
+        //turnsWithoutTreasure ++; // zera toda vez que encontra um tesouro
+        switchCurrentTeam();
+        giveCoins();
+         // 1 se não achou tesouro neste turno e 2 se achou.
+    }
+
+    private void executeSpell(Creature creature,String spell) {
+
+        switch(spell){
+            case ("Descongela"): {
+                creature.descongela();
+                creature.setImage(creature.getOutroTypeName()+"-"+ creature.getOrientation()+".png");
+                creature.setItSpellName(null);
+                break;
             }
-            //turnsWithoutTreasure ++; // zera toda vez que encontra um tesouro
-            turnCounter ++;
-            switchCurrentTeam();
-            giveCoins(); // 1 se não achou tesouro neste turno e 2 se achou.
+            case ("Congela"): {
+                creature.congela();
+                creature.setImage(creature.getOutroTypeName() + "-Frozen.png");
+                creature.setItSpellName(null);
+                break;
+            }
+            case ("Congela4Ever") : {
+                creature.congela4Ever();
+                creature.setImage(creature.getOutroTypeName() + "-Frozen4Ever.png");
+                creature.setItSpellName(null);
+                break;
+            }
+            case ("EmpurraParaNorte"): {
+                if (!creature.isFrozen() && !creature.isFrozen4Ever()){
+                    if (validateMovement(creature)) {
+                        creature.empurraParaNorte();
+                        creature.setItSpellName(null);
+                        creature.setOrientation("Norte");
+                        creature.setImage(creature.getOutroTypeName()+"-Norte.png");
+                    }
+                }
+                break;
+            }
+            case ("EmpurraParaEste"): {
+                if (!creature.isFrozen() && !creature.isFrozen4Ever()){
+                    if (validateMovement(creature)) {
+                        creature.empurraParaEste();
+                        creature.setItSpellName(null); // Já foi executado o feitiço, então passa a ficar em estado desencantado.
+                        creature.setOrientation("East");
+                        creature.setImage(creature.getOutroTypeName()+"-Este.png");
+                    }
+                }
+                break;
+            }
+            case ("EmpurraParaSul"): {
+                if (!creature.isFrozen() && !creature.isFrozen4Ever()){
+                    if (validateMovement(creature)) {
+                        creature.empurraParaSul();
+                        creature.setItSpellName(null); // Já foi executado o feitiço, então passa a ficar em estado desencantado.
+                        creature.setOrientation("Sul");
+                        creature.setImage(creature.getOutroTypeName()+"-Sul.png");
+                    }
+                }
+                break;
+            }
+            case ("EmpurraParaOeste"): {
+                if (!creature.isFrozen() && !creature.isFrozen4Ever()){
+                    if (validateMovement(creature)) {
+                        creature.empurraParaOeste();
+                        creature.setItSpellName(null); // Já foi executado o feitiço, então passa a ficar em estado desencantado.
+                        creature.setOrientation("Oeste");
+                        creature.setImage(creature.getOutroTypeName()+"-Oeste.png");
+                    }
+                }
+                break;
+            }
+            case ("ReduzAlcance"): {
+                creature.reduzAlcance();
+                creature.setItSpellName(null);
+                break;
+            }
+            case ("DuplicaAlcance"): {
+                creature.duplicaAlcance();
+                creature.setItSpellName(null);
+                break;
+            }
         }
     }
 
-    private boolean executeStandardMovement(int x, int y, String orientation, String typeName) {
+    private boolean executeStandardMovement(Creature creature) {
         System.out.println("Entrou em executeStandardMovement");
-        for (Creature creature: creatures){
-            if (creature.getX() == x && creature.getY()==y){
-                switch (creature.getTypeName()){
-                    case ("Anão"): {
-                        switch (creature.getOrientation()){
-                            case ("Norte"):{
-                                creature.setNextX(creature.getX());
-                                creature.setNextY(creature.getY() - creature.getRange());
-                                if (validateMovement(x,y,creature.getNextX(),creature.getNextY())){
-                                    return true;
-                                } else {
-                                    return false;
-                                }
+            switch (creature.getTypeName()){
+                case ("Anão"): {
+                    switch (creature.getOrientation()){
+                        case ("Norte"):{
+                            creature.setNextX(creature.getX());
+                            creature.setNextY(creature.getY() - creature.getRange());
+                            if (validateMovement(creature)){
+                                return true;
+                            } else {
+                                return false;
                             }
-                            case ("Sul"):{
-                                creature.setNextX(creature.getX());
-                                creature.setNextY(creature.getY() + creature.getRange());
-                                if (validateMovement(x,y,creature.getNextX(),creature.getNextY())){
-                                    return true;
-                                } else {
-                                    return false;
-                                }
+                        }
+                        case ("Sul"):{
+                            creature.setNextX(creature.getX());
+                            creature.setNextY(creature.getY() + creature.getRange());
+                            if (validateMovement(creature)){
+                                return true;
+                            } else {
+                                return false;
                             }
-                            case ("Este"):{
-                                creature.setNextX(creature.getX() + creature.getRange());
-                                creature.setNextY(creature.getY());
-                                if (validateMovement(x,y,creature.getNextX(),creature.getNextY())){
-                                    return true;
-                                } else {
-                                    return false;
-                                }
+                        }
+                        case ("Este"):{
+                            creature.setNextX(creature.getX() + creature.getRange());
+                            creature.setNextY(creature.getY());
+                            if (validateMovement(creature)){
+                                return true;
+                            } else {
+                                return false;
                             }
-                            case ("Oeste"):{
-                                creature.setNextX(creature.getX() - creature.getRange());
-                                creature.setNextY(creature.getY());
-                                if (validateMovement(x,y,creature.getNextX(),creature.getNextY())){
-                                    return true;
-                                } else {
-                                    return false;
-                                }
+                        }
+                        case ("Oeste"):{
+                            creature.setNextX(creature.getX() - creature.getRange());
+                            creature.setNextY(creature.getY());
+                            if (validateMovement(creature)){
+                                return true;
+                            } else {
+                                return false;
                             }
                         }
                     }
-                    // fazer ifs para verificar o time e trocar imagem, devido à restrição nominal dos tipos das craituras! TODO
-                    //case ("Humano"): TODO
-                    //case ("Elfo"): TODO
-                    //case ("Gigante"): TODO
-                    //case ("Dragão"): TODO
                 }
+
+                case ("Elfo"): {
+                    switch (creature.getOrientation()){
+                        case ("Norte"):{
+                            creature.setNextX(creature.getX());
+                            creature.setNextY(creature.getY() - creature.getRange());
+                            if (validateMovement(creature)){
+                                return true;
+                            } else {
+                                return false;
+                            }
+                        }
+                        case ("Sul"):{
+                            creature.setNextX(creature.getX());
+                            creature.setNextY(creature.getY() + creature.getRange());
+                            if (validateMovement(creature)){
+                                return true;
+                            } else {
+                                return false;
+                            }
+                        }
+                        case ("Este"):{
+                            creature.setNextX(creature.getX() + creature.getRange());
+                            creature.setNextY(creature.getY());
+                            if (validateMovement(creature)){
+                                return true;
+                            } else {
+                                return false;
+                            }
+                        }
+                        case ("Oeste"):{
+                            creature.setNextX(creature.getX() - creature.getRange());
+                            creature.setNextY(creature.getY());
+                            if (validateMovement(creature)){
+                                return true;
+                            } else {
+                                return false;
+                            }
+                        }
+                    }
+                }
+                case ("Dragão"): {
+                    switch (creature.getOrientation()){
+                        case ("Norte"):{
+                            creature.setNextX(creature.getX());
+                            creature.setNextY(creature.getY() - creature.getRange());
+                            if (validateMovement(creature)){
+                                return true;
+                            } else {
+                                return false;
+                            }
+                        }
+                        case ("Sul"):{
+                            creature.setNextX(creature.getX());
+                            creature.setNextY(creature.getY() + creature.getRange());
+                            if (validateMovement(creature)){
+                                return true;
+                            } else {
+                                return false;
+                            }
+                        }
+                        case ("Este"):{
+                            creature.setNextX(creature.getX() + creature.getRange());
+                            creature.setNextY(creature.getY());
+                            if (validateMovement(creature)){
+                                return true;
+                            } else {
+                                return false;
+                            }
+                        }
+                        case ("Oeste"):{
+                            creature.setNextX(creature.getX() - creature.getRange());
+                            creature.setNextY(creature.getY());
+                            if (validateMovement(creature)){
+                                return true;
+                            } else {
+                                return false;
+                            }
+                        }
+                    }
+                }
+                case ("Humano"): {
+                    switch (creature.getOrientation()){
+                        case ("Norte"):{
+                            creature.setNextX(creature.getX());
+                            creature.setNextY(creature.getY() - creature.getRange());
+                            if (validateMovement(creature)){
+                                return true;
+                            } else {
+                                return false;
+                            }
+                        }
+                        case ("Sul"):{
+                            creature.setNextX(creature.getX());
+                            creature.setNextY(creature.getY() + creature.getRange());
+                            if (validateMovement(creature)){
+                                return true;
+                            } else {
+                                return false;
+                            }
+                        }
+                        case ("Este"):{
+                            creature.setNextX(creature.getX() + creature.getRange());
+                            creature.setNextY(creature.getY());
+                            if (validateMovement(creature)){
+                                return true;
+                            } else {
+                                return false;
+                            }
+                        }
+                        case ("Oeste"):{
+                            creature.setNextX(creature.getX() - creature.getRange());
+                            creature.setNextY(creature.getY());
+                            if (validateMovement(creature)){
+                                return true;
+                            } else {
+                                return false;
+                            }
+                        }
+                    }
+                }
+                case ("Gigante"): {
+                    switch (creature.getOrientation()){
+                        case ("Norte"):{
+                            creature.setNextX(creature.getX());
+                            creature.setNextY(creature.getY() - creature.getRange());
+                            if (validateMovement(creature)){
+                                return true;
+                            } else {
+                                return false;
+                            }
+                        }
+                        case ("Sul"):{
+                            creature.setNextX(creature.getX());
+                            creature.setNextY(creature.getY() + creature.getRange());
+                            if (validateMovement(creature)){
+                                return true;
+                            } else {
+                                return false;
+                            }
+                        }
+                        case ("Este"):{
+                            creature.setNextX(creature.getX() + creature.getRange());
+                            creature.setNextY(creature.getY());
+                            if (validateMovement(creature)){
+                                return true;
+                            } else {
+                                return false;
+                            }
+                        }
+                        case ("Oeste"):{
+                            creature.setNextX(creature.getX() - creature.getRange());
+                            creature.setNextY(creature.getY());
+                            if (validateMovement(creature)){
+                                return true;
+                            } else {
+                                return false;
+                            }
+                        }
+                    }
+                }
+                // fazer ifs para verificar o time e trocar imagem, devido à restrição nominal dos tipos das craituras! TODO
+                //case ("Humano"): TODO
+                //case ("Elfo"): TODO
+                //case ("Gigante"): TODO
+                //case ("Dragão"): TODO
             }
-        }
+
+
         return false;
     }
 
@@ -616,102 +852,21 @@ public class FandeisiaGameManager{
         return false;
     }
 
-    private void executeSpell(int id,String spell) {
-        for (Creature creature : creatures){
-            if (creature.getId() == id){
-                switch(spell){
-                    case ("Descongela"): {
-                        creature.descongela();
-                        creature.setImage(creature.getOutroTypeName()+"-"+ creature.getOrientation()+".png");
-                        creature.setItSpellName(null);
-                        break;
-                    }
-                    case ("Congela"): {
-                        creature.congela();
-                        creature.setImage(creature.getOutroTypeName() + "-Frozen.png");
-                        creature.setItSpellName(null);
-                        break;
-                    }
-                    case ("Congela4Ever") : {
-                        creature.congela4Ever();
-                        creature.setImage(creature.getOutroTypeName() + "-Frozen4Ever.png");
-                        creature.setItSpellName(null);
-                        break;
-                    }
-                    case ("EmpurraParaNorte"): {
-                        if (!creature.isFrozen() && !creature.isFrozen4Ever()){
-                            if (validateMovement(creature.getX(), creature.getY(), creature.getX(),creature.getY()-1)) {
-                                creature.empurraParaNorte();
-                                creature.setItSpellName(null);
-                                creature.setOrientation("Norte");
-                                creature.setImage(creature.getOutroTypeName()+"-Norte.png");
-                            }
-                        }
-                        break;
-                    }
-                    case ("EmpurraParaEste"): {
-                        if (!creature.isFrozen() && !creature.isFrozen4Ever()){
-                            if (validateMovement(creature.getX(), creature.getY(), creature.getX()+1,creature.getY())) {
-                                creature.empurraParaEste();
-                                creature.setItSpellName(null); // Já foi executado o feitiço, então passa a ficar em estado desencantado.
-                                creature.setOrientation("East");
-                                creature.setImage(creature.getOutroTypeName()+"-Este.png");
-                            }
-                        }
-                        break;
-                    }
-                    case ("EmpurraParaSul"): {
-                        if (!creature.isFrozen() && !creature.isFrozen4Ever()){
-                            if (validateMovement(creature.getX(), creature.getY(), creature.getX(),creature.getY()+1)) {
-                                creature.empurraParaSul();
-                                creature.setItSpellName(null); // Já foi executado o feitiço, então passa a ficar em estado desencantado.
-                                creature.setOrientation("Sul");
-                                creature.setImage(creature.getOutroTypeName()+"-Sul.png");
-                            }
-                        }
-                        break;
-                    }
-                    case ("EmpurraParaOeste"): {
-                        if (!creature.isFrozen() && !creature.isFrozen4Ever()){
-                            if (validateMovement(creature.getX(), creature.getY(), creature.getX()-1,creature.getY())) {
-                                creature.empurraParaOeste();
-                                creature.setItSpellName(null); // Já foi executado o feitiço, então passa a ficar em estado desencantado.
-                                creature.setOrientation("Oeste");
-                                creature.setImage(creature.getOutroTypeName()+"-Oeste.png");
-                            }
-                        }
-                        break;
-                    }
-                    case ("ReduzAlcance"): {
-                        creature.reduzAlcance();
-                        creature.setItSpellName(null);
-                        break;
-                    }
-                    case ("DuplicaAlcance"): {
-                        creature.duplicaAlcance();
-                        creature.setItSpellName(null);
-                        break;
-                    }
-                }
-            }
-        }
-    }
+    private boolean validateMovement(Creature creature) {
 
-    private boolean validateMovement(int x, int y, int nextX, int nextY) {
-
-        if (nextX < 0 || nextY < 0){ // fora da tela
+        if (creature.getNextX() < 0 || creature.getNextY() < 0){ // fora da tela
             return false;
         }
-        if (nextX > columnsFgm-1 || nextY > rowsFgm-1){ // fora da tela
+        if (creature.getNextX() > columnsFgm-1 || creature.getNextY() > rowsFgm-1){ // fora da tela
             return false;
         }
 
-        if (getElementId(nextX, nextY) <=-500){ // buraco
+        if (getElementId(creature.getNextX(), creature.getNextX()) <=-500){ // buraco
             return false;
         }
 
         /*outra criatura */
-        return getElementId(nextX, nextY) <= 0;
+        return getElementId(creature.getNextX(), creature.getNextY()) <= 0;
     }
 
     // Checar saldo;
