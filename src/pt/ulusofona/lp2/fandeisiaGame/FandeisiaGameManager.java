@@ -323,9 +323,11 @@ public class FandeisiaGameManager{
     }
 
     public boolean enchant (int x, int y, String spellName) {
+        if (spellName == null){
+            return false;
+        }
         System.out.println(iterate(logCounter) + " - " + "Entrou em enchant");
         Creature c = getCreature(x, y);
-        assert spellName != null;
         if (c.isFrozen4Ever() && spellName.equals("Descongela")) {
             if (checkBalanceToSpell(getCurrentTeamId(), 8)) {
                 c.setEnchant(true);
@@ -592,12 +594,12 @@ public class FandeisiaGameManager{
                 }
                 break;
             }
-            case ("ReduzAlcance"): {
+            case ("ReduzAlcance"): {    // TODO Se duplicar o alcance e o próximo movimento da criatura não for valido.
                 creature.reduzAlcance();
                 creature.setItSpellName(null);
                 break;
             }
-            case ("DuplicaAlcance"): {
+            case ("DuplicaAlcance"): { // Tem restrição! TODO Se duplicar o alcance e o próximo movimento da criatura não for válido.
                 creature.duplicaAlcance();
                 creature.setItSpellName(null);
                 break;
@@ -954,9 +956,14 @@ return false;
         }
         return results;
     }
-
     public boolean saveGame (File fich){
-        System.out.println("Estou em saveGame");
+        /*List<String> data = new ArrayList<>();
+        data.add("Word state and teams: "+ rowsFgm + ":" + columnsFgm +":"+ turnCounter + ":" + turnsWithoutTreasure + ":" + currentTeam.getId() + ":" + teamLdr.getId() + ":"+
+                ":"+ teamLdr.getPoints() + ":"+teamLdr.getCoins() + ":" + teamRes.getId() + ":"+teamRes.getPoints());
+        for (Creature creatureF: creatures){
+            data.add("creatures: " + creatureF.getId() + ":"+creatureF.get);
+        }*/
+
         return true;
     }
     public boolean loadGame (File fich){
