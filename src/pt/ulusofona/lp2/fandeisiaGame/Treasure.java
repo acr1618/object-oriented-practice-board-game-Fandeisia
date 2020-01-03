@@ -3,20 +3,20 @@ package pt.ulusofona.lp2.fandeisiaGame;
 public class Treasure extends Element{
 
     protected String metalName;
-    protected int points;
+    protected int value;
 
-    public Treasure(int id, int x, int y, int points) {
+    public Treasure(int id, int x, int y, int value) {
         super(id, x, y);
-        this.points = points;
+        this.value = value;
     }
 
     @Override
     public String toString() {
-        return id + " | " + points + " @ " + "(" + x +", " + y + ") ";
+        return id + " | " + value + " @ " + "(" + x +", " + y + ") ";
     }
 
-    public int getPoints(){
-        return points;
+    public int getValue(){
+        return value;
     }
 
     public String getMetalName() {
