@@ -15,6 +15,7 @@ public class Team{
         this.name = name;
         this.coins = 50;
         this.points = 0;
+        this.treasuresFoundInThisTurn =false;
     }
     public boolean isActive(){
         return true;
@@ -52,11 +53,6 @@ public class Team{
         this.points = this.points + points;
     }
 
-    public void removePoints(int points){
-        this.points = points;
-    }
-
-
     public boolean checkBalanceToSpell(int spellCost) {
         return this.coins >= spellCost;
     }
@@ -67,5 +63,16 @@ public class Team{
 
     public boolean getTreasuresFoundInThisTurn() {
         return treasuresFoundInThisTurn;
+    }
+
+    @Override
+    public String toString() {
+        return "Team{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", points=" + points +
+                ", coins=" + coins +
+                ", treasuresFoundInThisTurn=" + treasuresFoundInThisTurn +
+                '}';
     }
 }

@@ -16,15 +16,7 @@ public abstract class Creature extends Element {
     protected String itSpellName;
     protected int nextX, nextY;
     protected int gold =0, silver =0, bronze =0;
-    protected String outroTypeName;
-
-    public String getOutroTypeName() {
-        return outroTypeName;
-    }
-
-    public void setOutroTypeName(String outroTypeName) {
-        this.outroTypeName = outroTypeName;
-    }
+    protected String outroTypeName; // para usar com a atualização de imagens
 
     /*// Variáveis para guardar o mundo:
     protected int rows;
@@ -42,6 +34,21 @@ public abstract class Creature extends Element {
         this.isFrozen = false;
         this.isFrozen4Ever = false;
         this.points = 0;
+        this.frozenTime =0;
+        this.gold =0;
+        this.silver =0;
+        this.bronze=0;
+        this.nextX=0;
+        this.nextY=0;
+    }
+
+
+    public String getOutroTypeName() {
+        return outroTypeName;
+    }
+
+    public void setOutroTypeName(String outroTypeName) {
+        this.outroTypeName = outroTypeName;
     }
 
     public String getImagePNG(){
@@ -203,26 +210,26 @@ public abstract class Creature extends Element {
 
     /* Feitiços */
 
-    public void EmpurraParaNorte() {
+    public void empurraParaNorte() {
         this.y = this.y -1;
         // Custa 1 Move 1 para Norte
     }
-    public void EmpurraParaEste(){
+    public void empurraParaEste(){
         this.x = this.x +1;
          // Custa 1 Move 1 para Leste
     }
-    public void EmpurraParaSul(){
+    public void empurraParaSul(){
         this.y = this.y +1;
         // Custa 1 move para Sul
     }
-    public void EmpurraParaOeste(){
+    public void empurraParaOeste(){
         this.x = this.x -1;
          // Custa 1 Move 1 para Oeste
     }
-    public void ReduzAlcance(){
+    public void reduzAlcance(){
         this.range = 1; // Custa 2 Reduz o alcance para
     }
-    public void DuplicaAlcance(){
+    public void duplicaAlcance(){
         this.range = range *2;
          // Custa 3 Aumenta alcance para o dobro
     }

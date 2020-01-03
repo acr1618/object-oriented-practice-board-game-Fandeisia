@@ -18,4 +18,8 @@ public class Treasure extends Element{
     public int getPoints(){
         return points;
     }
+
+    public String getMetalName() {
+        return metalName;
+    }
 }
