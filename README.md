@@ -2,4 +2,4 @@
 Fandeisia
 ![texto](https://github.com/a21900126/LP2-21900126/blob/master/diagrama.png)
 
-https://yotube.com/voufazer
+https://youtu.be/qDegav8i1Tc
