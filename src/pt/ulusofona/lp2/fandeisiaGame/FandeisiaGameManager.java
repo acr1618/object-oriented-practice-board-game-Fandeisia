@@ -470,12 +470,13 @@ public class FandeisiaGameManager{
         }
     }
 
-    public void processTurn(){ // still todo
+    public void processTurn(){ // still things fix and todo
         turnCounter ++;
         teamLdr.setTreasuresFoundInThisTurn(false);// Zera em todos turnos e incrementa quando acha tesouro
         teamRes.setTreasuresFoundInThisTurn(false);
         int teste = treasures.size();
         for (Creature creature: creatures){
+
             // Timer para descongelar
             if (creature.isFrozen()){
                 creature.setFrozenTime(1);
@@ -490,7 +491,6 @@ public class FandeisiaGameManager{
                 creature.setEnchant(false);
                 executeSpell(creature, creature.getItSpellName());
                 if(matchTreasure(creature)){
-                    // turnsWithoutTreasure = 0;
                     if (creature.getTeamId() ==10){
                         teamLdr.setTreasuresFoundInThisTurn(true);
                     } else {
@@ -503,7 +503,7 @@ public class FandeisiaGameManager{
             // Se não tá congelada ou congelada4Ever não se movimenta. Se não, bota pra movimentar.
             if (!creature.isFrozen4Ever() && !creature.isFrozen()){
                 if (executeStandardMovement(creature)){
-                   // creature.move();
+                   creature.move();
                     if(matchTreasure(creature)){
                         // turnsWithoutTreasure =0;
                         if (creature.getTeamId() ==10){
@@ -523,10 +523,8 @@ public class FandeisiaGameManager{
         } else {
             turnsWithoutTreasure = 0;
         }
-        //turnsWithoutTreasure ++; // zera toda vez que encontra um tesouro
         switchCurrentTeam();
-        giveCoins();
-         // 1 se não achou tesouro neste turno e 2 se achou.
+        giveCoins(); // 1 se não achou tesouro neste turno e 2 se achou.
     }
 
     private void executeSpell(Creature creature,String spell) {
@@ -811,11 +809,6 @@ public class FandeisiaGameManager{
                     }
                 }
             }
-            // fazer ifs para verificar o time e trocar imagem, devido à restrição nominal dos tipos das craituras! TODO
-            //case ("Humano"): TODO
-            //case ("Elfo"): TODO
-            //case ("Gigante"): TODO
-            //case ("Dragão"): TODO
         }
 
     return false;
