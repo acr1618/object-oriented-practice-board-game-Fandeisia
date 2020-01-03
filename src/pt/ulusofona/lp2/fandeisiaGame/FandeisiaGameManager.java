@@ -466,12 +466,12 @@ public class FandeisiaGameManager{
     }
 
     public void giveCoins(){
-        if (teamLdr.getTreasuresFoundInThisTurn() == 0){
+        if (!teamLdr.getTreasuresFoundInThisTurn()){
             teamLdr.addCoins(1);
         } else {
             teamLdr.addCoins(2);
         }
-        if (teamRes.getTreasuresFoundInThisTurn() == 0){
+        if (!teamRes.getTreasuresFoundInThisTurn()){
             teamRes.addCoins(1);
         } else {
             teamRes.addCoins(2);
@@ -480,8 +480,8 @@ public class FandeisiaGameManager{
 
     public void processTurn(){ // still todo
 
-        teamLdr.setTreasuresFoundInThisTurn(0);// Zera em todos turnos e incrementa quando acha tesouro
-        teamRes.setTreasuresFoundInThisTurn(0);
+        teamLdr.setTreasuresFoundInThisTurn(false);// Zera em todos turnos e incrementa quando acha tesouro
+        teamRes.setTreasuresFoundInThisTurn(false);
         boolean ldrJaAdicionou = false;
         boolean resJaAdicionou = false; //auxiliares pra me ajudar porque tá foda
 
@@ -501,11 +501,9 @@ public class FandeisiaGameManager{
                 if(matchTreasure(creature.getX(), creature.getY(), creature.getId(), creature.getTeamId())){
                     turnsWithoutTreasure = 0;
                     if (creature.getTeamId() ==10){
-                        teamLdr.setTreasuresFoundInThisTurn(1);
-                        ldrJaAdicionou = true; // auxiliar...
+                        teamLdr.setTreasuresFoundInThisTurn(true);
                     } else {
-                        teamRes.setTreasuresFoundInThisTurn(1);
-                        resJaAdicionou = true;
+                        teamRes.setTreasuresFoundInThisTurn(true);
                     }
                 }
                 creature.setEnchant(false);
@@ -518,14 +516,10 @@ public class FandeisiaGameManager{
                     if(matchTreasure(creature.getX(), creature.getY(), creature.getId(), creature.getTeamId())){
                         turnsWithoutTreasure =0;
                         if (creature.getTeamId() ==10){
-                            if (!ldrJaAdicionou){
-                                teamLdr.setTreasuresFoundInThisTurn(1);
-                            }
+                                teamLdr.setTreasuresFoundInThisTurn(true);
                         }
                         if (creature.getTeamId() ==20){
-                            if (!resJaAdicionou){
-                                teamRes.setTreasuresFoundInThisTurn(1);
-                            }
+                                teamRes.setTreasuresFoundInThisTurn(true);
                         }
 
                     }
