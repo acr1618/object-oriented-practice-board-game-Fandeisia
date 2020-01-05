@@ -196,10 +196,10 @@ public class FandeisiaGameManager{
             }
         }
 
-        List<Creature> ordenada = creatures;
+        List<Creature> sortedCreatures = creatures;
         creatures = new ArrayList<>();
-        ordenada.stream()
-                .sorted((c1,c2) ->c1.getId() - c2.getId())
+        sortedCreatures.stream()
+                .sorted(Comparator.comparingInt(Element::getId))
                 .forEach(c-> creatures.add(c));
 
         if (teamLdr.getCoins() < 0 && teamRes.getCoins() < 0){
