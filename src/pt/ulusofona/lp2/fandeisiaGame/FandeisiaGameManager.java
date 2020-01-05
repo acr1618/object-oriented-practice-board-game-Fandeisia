@@ -7,6 +7,12 @@ import java.io.*;
 import java.util.concurrent.ThreadLocalRandom;
 public class FandeisiaGameManager{
 
+    /*TODO - BUG central: Quando uma criatura recebe um spell de movimento sendo que outra criatura também recebe spell de movimento pra mesma próxima posição dá erro.
+    Acontece que a criatura que já tinha validado não executa o spell e mantem condição de isEnchant. Isso porque a validação é feita denovo no executeSpell.
+    Às vezes a criatura fica parada, às vezes fica com condição isENchant e se movimenta, às vezes não dá erro.
+
+    * */
+
     public FandeisiaGameManager(){
     }
 
@@ -64,13 +70,13 @@ public class FandeisiaGameManager{
         };
     }
 
-    public Map<String, Integer> createComputerArmy(){
+    public Map<String, Integer> createComputerArmy(){ // TODO - Algumas vezes está demorando muito. Como pode melhorar? E as vezes estoura.
         //System.out.println( iterate(logCounter) + " - "+"IN createComputerArmy\n --------------------\n");
-        int spent =0;
+        int spent  =0;
         Map<String, Integer> computerArmy = new HashMap<>();
         do {
             computerArmy.put("Anão", new Random().nextInt(4));
-            spent = spent + computerArmy.get("Anão");// criar um random entre 0 e 3.
+            spent = spent + computerArmy.get("Anão");
             computerArmy.put("Dragão", new Random().nextInt(4));
             spent = spent + computerArmy.get("Dragão")*9;
             computerArmy.put("Elfo", new Random().nextInt(4));
@@ -162,7 +168,6 @@ public class FandeisiaGameManager{
                 }
             }
             sumTreasuresLeft = sumTreasuresTotal;
-
         }
         /*imagens*/
         // Set initial orientation and team image
@@ -206,7 +211,7 @@ public class FandeisiaGameManager{
         }
         return 0;
 
-    }
+    } // TODO - Mudar o retorno para null e lançar exeption das moedas. As inicializações estão corretas?
 
     public int getCurrentScore(int teamId){
         //System.out.println(iterate(logCounter) + " - "+"IN getCurrentScore\n -----------------------------------\n");
@@ -218,7 +223,7 @@ public class FandeisiaGameManager{
         }else {
             return teamRes.getPoints();
         }
-    } // Está sendo chamada duas vezes seguidas no Visualizador. Depois é chamadas mais 2 vezes.
+    }
 
     public int getCoinTotal(int teamId){
         //System.out.println(iterate(logCounter) + " - "+"IN getCoinTotal\n -----------------------------------\n");
@@ -230,7 +235,7 @@ public class FandeisiaGameManager{
             ////System.out.println(iterate(logCounter) + " - "+"  teamRes.getCoins() " + teamRes.getCoins() + "\n");
             return teamRes.getCoins();
         }
-    } //OK 29-12 Também se repete depois de escolher exército
+    } // todo - Houve erro nos testes. Porque?
 
     public void setInitialTeam(int teamId){
         //System.out.println(iterate(logCounter) + " - "+"Entrou em setInitialTeam\n -----------------------------------\n\n");
@@ -258,13 +263,14 @@ public class FandeisiaGameManager{
         } else {
             currentTeam = teamRes;
         }
-    } //-- TODO o que tem que fazer aqui?
+    }
+    //-- TODO o que tem que fazer aqui? Não entendi o que significa que esta classe precisa conseguir iniciar o jogo com qualquer dos times se sempre passa 10. Ignorar o 10 e fazer qualquer cálculo? Qual seria melhor?
 
     public int getCurrentTeamId(){
         //System.out.println(iterate(logCounter) + " - "+"IN currentTeamId\n -----------------------------------\n");
         //System.out.println(iterate(logCounter) + " - "+"  currentTeam.getId(): "+ currentTeam.getId() + "\n");
         return currentTeam.getId();
-    }
+    } //
 
     public List<Creature> getCreatures(){
         ////System.out.println(iterate(logCounter) + " - "+"IN getCreatures");
@@ -289,7 +295,7 @@ public class FandeisiaGameManager{
         }
         ////System.out.println("Elements in getElementid: " + elements);
         return 0;
-    }
+    } // todo - Polimorfismo erá ok?
 
     public String[][] getSpellTypes(){
         //System.out.println(iterate(logCounter) + " - "+"IN getSpellTypes");
@@ -308,12 +314,7 @@ public class FandeisiaGameManager{
 
     public String getSpell (int x, int y){
         //System.out.println(iterate(logCounter) + " - "+"IN getSpell");
-        for(Creature creatureS: creatures){
-            if(creatureS.getX() == x && creatureS.getY() == y){
-                return creatureS.getItSpellName();
-            }
-        }
-        return null;
+        return (getCreature(x, y).getItSpellName());
     }
 
     public Creature getCreature (int x, int y){
@@ -350,7 +351,6 @@ public class FandeisiaGameManager{
             } else {
                 return false;
             }
-
         } else {
             switch (spellName) {
                 case ("Congela4Ever"): {
@@ -433,7 +433,7 @@ public class FandeisiaGameManager{
                         return false;
                     }
                 }
-                case ("ReduzAlcance"): {
+                case ("ReduzAlcance"): {// TODO Se reduzir o alcance e o próximo movimento da criatura não for valido.
                     if (checkBalanceToSpell(getCurrentTeamId(), 1)) {
                         c.setEnchant(true);
                         taxSpell(getCurrentTeamId(), 2);
@@ -445,7 +445,7 @@ public class FandeisiaGameManager{
                         return false;
                     }
                 }
-                case ("DuplicaAlcance"): {
+                case ("DuplicaAlcance"): { // TODO Se duplicar o alcance e o próximo movimento da criatura não for valido.
                     if (checkBalanceToSpell(getCurrentTeamId(), 1)) {
                         c.setEnchant(true);
                         taxSpell(getCurrentTeamId(), 3);
@@ -460,7 +460,7 @@ public class FandeisiaGameManager{
             }
         }
         return false;
-    }
+    }// TODO - Revisar restrições e fluxo de ações. Principalmente implementar as de duplica e reduz alcance.
 
     public void giveCoins(){
         if (!teamLdr.getTreasuresFoundInThisTurn()){
@@ -475,7 +475,7 @@ public class FandeisiaGameManager{
         }
     }
 
-    public void processTurn(){ // still things fix and todo
+    public void processTurn(){
         turnCounter ++;
         teamLdr.setTreasuresFoundInThisTurn(false);// Zera em todos turnos e incrementa quando acha tesouro
         teamRes.setTreasuresFoundInThisTurn(false);
@@ -530,7 +530,7 @@ public class FandeisiaGameManager{
         }
         switchCurrentTeam();
         giveCoins(); // 1 se não achou tesouro neste turno e 2 se achou.
-    }
+    }  // still things fix and TODO - Verificar o fluxo, se está correto. Deu erro no teste do número de turnos embora estivesse tudo ok aqui.
 
     private void executeSpell(Creature creature,String spell) {
 
@@ -597,7 +597,7 @@ public class FandeisiaGameManager{
                 }
                 break;
             }
-            case ("ReduzAlcance"): {    // TODO Se duplicar o alcance e o próximo movimento da criatura não for valido.
+            case ("ReduzAlcance"): {    // TODO Se reduzir o alcance e o próximo movimento da criatura não for valido.
                 creature.reduzAlcance();
                 creature.setItSpellName(null);
                 break;
@@ -608,7 +608,7 @@ public class FandeisiaGameManager{
                 break;
             }
         }
-    }
+    }//TODO - To Check! SOMETHING IS WRONG! nextX nextY creature still spelled. Check getSpell, enchant, processturn, validate e executeSpell.
 
     private boolean executeStandardMovement(Creature creature) {
         ////System.out.println("Entrou em executeStandardMovement");
@@ -737,7 +737,7 @@ public class FandeisiaGameManager{
         }
 
     return false;
-    }
+    } // TODO - De fato fazer os movimentos das outras criaturas - Checar se a lógica procede
 
     private boolean matchTreasure(Creature creatureT) {
         for (Iterator<Treasure> i = treasures.iterator(); i.hasNext();){ // Artifício muito louco para passar do ERRO ConcurrentModificationException
@@ -766,7 +766,7 @@ public class FandeisiaGameManager{
 return false;
     }
 
-    private boolean validateMovement(int x, int y, int nextX, int nextY) { // aqui fiz uma bagunça porque a criatura validava o nexPos dela com ela mesma e me perdi. Não deu tempo de acertar.
+    private boolean validateMovement(int x, int y, int nextX, int nextY) {
 
         if (nextX < 0 || nextY < 0){ // fora da tela
             return false;
@@ -791,7 +791,7 @@ return false;
         }
         /*outra criatura */
         return getElementId(nextX, nextY) <= 0;
-    }
+    } // TODO aqui fiz uma bagunça porque a criatura validava o nexPos dela com ela mesma e me perdi. Não deu tempo de acertar.
 
     // Checar saldo;
     private boolean checkBalanceToSpell(int teamId, int spellCost) {
@@ -835,7 +835,7 @@ return false;
             return true;
         }
 
-        //sumTreasuresLeft é zerada em startGame e incrementada em matchTreasure
+        //sumTreasuresLeft é zerada em startGame e incrementada em matchTreasure todo isso mudou
         return teamLdr.getPoints() > teamRes.getPoints() + sumTreasuresLeft || teamRes.getPoints() > teamLdr.getPoints() + sumTreasuresLeft;
     }
 
@@ -898,7 +898,7 @@ return false;
         ////System.out.println("Estou em whoIsLordEder");
 
         return "Éderzito António Macedo Lopes";
-    } //OK 29-12
+    } 
     public List<String> getAuthors(){
         return Collections.singletonList("Allyson Rodrigues");
     }
