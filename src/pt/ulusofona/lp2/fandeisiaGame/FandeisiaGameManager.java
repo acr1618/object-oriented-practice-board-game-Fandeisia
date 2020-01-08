@@ -21,7 +21,7 @@ public class FandeisiaGameManager{
     List<Creature> creatures = new ArrayList<>();
     Team teamLdr = new Team (10, "LDR");
     Team teamRes = new Team (20, "RESISTENCIA");
-    Team currentTeam = new Team(0,"0");
+    Team currentTeam;
     List<Element> elements = new ArrayList<>();
     int rowsFgm = 0;
     int columnsFgm = 0;
@@ -77,7 +77,7 @@ public class FandeisiaGameManager{
         do {
             computerArmy.put("Anão", new Random().nextInt(4));
             spent = spent + computerArmy.get("Anão");
-            computerArmy.put("Dragão", new Random().nextInt(4));
+            computerArmy.put("Dragão", new Random().nextInt(1));
             spent = spent + computerArmy.get("Dragão")*9;
             computerArmy.put("Elfo", new Random().nextInt(4));
             spent = spent + computerArmy.get("Elfo")*5;
@@ -211,7 +211,7 @@ public class FandeisiaGameManager{
         }
         return 0;
 
-    } // TODO - Mudar o retorno para null e lançar exeption das moedas. As inicializações estão corretas?
+    }
 
     public int getCurrentScore(int teamId){
         //System.out.println(iterate(logCounter) + " - "+"IN getCurrentScore\n -----------------------------------\n");
@@ -613,7 +613,32 @@ public class FandeisiaGameManager{
     private boolean executeStandardMovement(Creature creature) {
         ////System.out.println("Entrou em executeStandardMovement");
         switch (creature.getTypeName()){
-            case ("Anão"): {
+            case ("Anão"): case ("Gigante"): case ("Dragão"): {
+                switch (creature.getOrientation()){
+                    case ("Norte"):{
+                        creature.setNextX(creature.getX());
+                        creature.setNextY(creature.getY() - creature.getRange());
+                        return validateMovement(creature.getX(), creature.getY(), creature.getNextX(), creature.getNextY());
+                    }
+                    case ("Sul"):{
+                        creature.setNextX(creature.getX());
+                        creature.setNextY(creature.getY() + creature.getRange());
+                        return validateMovement(creature.getX(), creature.getY(), creature.getNextX(), creature.getNextY());
+                    }
+                    case ("Este"):{
+                        creature.setNextX(creature.getX() + creature.getRange());
+                        creature.setNextY(creature.getY());
+                        return validateMovement(creature.getX(), creature.getY(), creature.getNextX(), creature.getNextY());
+                    }
+                    case ("Oeste"):{
+                        creature.setNextX(creature.getX() - creature.getRange());
+                        creature.setNextY(creature.getY());
+                        return validateMovement(creature.getX(), creature.getY(), creature.getNextX(), creature.getNextY());
+                    }
+                }
+            }
+
+            case ("Humano"): {
                 switch (creature.getOrientation()){
                     case ("Norte"):{
                         creature.setNextX(creature.getX());
@@ -639,78 +664,6 @@ public class FandeisiaGameManager{
             }
 
             case ("Elfo"): {
-                switch (creature.getOrientation()){
-                    case ("Norte"):{
-                        creature.setNextX(creature.getX());
-                        creature.setNextY(creature.getY() - creature.getRange());
-                        return validateMovement(creature.getX(), creature.getY(), creature.getNextX(), creature.getNextY());
-                    }
-                    case ("Sul"):{
-                        creature.setNextX(creature.getX());
-                        creature.setNextY(creature.getY() + creature.getRange());
-                        return validateMovement(creature.getX(), creature.getY(), creature.getNextX(), creature.getNextY());
-                    }
-                    case ("Este"):{
-                        creature.setNextX(creature.getX() + creature.getRange());
-                        creature.setNextY(creature.getY());
-                        return validateMovement(creature.getX(), creature.getY(), creature.getNextX(), creature.getNextY());
-                    }
-                    case ("Oeste"):{
-                        creature.setNextX(creature.getX() - creature.getRange());
-                        creature.setNextY(creature.getY());
-                        return validateMovement(creature.getX(), creature.getY(), creature.getNextX(), creature.getNextY());
-                    }
-                }
-            }
-            case ("Dragão"): {
-                switch (creature.getOrientation()){
-                    case ("Norte"):{
-                        creature.setNextX(creature.getX());
-                        creature.setNextY(creature.getY() - creature.getRange());
-                        return validateMovement(creature.getX(), creature.getY(), creature.getNextX(), creature.getNextY());
-                    }
-                    case ("Sul"):{
-                        creature.setNextX(creature.getX());
-                        creature.setNextY(creature.getY() + creature.getRange());
-                        return validateMovement(creature.getX(), creature.getY(), creature.getNextX(), creature.getNextY());
-                    }
-                    case ("Este"):{
-                        creature.setNextX(creature.getX() + creature.getRange());
-                        creature.setNextY(creature.getY());
-                        return validateMovement(creature.getX(), creature.getY(), creature.getNextX(), creature.getNextY());
-                    }
-                    case ("Oeste"):{
-                        creature.setNextX(creature.getX() - creature.getRange());
-                        creature.setNextY(creature.getY());
-                        return validateMovement(creature.getX(), creature.getY(), creature.getNextX(), creature.getNextY());
-                    }
-                }
-            }
-            case ("Humano"): {
-                switch (creature.getOrientation()){
-                    case ("Norte"):{
-                        creature.setNextX(creature.getX());
-                        creature.setNextY(creature.getY() - creature.getRange());
-                        return validateMovement(creature.getX(), creature.getY(), creature.getNextX(), creature.getNextY());
-                    }
-                    case ("Sul"):{
-                        creature.setNextX(creature.getX());
-                        creature.setNextY(creature.getY() + creature.getRange());
-                        return validateMovement(creature.getX(), creature.getY(), creature.getNextX(), creature.getNextY());
-                    }
-                    case ("Este"):{
-                        creature.setNextX(creature.getX() + creature.getRange());
-                        creature.setNextY(creature.getY());
-                        return validateMovement(creature.getX(), creature.getY(), creature.getNextX(), creature.getNextY());
-                    }
-                    case ("Oeste"):{
-                        creature.setNextX(creature.getX() - creature.getRange());
-                        creature.setNextY(creature.getY());
-                        return validateMovement(creature.getX(), creature.getY(), creature.getNextX(), creature.getNextY());
-                    }
-                }
-            }
-            case ("Gigante"): {
                 switch (creature.getOrientation()){
                     case ("Norte"):{
                         creature.setNextX(creature.getX());
