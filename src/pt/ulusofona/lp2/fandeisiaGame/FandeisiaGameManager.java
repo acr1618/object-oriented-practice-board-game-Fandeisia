@@ -613,7 +613,7 @@ public class FandeisiaGameManager{
     private boolean executeStandardMovement(Creature creature) {
         ////System.out.println("Entrou em executeStandardMovement");
         switch (creature.getTypeName()){
-            case ("Anão"): case ("Gigante"): case ("Dragão"): {
+            case ("Anão"): case ("Dragão"): case ("Gigante"): {
                 switch (creature.getOrientation()){
                     case ("Norte"):{
                         creature.setNextX(creature.getX());
