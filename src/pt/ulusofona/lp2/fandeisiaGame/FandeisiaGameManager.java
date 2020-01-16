@@ -122,7 +122,7 @@ public class FandeisiaGameManager{
         return Collections.emptyMap();
     }
 
-    public int startGame(String[] content, int rows, int columns){
+    public void startGame(String[] content, int rows, int columns) throws InsufficientCoinsException{
         //System.out.println( iterate(logCounter) + " - "+"IN startGame\n -----------------------------------\n");
 
         teamLdr = new Team (10,"LDR");
@@ -236,14 +236,14 @@ public class FandeisiaGameManager{
                 .sorted(Comparator.comparingInt(Element::getId))
                 .forEach(c-> creatures.add(c));
 
-        if (teamLdr.getCoins() < 0 && teamRes.getCoins() < 0){
+        /*if (teamLdr.getCoins() < 0 && teamRes.getCoins() < 0){
             return 1;
         } else if(teamLdr.getCoins() < 0){
             return 2;
         } else if(teamRes.getCoins() < 0){
             return 3;
         }
-        return 0;
+        return 0;*/
 
     }
 
