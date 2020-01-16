@@ -5,9 +5,10 @@ import java.sql.SQLOutput;
 import java.util.*;
 import java.io.*;
 import java.util.concurrent.ThreadLocalRandom;
+
 public class FandeisiaGameManager{
 
-    /*TODO - BUG central: Quando uma criatura recebe um spell de movimento sendo que outra criatura também recebe spell de movimento pra mesma próxima posição dá erro.
+    /* TODO - BUG central: Quando uma criatura recebe um spell de movimento sendo que outra criatura também recebe spell de movimento pra mesma próxima posição dá erro.
     Acontece que a criatura que já tinha validado não executa o spell e mantem condição de isEnchant. Isso porque a validação é feita denovo no executeSpell.
     Às vezes a criatura fica parada, às vezes fica com condição isENchant e se movimenta, às vezes não dá erro.
 
@@ -90,6 +91,37 @@ public class FandeisiaGameManager{
         return computerArmy;
     }
 
+    public Map<String, List<String>> getStatistics(){
+        Map<String, List<String>> dictionary = new HashMap<>();
+
+        //Quais as 3 criaturas com mais tesouros encontrados?
+        ArrayList<String> as3MaisCarregadas = new ArrayList<>();
+        //Stream
+        dictionary.put("as3MaisCarregadas", as3MaisCarregadas);
+
+        //As 5 criaturas com mais pontos encontrados
+        ArrayList<String> as5MaisRicas = new ArrayList<>();
+        //Stream
+        dictionary.put("as5MaisRicas", as5MaisRicas);
+
+        //As 3 que mais vezes foram alvos de feitiços
+        ArrayList<String> osAlvosFavoritos = new ArrayList<>();
+        //Stream
+        dictionary.put("osAlvosFavoritos", osAlvosFavoritos);
+
+        //As 3 que mais km percorreram? 1 casa 1 km
+        ArrayList<String> as3MaisViajadas = new ArrayList<>();
+        //Stream
+        dictionary.put("as3MaisViajadas", as3MaisViajadas);
+
+        //Total de pontos apanhado por cada tipo de criatura
+        ArrayList<String> tiposDeCriaturasESeusTesouros = new ArrayList<>();
+        //Stream
+        dictionary.put("tiposDeCriaturasESeusTesouros", tiposDeCriaturasESeusTesouros);
+
+        return Collections.emptyMap();
+    }
+
     public int startGame(String[] content, int rows, int columns){
         //System.out.println( iterate(logCounter) + " - "+"IN startGame\n -----------------------------------\n");
 
@@ -107,6 +139,8 @@ public class FandeisiaGameManager{
         sumTreasuresTotal =0;
         turnCounter = 0;
         iAactive = false;
+
+
 
         for(String line: content){
             String[] individual_line = line.split(", ");
@@ -239,32 +273,12 @@ public class FandeisiaGameManager{
 
     public void setInitialTeam(int teamId){
         //System.out.println(iterate(logCounter) + " - "+"Entrou em setInitialTeam\n -----------------------------------\n\n");
-
-        /*//System.out.println(" \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n############################## BEM VINDO AO FANDEISIA GAME ##############################\n\n");
-        //System.out.println("ESCOLHA QUAL TIME IRÁ COMEÇAR JOGANDO.");
-        //System.out.print("DIGITE 1 PARA LDR, 2 PARA RESISTENCIA:");
-        Scanner keyboard = new Scanner (System.in);
-        int choice = keyboard.nextInt();
-        if (choice == 1 ){
-            currentTeam = teamLdr;
-        } else {
-            currentTeam = teamRes;
-        }*/
-        // Seleção aleatória com dado
-         /*int resultDice = rollDiceBinary();
-         if (resultDice == 0){
-             currentTeam = teamLdr;
-         }else {
-             currentTeam = teamRes;
-         }*/
-
         if (teamId == teamLdr.getId()){
             currentTeam = teamLdr;
         } else {
             currentTeam = teamRes;
         }
     }
-    //-- TODO o que tem que fazer aqui? Não entendi o que significa que esta classe precisa conseguir iniciar o jogo com qualquer dos times se sempre passa 10. Ignorar o 10 e fazer qualquer cálculo? Qual seria melhor?
 
     public int getCurrentTeamId(){
         //System.out.println(iterate(logCounter) + " - "+"IN currentTeamId\n -----------------------------------\n");
@@ -788,7 +802,7 @@ return false;
             return true;
         }
 
-        //sumTreasuresLeft é zerada em startGame e incrementada em matchTreasure todo isso mudou
+        //sumTreasuresLeft é zerada em startGame e incrementada em matchTreasurex
         return teamLdr.getPoints() > teamRes.getPoints() + sumTreasuresLeft || teamRes.getPoints() > teamLdr.getPoints() + sumTreasuresLeft;
     }
 
