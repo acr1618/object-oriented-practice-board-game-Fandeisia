@@ -3,16 +3,10 @@ package pt.ulusofona.lp2.fandeisiaGame;
 public class InsufficientCoinsException extends Exception{
 
     public boolean teamRequiresMoreCoins (int teamId){
-        return true;
+        return false;
     }
 
     public int getRequiredCoinsForTeam (int teamID){
-        return 0;
+        return 20;
     }
-
-
-
-
-
-
 }

@@ -779,7 +779,6 @@ return false;
         if (teamId == 10){
             teamLdr.removeCoins(spellCost);
             //System.out.println(iterate(logCounter) + " - "+"Spell taxed from LORD ELDER");
-
         }
         if (teamId == 20){
             teamRes.removeCoins(spellCost);
@@ -830,7 +829,6 @@ return false;
                 for (Creature cR: creatures){
                     results.add(cR.getId() +" : " + cR.getTypeName() + " : " + cR.getGold() + " : " + cR.getSilver() + " : " + cR.getBronze() + " : " + cR.getPoints());
                 }
-
             }else {
                 results.add("Welcome to FANDEISIA");
                 results.add("Resultado: Vitória da equipa " + teamRes.getName());

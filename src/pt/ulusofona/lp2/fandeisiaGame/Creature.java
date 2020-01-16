@@ -17,6 +17,9 @@ public abstract class Creature extends Element {
      int nextX, nextY;
      int gold =0, silver =0, bronze =0;
      String outroTypeName; // para usar com a atualização de imagens
+     int treasureCounter = 0;
+     int spellTargetCounter = 0;
+     int distanceTraveled = 0;
 
     /*// Variáveis para guardar o mundo:
     protected int rows;
@@ -88,8 +91,6 @@ public abstract class Creature extends Element {
             }
         }
     }
-        //return true;
-     //} Talvez deixe de ser abstrato e passe a ter a implementação básica (anão) e sobrescrita nas outras classes de criatura. todo
 
     public void spin(){
             switch (this.orientation){
@@ -186,10 +187,9 @@ public abstract class Creature extends Element {
         return isFrozen4Ever;
     }
 
-
-    public void setTypeName(String typeName) {
+    /*public void setTypeName(String typeName) {
         this.typeName = typeName;
-    }
+    }*/
 
     public int getNextX() {
         return nextX;
