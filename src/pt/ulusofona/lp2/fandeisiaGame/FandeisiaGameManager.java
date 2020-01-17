@@ -63,10 +63,10 @@ public class FandeisiaGameManager implements Serializable{
         //System.out.println( iterate(logCounter) + " - "+ "IN getCreatureTypes\n -----------------------------------\n");
         return new String[][]{
                 {"Anão", "Anao.png", "Descrição do Anão", String.valueOf(1)},
-                {"Dragão", "Dragao.png", "Descrição do Dragão", String.valueOf(9)},
-                {"Elfo", "Elfo.png", "Descrição do Elfo", String.valueOf(5)},
-                {"Gigante", "Gigante.png", "Descrição do Gigante", String.valueOf(5)},
                 {"Humano", "Humano.png", "Descrição do Humano", String.valueOf(3)},
+                {"Elfo", "Elfo.png", "Descrição do Elfo", String.valueOf(5)},
+                {"Dragão", "Dragao.png", "Descrição do Dragão", String.valueOf(9)},
+                {"Gigante", "Gigante.png", "Descrição do Gigante", String.valueOf(5)},
         };
     }
 
@@ -75,16 +75,16 @@ public class FandeisiaGameManager implements Serializable{
         int spent  =0;
         Map<String, Integer> computerArmy = new HashMap<>();
         do {
-            computerArmy.put("Anão", new Random().nextInt(3));
-            spent = spent + computerArmy.get("Anão");
-            computerArmy.put("Dragão", new Random().nextInt(1));
-            spent = spent + computerArmy.get("Dragão")*9;
-            computerArmy.put("Elfo", new Random().nextInt(3));
-            spent = spent + computerArmy.get("Elfo")*5;
-            computerArmy.put("Gigante", new Random().nextInt(3));
-            spent = spent + computerArmy.get("Gigante")*5;
+            //computerArmy.put("Anão", new Random().nextInt(3));
+            //spent = spent + computerArmy.get("Anão");
             computerArmy.put("Humano", new Random().nextInt(3));
             spent = spent + computerArmy.get("Humano") *3;
+            computerArmy.put("Elfo", new Random().nextInt(3));
+            spent = spent + computerArmy.get("Elfo")*5;
+            //computerArmy.put("Dragão", new Random().nextInt(1));
+            //spent = spent + computerArmy.get("Dragão")*9;
+            //computerArmy.put("Gigante", new Random().nextInt(3));
+            //spent = spent + computerArmy.get("Gigante")*5;
 
         } while (spent >50 || computerArmy.isEmpty());
         return computerArmy;
