@@ -1,26 +1,25 @@
 package pt.ulusofona.lp2.fandeisiaGame;
 
-import java.util.List;
 public abstract class Creature extends Element {
 
-    int teamId;
-    int cost;
-    String orientation;
-    String image;
-    int points;
-    String typeName;
-    int range;
-    boolean isEnchant;
-    boolean isFrozen, isFrozen4Ever;
-    int frozenTime;
-    String itSpellName;
-    int nextX, nextY;
-    int gold, silver, bronze;
-    String outroTypeName; // para usar com a atualização de imagens
-    int treasureCounter = 0;
-    int spellTargetCounter = 0;
-    int distanceTraveled = 0;
-    private int collectedTreasures = 0;
+    protected int teamId;
+    protected int cost;
+    protected String orientation;
+    protected String image;
+    protected int points;
+    protected String typeName;
+    protected int range;
+    protected boolean isEnchant;
+    protected boolean isFrozen, isFrozen4Ever;
+    protected int frozenTime;
+    protected String itSpellName;
+    protected int nextX, nextY;
+    protected int gold, silver, bronze;
+    protected String outroTypeName; // para usar com a atualização de imagens
+    protected int treasureCounter = 0;
+    protected int spellTargetCounter = 0;
+    protected int distanceTraveled = 0;
+    protected int collectedTreasures = 0;
 
     /*// Variáveis para guardar o mundo:
     protected int rows;

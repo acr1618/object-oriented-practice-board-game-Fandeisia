@@ -1,12 +1,10 @@
 package pt.ulusofona.lp2.fandeisiaGame;
 
 import java.io.File;
-import java.sql.SQLOutput;
+import java.io.Serializable;
 import java.util.*;
-import java.io.*;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
-import java.util.stream.DoubleStream;
 
 public class FandeisiaGameManager implements Serializable{
 
@@ -496,12 +494,12 @@ public class FandeisiaGameManager implements Serializable{
     }// TODO - Revisar restrições e fluxo de ações. Principalmente implementar as de duplica e reduz alcance.
 
     public void giveCoins(){
-        if (!teamLdr.getTreasuresFoundInThisTurn()){
+        if (!teamLdr.isTreasuresFoundInThisTurn()){
             teamLdr.addCoins(1);
         } else {
             teamLdr.addCoins(2);
         }
-        if (!teamRes.getTreasuresFoundInThisTurn()){
+        if (!teamRes.isTreasuresFoundInThisTurn()){
             teamRes.addCoins(1);
         } else {
             teamRes.addCoins(2);
