@@ -6,12 +6,12 @@ import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 
-public class FandeisiaGameManager implements Serializable{
-
-    /* TODO - BUG central: Quando uma criatura recebe um spell de movimento sendo que outra criatura também recebe spell de movimento pra mesma próxima posição dá erro.
+/* TODO - BUG central: Quando uma criatura recebe um spell de movimento sendo que outra criatura também recebe spell de movimento pra mesma próxima posição dá erro.
     Acontece que a criatura que já tinha validado não executa o spell e mantem condição de isEnchant. Isso porque a validação é feita denovo no executeSpell.
     Às vezes a criatura fica parada, às vezes fica com condição isENchant e se movimenta, às vezes não dá erro.
     * */
+
+public class FandeisiaGameManager implements Serializable{
 
     public FandeisiaGameManager(){
     }
@@ -31,19 +31,15 @@ public class FandeisiaGameManager implements Serializable{
     long logCounter = 0;
     int turnCounter = 0;
     boolean iAactive = false; // Altera para true se quiser IA
-
     void setRowsFgm(int rows){
         this.rowsFgm = rows;
      }
     void setColumnsFgm(int columns){
         this.columnsFgm = columns;
      }
-
-
     // Dado binário (0 ou 1)
     int rollDiceBinary(){ return ThreadLocalRandom.current().nextInt(1 );
     } // Usado para sortear time que começa o jogo
-
     // Contador para as linhas impressas no console vindas das funções. Apenas para utilizar no desenvolvimento.
     long iterate(long i){
         if (i < 2147483647){
@@ -58,7 +54,6 @@ public class FandeisiaGameManager implements Serializable{
     public void toggleAI(boolean active){
         iAactive = !active;
     }
-
     public String[][] getCreatureTypes(){
         //System.out.println( iterate(logCounter) + " - "+ "IN getCreatureTypes\n -----------------------------------\n");
         return new String[][]{
@@ -69,9 +64,8 @@ public class FandeisiaGameManager implements Serializable{
                 {"Gigante", "Gigante.png", "Descrição do Gigante", String.valueOf(5)},
         };
     }
-
-    public Map<String, Integer> createComputerArmy(){ // TODO - Algumas vezes está demorando muito. Como pode melhorar? E as vezes estoura.
-        //System.out.println( iterate(logCounter) + " - "+"IN createComputerArmy\n --------------------\n");
+    public Map<String, Integer> createComputerArmy(){
+        //System.out.println(iterate(logCounter) + " - "+"IN createComputerArmy\n --------------------\n");
         int spent  =0;
         Map<String, Integer> computerArmy = new HashMap<>();
         do {
@@ -89,7 +83,6 @@ public class FandeisiaGameManager implements Serializable{
         } while (spent >50 || computerArmy.isEmpty());
         return computerArmy;
     }
-
     public Map<String, List<String>> getStatistics(){
         Map<String, List<String>> dictionary = new HashMap<>();
 
@@ -122,7 +115,6 @@ public class FandeisiaGameManager implements Serializable{
             dictionary.put("as5MaisRicas", asExistentes);
         }
 
-
         //As 3 que mais vezes foram alvos de feitiços
         ArrayList<String> osAlvosFavoritos = new ArrayList<>();
         //Stream
@@ -139,8 +131,7 @@ public class FandeisiaGameManager implements Serializable{
         dictionary.put("tiposDeCriaturasESeusTesouros", tiposDeCriaturasESeusTesouros);
 
         return dictionary;
-    }
-
+    } //TODO 3 more statistics
     public void startGame(String[] content, int rows, int columns) throws InsufficientCoinsException{
         //System.out.println( iterate(logCounter) + " - "+"IN startGame\n -----------------------------------\n");
 
@@ -260,10 +251,9 @@ public class FandeisiaGameManager implements Serializable{
         } else if(teamRes.getCoins() < 0){
             return 3;
         }
-        return 0;*/ // TODO
+        return 0;*/ // TODO Exception
 
     }
-
     public int getCurrentScore(int teamId){
         //System.out.println(iterate(logCounter) + " - "+"IN getCurrentScore\n -----------------------------------\n");
         //System.out.println(iterate(logCounter) + " - "+"  teamLdr.getId() in CUURRENTSCORE: " +teamLdr.getId());
@@ -275,7 +265,6 @@ public class FandeisiaGameManager implements Serializable{
             return teamRes.getPoints();
         }
     }
-
     public int getCoinTotal(int teamId){
         //System.out.println(iterate(logCounter) + " - "+"IN getCoinTotal\n -----------------------------------\n");
 
@@ -286,8 +275,7 @@ public class FandeisiaGameManager implements Serializable{
             ////System.out.println(iterate(logCounter) + " - "+"  teamRes.getCoins() " + teamRes.getCoins() + "\n");
             return teamRes.getCoins();
         }
-    } // todo - Houve erro nos testes. Porque?
-
+    }
     public void setInitialTeam(int teamId){
         //System.out.println(iterate(logCounter) + " - "+"Entrou em setInitialTeam\n -----------------------------------\n\n");
         if (teamId == teamLdr.getId()){
@@ -296,20 +284,17 @@ public class FandeisiaGameManager implements Serializable{
             currentTeam = teamRes;
         }
     }
-
     public int getCurrentTeamId(){
         //System.out.println(iterate(logCounter) + " - "+"IN currentTeamId\n -----------------------------------\n");
         //System.out.println(iterate(logCounter) + " - "+"  currentTeam.getId(): "+ currentTeam.getId() + "\n");
         return currentTeam.getId();
     } //
-
     public List<Creature> getCreatures(){
         ////System.out.println(iterate(logCounter) + " - "+"IN getCreatures");
         //System.out.println(iterate(logCounter) + " - "+" IN getCreatures ---  Lista de criaturas do mundo: "+ creatures);
         //System.out.println(iterate(logCounter) + " - "+"Depois entra em getElementId e percorre tabuleiro. Parece ok. ");
         return creatures;
     }
-
     public int getElementId(int x, int y){
         ////System.out.print(iterate(logCounter) + " - "+"IN getElementId("+x+","+y+")"+ " rowsFgm: "+rowsFgm +" columnsFgm: "+columnsFgm);
         ////System.out.println("Dimensões do mundo (rows e columns): " + rowsFgm + " e " + columnsFgm);
@@ -326,8 +311,7 @@ public class FandeisiaGameManager implements Serializable{
         }
         ////System.out.println("Elements in getElementid: " + elements);
         return 0;
-    } // todo - Polimorfismo erá ok?
-
+    }
     public String[][] getSpellTypes(){
         //System.out.println(iterate(logCounter) + " - "+"IN getSpellTypes");
         return new String[][]{
@@ -342,12 +326,10 @@ public class FandeisiaGameManager implements Serializable{
                 {"Descongela", "Descrição do Descongela", String.valueOf(8)},
         };
     }
-
     public String getSpell (int x, int y){
         //System.out.println(iterate(logCounter) + " - "+"IN getSpell");
         return (getCreature(x, y).getItSpellName());
     }
-
     public Creature getCreature (int x, int y){
         for (Creature cG : creatures) {
             if (cG.getX() == x && cG.getY() == y){
@@ -356,7 +338,6 @@ public class FandeisiaGameManager implements Serializable{
         }
         return null;
     }
-
     public boolean enchant (int x, int y, String spellName) {
         if (spellName == null){
             return false;
@@ -492,7 +473,6 @@ public class FandeisiaGameManager implements Serializable{
         }
         return false;
     }// TODO - Revisar restrições e fluxo de ações. Principalmente implementar as de duplica e reduz alcance.
-
     public void giveCoins(){
         if (!teamLdr.isTreasuresFoundInThisTurn()){
             teamLdr.addCoins(1);
@@ -505,7 +485,6 @@ public class FandeisiaGameManager implements Serializable{
             teamRes.addCoins(2);
         }
     }
-
     public void processTurn(){
         turnCounter ++;
         teamLdr.setTreasuresFoundInThisTurn(false);// Zera em todos turnos e incrementa quando acha tesouro
@@ -538,7 +517,7 @@ public class FandeisiaGameManager implements Serializable{
             /* Movimento normal das criaturas */
             // Se não tá congelada ou congelada4Ever não se movimenta. Se não, bota pra movimentar.
             if (!creature.isFrozen4Ever() && !creature.isFrozen()){
-                if (executeStandardMovement(creature)){
+                if (canExecuteStandardMovement(creature)){
                    creature.move();
                     if(matchTreasure(creature)){
                         // turnsWithoutTreasure =0;
@@ -562,7 +541,6 @@ public class FandeisiaGameManager implements Serializable{
         switchCurrentTeam();
         giveCoins(); // 1 se não achou tesouro neste turno e 2 se achou.
     }  // still things fix and TODO - Verificar o fluxo, se está correto. Deu erro no teste do número de turnos embora estivesse tudo ok aqui.
-
     private void executeSpell(Creature creature,String spell) {
 
         switch(spell){
@@ -640,9 +618,8 @@ public class FandeisiaGameManager implements Serializable{
             }
         }
     }//TODO - To Check! SOMETHING IS WRONG! nextX nextY creature still spelled. Check getSpell, enchant, processturn, validate e executeSpell.
-
-    private boolean executeStandardMovement(Creature creature) {
-        ////System.out.println("Entrou em executeStandardMovement");
+    private boolean canExecuteStandardMovement(Creature creature) {
+        ////System.out.println("Entrou em canExecuteStandardMovement");
         switch (creature.getTypeName()){
             case ("Anão"): case ("Dragão"): case ("Gigante"): {
                 switch (creature.getOrientation()){
@@ -741,8 +718,7 @@ public class FandeisiaGameManager implements Serializable{
         }
 
     return false;
-    } // TODO - De fato fazer os movimentos das outras criaturas - Checar se a lógica procede
-
+    }
     private boolean matchTreasure(Creature creatureT) {
         for (Iterator<Treasure> i = treasures.iterator(); i.hasNext();){ // Artifício muito louco para passar do ERRO ConcurrentModificationException
             Treasure treasure = i.next();
@@ -770,7 +746,6 @@ public class FandeisiaGameManager implements Serializable{
         }
 return false;
     }
-
     private boolean validateMovement(int x, int y, int nextX, int nextY) {
 
         if (nextX < 0 || nextY < 0){ // fora da tela
@@ -796,7 +771,7 @@ return false;
         }
         /*outra criatura */
         return getElementId(nextX, nextY) <= 0;
-    } // TODO aqui fiz uma bagunça porque a criatura validava o nexPos dela com ela mesma e me perdi. Não deu tempo de acertar.
+    }
 
     // Checar saldo;
     private boolean checkBalanceToSpell(int teamId, int spellCost) {
@@ -831,7 +806,6 @@ return false;
             currentTeam = teamLdr;
         }
     }
-
     public boolean gameIsOver(){
         //System.out.println("Entrou em gameIsOver");
 
@@ -842,7 +816,6 @@ return false;
         //sumTreasuresLeft é zerada em startGame e incrementada em matchTreasurex
         return teamLdr.getPoints() > teamRes.getPoints() + sumTreasuresLeft || teamRes.getPoints() > teamLdr.getPoints() + sumTreasuresLeft;
     }
-
     public List<String> getResults(){
         List<String> results = new ArrayList<>();
 
@@ -881,7 +854,6 @@ return false;
         }
         return results;
     }
-
     public boolean saveGame (File fich){
         FandeisiaGameManager game = new FandeisiaGameManager();
 
@@ -892,7 +864,6 @@ return false;
 
         return true;
     }
-
     public String whoIsLordEder(){
         ////System.out.println("Estou em whoIsLordEder");
 

@@ -78,7 +78,7 @@ public abstract class Creature extends Element {
         return points;
     }
     public void addPoints(int points) {
-        this.points = this.points + points;
+        this.points++;
     }
 
     /*Movimento*/
