@@ -77,15 +77,15 @@ public class FandeisiaGameManager implements Serializable{
         int spent  =0;
         Map<String, Integer> computerArmy = new HashMap<>();
         do {
-            computerArmy.put("Anão", new Random().nextInt(4));
+            computerArmy.put("Anão", new Random().nextInt(3));
             spent = spent + computerArmy.get("Anão");
             computerArmy.put("Dragão", new Random().nextInt(1));
             spent = spent + computerArmy.get("Dragão")*9;
-            computerArmy.put("Elfo", new Random().nextInt(4));
+            computerArmy.put("Elfo", new Random().nextInt(3));
             spent = spent + computerArmy.get("Elfo")*5;
-            computerArmy.put("Gigante", new Random().nextInt(4));
+            computerArmy.put("Gigante", new Random().nextInt(3));
             spent = spent + computerArmy.get("Gigante")*5;
-            computerArmy.put("Humano", new Random().nextInt(4));
+            computerArmy.put("Humano", new Random().nextInt(3));
             spent = spent + computerArmy.get("Humano") *3;
 
         } while (spent >50 || computerArmy.isEmpty());
@@ -105,16 +105,25 @@ public class FandeisiaGameManager implements Serializable{
         dictionary.put("as3MaisCarregadas", as3MaisCarregadas);
 
         //As 5 criaturas com mais pontos encontrados
-        Comparator<Creature> compareByPointsAndTreasures = Comparator
-                .comparing(Creature::getPoints)
-                .thenComparing(Creature::getCollectedTreasures);
-        List<String> as5MaisRicas = creatures.stream()
-                .sorted(compareByPointsAndTreasures)
-                .limit(5)
-                .sorted((c1, c2) -> c2.getPoints() - c1.getPoints() )
-                .map(creature -> creature.getId() + ":" + creature.getPoints() + ":" + creature.getCollectedTreasures())
-                .collect(Collectors.toList());
-        dictionary.put("as5MaisRicas", as5MaisRicas);
+        if (creatures.size() >= 5){
+            Comparator<Creature> compareByPointsAndTreasures = Comparator
+                    .comparing(Creature::getPoints)
+                    .thenComparing(Creature::getCollectedTreasures);
+            List<String> as5MaisRicas = creatures.stream()
+                    .sorted(compareByPointsAndTreasures)
+                    .limit(5)
+                    .sorted((c1, c2) -> c2.getPoints() - c1.getPoints() )
+                    .map(creature -> creature.getId() + ":" + creature.getPoints() + ":" + creature.getCollectedTreasures())
+                    .collect(Collectors.toList());
+            dictionary.put("as5MaisRicas", as5MaisRicas);
+        }else {
+            List<String> asExistentes = creatures.stream()
+                    .sorted((c1,c2) -> c2.getCollectedTreasures() - c1.getCollectedTreasures())
+                    .map(creature -> creature.getId() + ":" + creature.getPoints() + ":" + creature.getCollectedTreasures())
+                    .collect(Collectors.toList());
+            dictionary.put("as5MaisRicas", asExistentes);
+        }
+
 
         //As 3 que mais vezes foram alvos de feitiços
         ArrayList<String> osAlvosFavoritos = new ArrayList<>();
