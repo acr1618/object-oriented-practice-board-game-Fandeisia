@@ -224,7 +224,7 @@ public class FandeisiaGameManager implements Serializable{
         }
         /*imagens*/
         // Set initial orientation and team image
-        // Gera imagens diferentes para criaturas da Resistencia.  -- 1 coelho ou 2? - Change filter to a better later. mmaybe sobel filter
+        // Gera imagens diferentes para criaturas da Resistencia.  -- 1 coelho ou 2? - Change filter to a better later. maybe sobel filter
         for (Creature creatureI: creatures){
             if (creatureI.getTeamId() == 20){
                 creatureI.setOutroTypeName(creatureI.getOutroTypeName()+"Negate");
@@ -716,6 +716,26 @@ public class FandeisiaGameManager implements Serializable{
                     case ("Oeste"):{
                         creature.setNextX(creature.getX() - creature.getRange());
                         creature.setNextY(creature.getY());
+                        return validateMovement(creature.getX(), creature.getY(), creature.getNextX(), creature.getNextY());
+                    }
+                    case ("Nordeste"):{
+                        creature.setNextY(creature.getY() - creature.getRange());
+                        creature.setNextX(creature.getX() + creature.getRange());
+                        return validateMovement(creature.getX(), creature.getY(), creature.getNextX(), creature.getNextY());
+                    }
+                    case ("Sudeste"):{
+                        creature.setNextY(creature.getY() + creature.getRange());
+                        creature.setNextX(creature.getX() + creature.getRange());
+                        return validateMovement(creature.getX(), creature.getY(), creature.getNextX(), creature.getNextY());
+                    }
+                    case ("Sudoeste"):{
+                        creature.setNextY(creature.getY() + creature.getRange());
+                        creature.setNextX(creature.getX() - creature.getRange());
+                        return validateMovement(creature.getX(), creature.getY(), creature.getNextX(), creature.getNextY());
+                    }
+                    case ("Noroeste"):{
+                        creature.setNextY(creature.getY() - creature.getRange());
+                        creature.setNextX(creature.getX() - creature.getRange());
                         return validateMovement(creature.getX(), creature.getY(), creature.getNextX(), creature.getNextY());
                     }
                 }

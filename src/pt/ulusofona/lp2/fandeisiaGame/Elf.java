@@ -28,21 +28,78 @@ public class Elf extends Creature {
     @Override
     public void spin(){
         switch (this.orientation){
-            case ("Norte"): this.orientation = "Nordeste";
+            case ("Norte"):
+                this.orientation = "Nordeste";
+                this.image = this.outroTypeName+"-"+this.orientation+".png";
                 break;
-            case ("Nordeste"): this.orientation = "Este";
+            case ("Nordeste"):
+                this.orientation = "Este";
+                this.image = this.outroTypeName+"-"+this.orientation+".png";
                 break;
-            case("Este"): this.orientation = "Sudeste";
+            case("Este"):
+                this.orientation = "Sudeste";
+                this.image = this.outroTypeName+"-"+this.orientation+".png";
                 break;
-            case ("Sudeste"): this.orientation = "Sul";
+            case ("Sudeste"):
+                this.orientation = "Sul";
+                this.image = this.outroTypeName+"-"+this.orientation+".png";
                 break;
-            case ("Sul"): this.orientation = "Sudoeste";
+            case ("Sul"):
+                this.orientation = "Sudoeste";
+                this.image = this.outroTypeName+"-"+this.orientation+".png";
                 break;
-            case ("Sudoeste"): this.orientation = "Oeste";
+            case ("Sudoeste"):
+                this.orientation = "Oeste";
+                this.image = this.outroTypeName+"-"+this.orientation+".png";
                 break;
-            case ("Oeste"): this.orientation = "Noroeste";
+            case ("Oeste"):
+                this.orientation = "Noroeste";
+                this.image = this.outroTypeName+"-"+this.orientation+".png";
                 break;
-            case ("Noroeste"): this.orientation = "Norte";
+            case ("Noroeste"):
+                this.orientation = "Norte";
+                this.image = this.outroTypeName+"-"+this.orientation+".png";
+                break;
+        }
+    }
+    public void move(){
+        switch (this.orientation){
+            case ("Norte"): {
+                this.y = y-this.range;
+                break;
+            }
+            case ("Este"): {
+                this.x = x+this.range;
+                break;
+            }
+            case ("Sul"): {
+                this.y = y+this.range;
+                break;
+            }
+            case ("Oeste"): {
+                this.x = x-this.range;
+                break;
+            }
+            case ("Nordeste"): {
+                this.y = y-this.range;
+                this.x = x+this.range;
+                break;
+            }
+            case ("Sudeste"): {
+                this.y = y+this.range;
+                this.x = x+this.range;
+                break;
+            }
+            case ("Sudoeste"): {
+                this.y = y+this.range;
+                this.x = x-this.range;
+                break;
+            }
+            case ("Noroeste"): {
+                this.y = y-this.range;
+                this.x = x-this.range;
+                break;
+            }
         }
     }
 }

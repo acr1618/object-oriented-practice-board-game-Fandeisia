@@ -23,26 +23,41 @@ public class Dragon extends Creature {
         this.nextX=0;
         this.nextY=0;
     }
-
-
     @Override
     public void spin(){
         switch (this.orientation){
-            case ("Norte"): this.orientation = "Nordeste";
+            case ("Norte"):
+                this.orientation = "Nordeste";
+                this.image = this.outroTypeName+"-"+this.orientation+".png";
                 break;
-            case ("Nordeste"): this.orientation = "Este";
+            case ("Nordeste"):
+                this.orientation = "Este";
+                this.image = this.outroTypeName+"-"+this.orientation+".png";
                 break;
-            case("Este"): this.orientation = "Sudeste";
+            case("Este"):
+                this.orientation = "Sudeste";
+                this.image = this.outroTypeName+"-"+this.orientation+".png";
                 break;
-            case ("Sudeste"): this.orientation = "Sul";
+            case ("Sudeste"):
+                this.orientation = "Sul";
+                this.image = this.outroTypeName+"-"+this.orientation+".png";
                 break;
-            case ("Sul"): this.orientation = "Sudoeste";
+            case ("Sul"):
+                this.orientation = "Sudoeste";
+                this.image = this.outroTypeName+"-"+this.orientation+".png";
                 break;
-            case ("Sudoeste"): this.orientation = "Oeste";
+            case ("Sudoeste"):
+                this.orientation = "Oeste";
+                this.image = this.outroTypeName+"-"+this.orientation+".png";
                 break;
-            case ("Oeste"): this.orientation = "Noroeste";
+            case ("Oeste"):
+                this.orientation = "Noroeste";
+                this.image = this.outroTypeName+"-"+this.orientation+".png";
                 break;
-            case ("Noroeste"): this.orientation = "Norte";
+            case ("Noroeste"):
+                this.orientation = "Norte";
+                this.image = this.outroTypeName+"-"+this.orientation+".png";
+                break;
         }
     }
 }
