@@ -5,6 +5,8 @@ import java.sql.SQLOutput;
 import java.util.*;
 import java.io.*;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.stream.Collectors;
+import java.util.stream.DoubleStream;
 
 public class FandeisiaGameManager implements Serializable{
 
@@ -93,14 +95,25 @@ public class FandeisiaGameManager implements Serializable{
     public Map<String, List<String>> getStatistics(){
         Map<String, List<String>> dictionary = new HashMap<>();
 
-        //Quais as 3 criaturas com mais tesouros encontrados?
-        ArrayList<String> as3MaisCarregadas = new ArrayList<>();
-        //Stream
+        //As 3 criaturas com mais tesouros encontrados
+        List<String> as3MaisCarregadas = creatures.stream()
+                .sorted((c1,c2) -> c2.getCollectedTreasures() - c1.getCollectedTreasures())
+                .limit(3)
+                .sorted((c1,c2) -> c2.getCollectedTreasures() - c1.getCollectedTreasures())
+                .map(creature -> creature.getId() + ":" + creature.getCollectedTreasures())
+                .collect(Collectors.toList());
         dictionary.put("as3MaisCarregadas", as3MaisCarregadas);
 
         //As 5 criaturas com mais pontos encontrados
-        ArrayList<String> as5MaisRicas = new ArrayList<>();
-        //Stream
+        Comparator<Creature> compareByPointsAndTreasures = Comparator
+                .comparing(Creature::getPoints)
+                .thenComparing(Creature::getCollectedTreasures);
+        List<String> as5MaisRicas = creatures.stream()
+                .sorted(compareByPointsAndTreasures)
+                .limit(5)
+                .sorted((c1, c2) -> c2.getPoints() - c1.getPoints() )
+                .map(creature -> creature.getId() + ":" + creature.getPoints() + ":" + creature.getCollectedTreasures())
+                .collect(Collectors.toList());
         dictionary.put("as5MaisRicas", as5MaisRicas);
 
         //As 3 que mais vezes foram alvos de feitiços
@@ -118,7 +131,7 @@ public class FandeisiaGameManager implements Serializable{
         //Stream
         dictionary.put("tiposDeCriaturasESeusTesouros", tiposDeCriaturasESeusTesouros);
 
-        return Collections.emptyMap();
+        return dictionary;
     }
 
     public void startGame(String[] content, int rows, int columns) throws InsufficientCoinsException{
@@ -709,13 +722,13 @@ public class FandeisiaGameManager implements Serializable{
             if (creatureT.getX() == treasure.getX() && creatureT.getY() == treasure.getY()){ // MATCH
                 creatureT.addPoints(treasure.getValue()); // Add pontos criatura
                 sumTreasuresLeft -= treasure.getValue();
-                if (treasure.getValue() ==3){
+                if (treasure.getValue() ==3){ //gold
                     creatureT.addGold();
                 }
-                if (treasure.getValue() ==2){
+                if (treasure.getValue() ==2){ //silver
                     creatureT.addSilver();
                 }
-                if (treasure.getValue() ==1){
+                if (treasure.getValue() ==1){ //bronze
                     creatureT.addBronze();
                 }
                 if (creatureT.getTeamId() == 10){
@@ -723,6 +736,7 @@ public class FandeisiaGameManager implements Serializable{
                 } else {
                     teamRes.addPoints(treasure.getValue()); // Add pontos time
                 }
+                creatureT.collectTreasure(treasure.getValue());
                 i.remove();
                 return true;
             }

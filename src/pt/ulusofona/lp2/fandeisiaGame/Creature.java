@@ -22,6 +22,7 @@ public abstract class Creature extends Element {
      int treasureCounter = 0;
      int spellTargetCounter = 0;
      int distanceTraveled = 0;
+    private int collectedTreasures = 0;
 
     /*// Variáveis para guardar o mundo:
     protected int rows;
@@ -253,5 +254,13 @@ public abstract class Creature extends Element {
     }
     public int getBronze() {
         return bronze;
+    }
+
+    public int getCollectedTreasures() {
+        return collectedTreasures;
+    }
+
+    public void collectTreasure(int value) {
+        this.collectedTreasures ++;
     }
 }
