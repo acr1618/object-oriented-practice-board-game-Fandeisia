@@ -62,9 +62,9 @@ public class FandeisiaGameManager implements Serializable{
     public String[][] getCreatureTypes(){
         //System.out.println( iterate(logCounter) + " - "+ "IN getCreatureTypes\n -----------------------------------\n");
         return new String[][]{
-                {"Anão", "Anao.png", "Descrição do Anão", String.valueOf(1)},
                 {"Humano", "Humano.png", "Descrição do Humano", String.valueOf(3)},
                 {"Elfo", "Elfo.png", "Descrição do Elfo", String.valueOf(5)},
+                {"Anão", "Anao.png", "Descrição do Anão", String.valueOf(1)},
                 {"Dragão", "Dragao.png", "Descrição do Dragão", String.valueOf(9)},
                 {"Gigante", "Gigante.png", "Descrição do Gigante", String.valueOf(5)},
         };
