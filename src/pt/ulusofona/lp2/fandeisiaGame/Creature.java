@@ -6,6 +6,7 @@ public abstract class Creature extends Element {
     protected int cost;
     protected String orientation;
     protected String image;
+    protected int points;
     protected String typeName;
     protected int range;
     protected boolean isEnchant;
@@ -35,6 +36,7 @@ public abstract class Creature extends Element {
         this.isEnchant = false;
         this.isFrozen = false;
         this.isFrozen4Ever = false;
+        this.points = 0;
         this.frozenTime =0;
         this.gold =0;
         this.silver =0;
@@ -52,7 +54,7 @@ public abstract class Creature extends Element {
     public int getCost(){ return cost; }
     @Override
     public String toString() {
-        return id + " | " + typeName + " | " + teamId + " | " + collectedTreasures + " @ " + "(" + x +", " + y + ") " + orientation;
+        return id + " | " + typeName + " | " + teamId + " | " + points + " @ " + "(" + x +", " + y + ") " + orientation;
     }
 
     /*Imagem*/
@@ -199,6 +201,9 @@ public abstract class Creature extends Element {
     }
 
     /*Tesouros e Pontos*/
+    public int getPoints(){
+        return points;
+    }
     public void addGold() {
         gold = gold +1;
     }
@@ -217,11 +222,8 @@ public abstract class Creature extends Element {
     public int getBronze() {
         return bronze;
     }
-    public int getCollectedTreasures() {
-        return collectedTreasures;
-    }
     public void collectTreasure(int value) {
-        this.collectedTreasures ++;
+        this.points = this.points++;
     }
 
     //public void lookAtTheWorld(int rows, int columns, List<Hole> holes, List<Treasure> treasures, List<Creature> creatures) {} -----> NOT YET!

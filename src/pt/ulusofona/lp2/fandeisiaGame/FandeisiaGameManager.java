@@ -83,10 +83,10 @@ public class FandeisiaGameManager implements Serializable{
 
         //As 3 criaturas com mais tesouros encontrados
         List<String> as3MaisCarregadas = creatures.stream()
-                .sorted((c1,c2) -> c2.getCollectedTreasures() - c1.getCollectedTreasures())
+                .sorted((c1,c2) -> c2.getPoints() - c1.getPoints())
                 .limit(3)
-                .sorted((c1,c2) -> c2.getCollectedTreasures() - c1.getCollectedTreasures())
-                .map(creature -> creature.getId() + ":" + creature.getCollectedTreasures())
+                .sorted((c1,c2) -> c2.getPoints() - c1.getPoints())
+                .map(creature -> creature.getId() + ":" + creature.getPoints())
                 .collect(Collectors.toList());
         dictionary.put("as3MaisCarregadas", as3MaisCarregadas);
 
@@ -95,18 +95,18 @@ public class FandeisiaGameManager implements Serializable{
             Comparator<Creature> compareByPointsAndTreasures = Comparator
                     .comparing(Creature::getPoints)
                     .reversed()
-                    .thenComparing(Creature::getCollectedTreasures);
+                    .thenComparing(Creature::getPoints);
             List<String> as5MaisRicas = creatures.stream()
                     .sorted(compareByPointsAndTreasures)
                     .limit(5)
                     .sorted((c1, c2) -> c2.getPoints() - c1.getPoints() )
-                    .map(creature -> creature.getId() + ":" + creature.getPoints() + ":" + creature.getCollectedTreasures())
+                    .map(creature -> creature.getId() + ":" + creature.getPoints() + ":" + creature.getPoints())
                     .collect(Collectors.toList());
             dictionary.put("as5MaisRicas", as5MaisRicas);
         }else {
             List<String> asExistentes = creatures.stream()
-                    .sorted((c1,c2) -> c2.getCollectedTreasures() - c1.getCollectedTreasures())
-                    .map(creature -> creature.getId() + ":" + creature.getPoints() + ":" + creature.getCollectedTreasures())
+                    .sorted((c1,c2) -> c2.getPoints() - c1.getPoints())
+                    .map(creature -> creature.getId() + ":" + creature.getPoints() + ":" + creature.getPoints())
                     .collect(Collectors.toList());
             dictionary.put("as5MaisRicas", asExistentes);
         }
@@ -822,7 +822,7 @@ return false;
             results.add("Nr. de Turnos jogados: "+ turnCounter);
             results.add("-----");
             for (Creature cR: creatures){
-                results.add(cR.getId() +" : " + cR.getTypeName() + " : " + cR.getGold() + " : " + cR.getSilver() + " : " + cR.getBronze() + " : " + cR.getCollectedTreasures());
+                results.add(cR.getId() +" : " + cR.getTypeName() + " : " + cR.getGold() + " : " + cR.getSilver() + " : " + cR.getBronze() + " : " + cR.getPoints());
             }
         } else {
             if (teamRes.getPoints() == teamLdr.getPoints()){
@@ -833,7 +833,7 @@ return false;
                 results.add("Nr. de Turnos jogados: "+ turnCounter);
                 results.add("-----");
                 for (Creature cR: creatures){
-                    results.add(cR.getId() +" : " + cR.getTypeName() + " : " + cR.getGold() + " : " + cR.getSilver() + " : " + cR.getBronze() + " : " + cR.getCollectedTreasures());
+                    results.add(cR.getId() +" : " + cR.getTypeName() + " : " + cR.getGold() + " : " + cR.getSilver() + " : " + cR.getBronze() + " : " + cR.getPoints());
                 }
             }else {
                 results.add("Welcome to FANDEISIA");
@@ -843,7 +843,7 @@ return false;
                 results.add("Nr. de Turnos jogados: "+ turnCounter);
                 results.add("-----");
                 for (Creature cR: creatures){
-                    results.add(cR.getId() +" : " + cR.getTypeName() + " : " + cR.getGold() + " : " + cR.getSilver() + " : " + cR.getBronze() + " : " + cR.getCollectedTreasures());
+                    results.add(cR.getId() +" : " + cR.getTypeName() + " : " + cR.getGold() + " : " + cR.getSilver() + " : " + cR.getBronze() + " : " + cR.getPoints());
                 }
             }
         }
