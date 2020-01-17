@@ -6,7 +6,6 @@ public abstract class Creature extends Element {
     protected int cost;
     protected String orientation;
     protected String image;
-    protected int points;
     protected String typeName;
     protected int range;
     protected boolean isEnchant;
@@ -36,7 +35,6 @@ public abstract class Creature extends Element {
         this.isEnchant = false;
         this.isFrozen = false;
         this.isFrozen4Ever = false;
-        this.points = 0;
         this.frozenTime =0;
         this.gold =0;
         this.silver =0;
@@ -54,7 +52,7 @@ public abstract class Creature extends Element {
     public int getCost(){ return cost; }
     @Override
     public String toString() {
-        return id + " | " + typeName + " | " + teamId + " | " + points + " @ " + "(" + x +", " + y + ") " + orientation;
+        return id + " | " + typeName + " | " + teamId + " | " + collectedTreasures + " @ " + "(" + x +", " + y + ") " + orientation;
     }
 
     /*Imagem*/
@@ -71,14 +69,6 @@ public abstract class Creature extends Element {
     }
     public void setOutroTypeName(String outroTypeName) {
         this.outroTypeName = outroTypeName;
-    }
-
-    /*Pontos*/
-    public int getPoints(){
-        return points;
-    }
-    public void addPoints(int points) {
-        this.points = this.points + points;
     }
 
     /*Movimento*/
@@ -208,7 +198,7 @@ public abstract class Creature extends Element {
         return isFrozen4Ever;
     }
 
-    /*Tesouros*/
+    /*Tesouros e Pontos*/
     public void addGold() {
         gold = gold +1;
     }
@@ -231,7 +221,6 @@ public abstract class Creature extends Element {
         return collectedTreasures;
     }
     public void collectTreasure(int value) {
-        this.points = this.points + value;
         this.collectedTreasures ++;
     }
 

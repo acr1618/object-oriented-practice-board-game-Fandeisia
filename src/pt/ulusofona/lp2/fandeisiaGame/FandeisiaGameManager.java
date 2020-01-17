@@ -822,7 +822,7 @@ return false;
             results.add("Nr. de Turnos jogados: "+ turnCounter);
             results.add("-----");
             for (Creature cR: creatures){
-                results.add(cR.getId() +" : " + cR.getTypeName() + " : " + cR.getGold() + " : " + cR.getSilver() + " : " + cR.getBronze() + " : " + cR.getPoints());
+                results.add(cR.getId() +" : " + cR.getTypeName() + " : " + cR.getGold() + " : " + cR.getSilver() + " : " + cR.getBronze() + " : " + cR.getCollectedTreasures());
             }
         } else {
             if (teamRes.getPoints() == teamLdr.getPoints()){
@@ -833,7 +833,7 @@ return false;
                 results.add("Nr. de Turnos jogados: "+ turnCounter);
                 results.add("-----");
                 for (Creature cR: creatures){
-                    results.add(cR.getId() +" : " + cR.getTypeName() + " : " + cR.getGold() + " : " + cR.getSilver() + " : " + cR.getBronze() + " : " + cR.getPoints());
+                    results.add(cR.getId() +" : " + cR.getTypeName() + " : " + cR.getGold() + " : " + cR.getSilver() + " : " + cR.getBronze() + " : " + cR.getCollectedTreasures());
                 }
             }else {
                 results.add("Welcome to FANDEISIA");
@@ -843,7 +843,7 @@ return false;
                 results.add("Nr. de Turnos jogados: "+ turnCounter);
                 results.add("-----");
                 for (Creature cR: creatures){
-                    results.add(cR.getId() +" : " + cR.getTypeName() + " : " + cR.getGold() + " : " + cR.getSilver() + " : " + cR.getBronze() + " : " + cR.getPoints());
+                    results.add(cR.getId() +" : " + cR.getTypeName() + " : " + cR.getGold() + " : " + cR.getSilver() + " : " + cR.getBronze() + " : " + cR.getCollectedTreasures());
                 }
             }
         }
