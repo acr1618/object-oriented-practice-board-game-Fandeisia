@@ -16,32 +16,27 @@ public class FandeisiaGameManager implements Serializable{
     public FandeisiaGameManager(){
     }
 
-    List<Treasure> treasures = new ArrayList<>();
-    List<Hole> holes = new ArrayList<>();
-    List<Creature> creatures = new ArrayList<>();
-    Team teamLdr = new Team (10, "LDR");
-    Team teamRes = new Team (20, "RESISTENCIA");
-    Team currentTeam; // referencia ao time corrente
-    List<Element> elements = new ArrayList<>();
-    int rowsFgm = 0; // linhas do mundo
-    int columnsFgm = 0; // colunas do mundo
-    int turnsWithoutTreasure = 0;
-    int sumTreasuresLeft = 0;
-    int sumTreasuresTotal =0;
-    long logCounter = 0;
-    int turnCounter = 0;
-    boolean iAactive = false; // Altera para true se quiser IA
-    void setRowsFgm(int rows){
+    private List<Treasure> treasures = new ArrayList<>();
+    private List<Hole> holes = new ArrayList<>();
+    private List<Creature> creatures = new ArrayList<>();
+    private Team teamLdr = new Team (10, "LDR");
+    private Team teamRes = new Team (20, "RESISTENCIA");
+    private Team currentTeam; // referencia ao time corrente
+    private int rowsFgm = 0; // linhas do mundo
+    private int columnsFgm = 0; // colunas do mundo
+    private int turnsWithoutTreasure = 0;
+    private int sumTreasuresLeft = 0;
+    private long logCounter = 0;
+    private int turnCounter = 0;
+    private boolean iAactive = false; // Altera para true se quiser IA
+    private void setRowsFgm(int rows){
         this.rowsFgm = rows;
      }
-    void setColumnsFgm(int columns){
+    private void setColumnsFgm(int columns){
         this.columnsFgm = columns;
      }
-    // Dado binário (0 ou 1)
-    int rollDiceBinary(){ return ThreadLocalRandom.current().nextInt(1 );
-    } // Usado para sortear time que começa o jogo
     // Contador para as linhas impressas no console vindas das funções. Apenas para utilizar no desenvolvimento.
-    long iterate(long i){
+    private long iterate(long i){
         if (i < 2147483647){
         logCounter++;
         return logCounter;
@@ -146,7 +141,7 @@ public class FandeisiaGameManager implements Serializable{
         creatures = new ArrayList<>();
         turnsWithoutTreasure = 0;
         sumTreasuresLeft = 0;
-        sumTreasuresTotal =0;
+        int sumTreasuresTotal = 0;
         turnCounter = 0;
         iAactive = false;
 
@@ -299,7 +294,7 @@ public class FandeisiaGameManager implements Serializable{
         ////System.out.print(iterate(logCounter) + " - "+"IN getElementId("+x+","+y+")"+ " rowsFgm: "+rowsFgm +" columnsFgm: "+columnsFgm);
         ////System.out.println("Dimensões do mundo (rows e columns): " + rowsFgm + " e " + columnsFgm);
 
-        elements = new ArrayList<>();
+        List<Element> elements = new ArrayList<>();
         elements.addAll(creatures);
         elements.addAll(treasures);
         elements.addAll(holes);
