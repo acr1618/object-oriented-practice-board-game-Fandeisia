@@ -3,6 +3,8 @@ package pt.ulusofona.lp2.fandeisiaGame;
 import java.util.List;
 public abstract class Creature extends Element {
 
+
+
      int teamId;
      int cost;
      String orientation;

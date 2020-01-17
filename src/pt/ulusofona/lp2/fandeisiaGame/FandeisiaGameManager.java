@@ -6,12 +6,11 @@ import java.util.*;
 import java.io.*;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class FandeisiaGameManager{
+public class FandeisiaGameManager implements Serializable{
 
     /* TODO - BUG central: Quando uma criatura recebe um spell de movimento sendo que outra criatura também recebe spell de movimento pra mesma próxima posição dá erro.
     Acontece que a criatura que já tinha validado não executa o spell e mantem condição de isEnchant. Isso porque a validação é feita denovo no executeSpell.
     Às vezes a criatura fica parada, às vezes fica com condição isENchant e se movimenta, às vezes não dá erro.
-
     * */
 
     public FandeisiaGameManager(){
@@ -22,12 +21,12 @@ public class FandeisiaGameManager{
     List<Creature> creatures = new ArrayList<>();
     Team teamLdr = new Team (10, "LDR");
     Team teamRes = new Team (20, "RESISTENCIA");
-    Team currentTeam;
+    Team currentTeam; // referencia ao time corrente
     List<Element> elements = new ArrayList<>();
-    int rowsFgm = 0;
-    int columnsFgm = 0;
+    int rowsFgm = 0; // linhas do mundo
+    int columnsFgm = 0; // colunas do mundo
     int turnsWithoutTreasure = 0;
-    int sumTreasuresLeft = 0; //Soma tesouros restantes
+    int sumTreasuresLeft = 0;
     int sumTreasuresTotal =0;
     long logCounter = 0;
     int turnCounter = 0;
@@ -139,8 +138,6 @@ public class FandeisiaGameManager{
         sumTreasuresTotal =0;
         turnCounter = 0;
         iAactive = false;
-
-
 
         for(String line: content){
             String[] individual_line = line.split(", ");
@@ -843,13 +840,9 @@ return false;
         }
         return results;
     }
+
     public boolean saveGame (File fich){
-        /*List<String> data = new ArrayList<>();
-        data.add("Word state and teams: "+ rowsFgm + ":" + columnsFgm +":"+ turnCounter + ":" + turnsWithoutTreasure + ":" + currentTeam.getId() + ":" + teamLdr.getId() + ":"+
-                ":"+ teamLdr.getPoints() + ":"+teamLdr.getCoins() + ":" + teamRes.getId() + ":"+teamRes.getPoints());
-        for (Creature creatureF: creatures){
-            data.add("creatures: " + creatureF.getId() + ":"+creatureF.get);
-        }*/
+        FandeisiaGameManager game = new FandeisiaGameManager();
 
         return true;
     }
