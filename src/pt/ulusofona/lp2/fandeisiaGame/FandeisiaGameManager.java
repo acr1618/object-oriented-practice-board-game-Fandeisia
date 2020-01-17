@@ -94,6 +94,7 @@ public class FandeisiaGameManager implements Serializable{
         if (creatures.size() >= 5){
             Comparator<Creature> compareByPointsAndTreasures = Comparator
                     .comparing(Creature::getPoints)
+                    .reversed()
                     .thenComparing(Creature::getCollectedTreasures);
             List<String> as5MaisRicas = creatures.stream()
                     .sorted(compareByPointsAndTreasures)
@@ -718,7 +719,6 @@ public class FandeisiaGameManager implements Serializable{
         for (Iterator<Treasure> i = treasures.iterator(); i.hasNext();){ // Artifício muito louco para passar do ERRO ConcurrentModificationException
             Treasure treasure = i.next();
             if (creatureT.getX() == treasure.getX() && creatureT.getY() == treasure.getY()){ // MATCH
-                creatureT.addPoints(treasure.getValue()); // Add pontos criatura
                 sumTreasuresLeft -= treasure.getValue();
                 if (treasure.getValue() ==3){ //gold
                     creatureT.addGold();
