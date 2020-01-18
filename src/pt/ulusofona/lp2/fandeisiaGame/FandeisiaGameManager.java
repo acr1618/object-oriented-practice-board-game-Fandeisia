@@ -113,17 +113,27 @@ public class FandeisiaGameManager implements Serializable{
         }
 
         //As 3 que mais vezes foram alvos de feitiços
-        ArrayList<String> osAlvosFavoritos = new ArrayList<>();
+        List<String> osAlvosFavoritos = creatures.stream()
+                .sorted((c1, c2) -> c2.getSpellTargetCounter() - c1.getSpellTargetCounter())
+                .limit(3)
+                .map(creature -> creature.getId() + ":" + creature.getTeamId() + ":" + creature.getSpellTargetCounter())
+                .collect(Collectors.toList());
+
         //Stream
         dictionary.put("osAlvosFavoritos", osAlvosFavoritos);
 
         //As 3 que mais km percorreram? 1 casa 1 km
-        ArrayList<String> as3MaisViajadas = new ArrayList<>();
+        List<String> as3MaisViajadas = creatures.stream()
+                .sorted((c1,c2) -> c2.getKm() - c1.getKm())
+                .limit(3)
+                .sorted(Comparator.comparingInt(c -> c.getKm()))
+                .map(creature -> creature.getId() + ":" + creature.getKm())
+                .collect(Collectors.toList());
         //Stream
         dictionary.put("as3MaisViajadas", as3MaisViajadas);
 
         //Total de pontos apanhado por cada tipo de criatura
-        ArrayList<String> tiposDeCriaturasESeusTesouros = new ArrayList<>();
+        List<String> tiposDeCriaturasESeusTesouros = new ArrayList<>();
         //Stream
         dictionary.put("tiposDeCriaturasESeusTesouros", tiposDeCriaturasESeusTesouros);
 
@@ -346,6 +356,7 @@ public class FandeisiaGameManager implements Serializable{
                 c.setEnchant(true);
                 c.setItSpellName(spellName);
                 taxSpell(getCurrentTeamId(), 8);
+                c.setSpellTargetCounter();
                 return true;
             } else {
                 return false;
@@ -356,6 +367,7 @@ public class FandeisiaGameManager implements Serializable{
                 c.setEnchant(true);
                 taxSpell(getCurrentTeamId(), 3);
                 c.setItSpellName(spellName);
+                c.setSpellTargetCounter();
                 return true;
             } else {
                 return false;
@@ -369,6 +381,7 @@ public class FandeisiaGameManager implements Serializable{
                         //c.setItSpellName("Congela4Ever");
                         taxSpell(getCurrentTeamId(), 10);
                         c.setItSpellName(spellName);
+                        c.setSpellTargetCounter();
                         return true;
                     } else {
                         return false;
@@ -382,6 +395,7 @@ public class FandeisiaGameManager implements Serializable{
                             c.setEnchant(true);
                             taxSpell(getCurrentTeamId(), 1);
                             c.setItSpellName(spellName);
+                            c.setSpellTargetCounter();
                             return true;
                         } else {
                             return false;
@@ -400,6 +414,7 @@ public class FandeisiaGameManager implements Serializable{
                             //c.EmpurraParaEste();
                             taxSpell(getCurrentTeamId(), 1);
                             c.setItSpellName(spellName);
+                            c.setSpellTargetCounter();
                             return true;
                         } else {
                             return false;
@@ -418,6 +433,7 @@ public class FandeisiaGameManager implements Serializable{
                             //c.setItSpellName("EmpurraParaSul");
                             taxSpell(getCurrentTeamId(), 1);
                             c.setItSpellName(spellName);
+                            c.setSpellTargetCounter();
                             return true;
                         } else {
                             return false;
@@ -434,6 +450,7 @@ public class FandeisiaGameManager implements Serializable{
                             c.setEnchant(true);
                             taxSpell(getCurrentTeamId(), 1);
                             c.setItSpellName(spellName);
+                            c.setSpellTargetCounter();
                             return true;
                         } else {
                             return false;
@@ -449,6 +466,7 @@ public class FandeisiaGameManager implements Serializable{
                         c.setItSpellName(spellName);
                         //c.ReduzAlcance();
                         //c.setItSpellName("ReduzAlcance");
+                        c.setSpellTargetCounter();
                         return true;
                     } else {
                         return false;
@@ -461,6 +479,7 @@ public class FandeisiaGameManager implements Serializable{
                         c.setItSpellName(spellName);
                         //c.DuplicaAlcance(c.getRange());
                         //c.setItSpellName("DuplicaAlcance");
+                        c.setSpellTargetCounter();
                         return true;
                     } else {
                         return false;

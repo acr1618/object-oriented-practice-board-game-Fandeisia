@@ -16,10 +16,9 @@ public abstract class Creature extends Element {
     protected int nextX, nextY;
     protected int gold, silver, bronze;
     protected String outroTypeName; // para usar com a atualização de imagens
-    protected int treasureCounter = 0;
     protected int spellTargetCounter = 0;
     protected int distanceTraveled = 0;
-    protected int collectedTreasures = 0;
+    protected int km = 0;
 
     /*// Variáveis para guardar o mundo:
     protected int rows;
@@ -226,6 +225,31 @@ public abstract class Creature extends Element {
         this.points = this.points + 1;
     }
 
+    /*Statistics*/
+
+    public int getSpellTargetCounter() {
+        return spellTargetCounter;
+    }
+
+    public void setSpellTargetCounter() {
+        this.spellTargetCounter ++;
+    }
+
+    public int getDistanceTraveled() {
+        return distanceTraveled;
+    }
+
+    public void setDistanceTraveled(int distanceTraveled) {
+        this.distanceTraveled = distanceTraveled;
+    }
+
+    public int getKm() {
+        return km;
+    }
+
+    public void addKm(int km){
+        this.km = this.km + km;
+    }
     //public void lookAtTheWorld(int rows, int columns, List<Hole> holes, List<Treasure> treasures, List<Creature> creatures) {} -----> NOT YET!
 
 }

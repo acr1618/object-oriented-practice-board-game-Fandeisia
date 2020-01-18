@@ -6,7 +6,7 @@ public class InsufficientCoinsException extends Exception{
         return false;
     }
 
-    public int requiredCoinsForTeam (int teamID){
+    public int getRequiredCoinsForTeam (int teamID){
         return 20;
     }
 }
