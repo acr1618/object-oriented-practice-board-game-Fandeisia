@@ -12,9 +12,6 @@ import java.util.stream.Collectors;
 
 public class FandeisiaGameManager implements Serializable{
 
-    public FandeisiaGameManager(){
-    }
-
     /*Team*/
     private Team teamLdr = new Team (10, "LDR");
     private Team teamRes = new Team (20, "RESISTENCIA");
@@ -30,6 +27,9 @@ public class FandeisiaGameManager implements Serializable{
     private long logCounter = 0;
     private int turnCounter = 0;
     private boolean iAactive = false; // Altera para true se quiser IA
+
+    public FandeisiaGameManager(){
+    }
     private void setRowsFgm(int rows){
         this.rowsFgm = rows;
      }
