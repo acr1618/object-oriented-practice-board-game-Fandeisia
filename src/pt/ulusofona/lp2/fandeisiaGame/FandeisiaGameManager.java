@@ -245,11 +245,10 @@ public class FandeisiaGameManager implements Serializable{
             }
         }
 
-        List<Creature> sortedCreatures = creatures;
-        creatures = new ArrayList<>();
-        sortedCreatures.stream()
-                .sorted(Comparator.comparingInt(Element::getId))
-                .forEach(c-> creatures.add(c));
+        List<Creature> sortedCreatures = creatures.stream()
+                .sorted((c1,c2) -> c1.getId() - c2.getId())
+                .collect(Collectors.toList());
+        setCreaturesList(sortedCreatures);
 
         /*if (teamLdr.getCoins() < 0 && teamRes.getCoins() < 0){
             return 1;
@@ -261,6 +260,11 @@ public class FandeisiaGameManager implements Serializable{
         return 0;*/ // TODO Exception
 
     }
+
+    private void setCreaturesList(List<Creature> sortedCreatures) {
+        this.creatures = sortedCreatures;
+    }
+
     public int getCurrentScore(int teamId){
         //System.out.println(iterate(logCounter) + " - "+"IN getCurrentScore\n -----------------------------------\n");
         //System.out.println(iterate(logCounter) + " - "+"  teamLdr.getId() in CUURRENTSCORE: " +teamLdr.getId());
