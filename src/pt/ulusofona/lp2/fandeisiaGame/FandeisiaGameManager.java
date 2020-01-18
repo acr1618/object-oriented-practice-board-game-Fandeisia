@@ -792,7 +792,7 @@ public class FandeisiaGameManager implements Serializable{
                         creature.setNextX(creature.getX());
                         creature.setNextY(creature.getY() - creature.getRange());
                         /*Checa salto do humano inclusive em caso de reduz alcance - vai virar função depois*/
-                        if (getElementId(creature.getNextX(), creature.getNextY()-1) > 0 || getElementId(creature.getNextX(), creature.getNextY()-1) <=-500){
+                        if (getElementId(creature.getNextX(), creature.getNextY()+1) > 0 || getElementId(creature.getNextX(), creature.getNextY()+1) <=-500){
                             return false;
                         }
                         return validateMovement(creature.getX(), creature.getY(), creature.getNextX(), creature.getNextY());
@@ -801,7 +801,7 @@ public class FandeisiaGameManager implements Serializable{
                         creature.setNextX(creature.getX());
                         creature.setNextY(creature.getY() + creature.getRange());
                         /*Checa salto do humano inclusive em caso de reduz alcance - vai virar função depois*/
-                        if (getElementId(creature.getNextX(), creature.getNextY()+1) > 0 || getElementId(creature.getNextX(), creature.getNextY()+1) <=-500){
+                        if (getElementId(creature.getNextX(), creature.getNextY()-1) > 0 || getElementId(creature.getNextX(), creature.getNextY()-1) <=-500){
                             return false;
                         }
                         return validateMovement(creature.getX(), creature.getY(), creature.getNextX(), creature.getNextY());
