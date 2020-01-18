@@ -63,9 +63,9 @@ public class FandeisiaGameManager implements Serializable{
             //computerArmy.put("Anão", new Random().nextInt(3));
             //spent = spent + computerArmy.get("Anão");
             computerArmy.put("Humano", new Random().nextInt(3));
-            spent = spent + computerArmy.get("Humano") *3;
-            computerArmy.put("Elfo", new Random().nextInt(3));
-            spent = spent + computerArmy.get("Elfo")*5;
+            spent = spent + computerArmy.get("Humano") *5;
+            //computerArmy.put("Elfo", new Random().nextInt(3));
+            //spent = spent + computerArmy.get("Elfo")*5;
             //computerArmy.put("Dragão", new Random().nextInt(1));
             //spent = spent + computerArmy.get("Dragão")*9;
             //computerArmy.put("Gigante", new Random().nextInt(3));
@@ -121,7 +121,7 @@ public class FandeisiaGameManager implements Serializable{
         List<String> as3MaisViajadas = creatures.stream()
                 .sorted((c1,c2) -> c2.getKm() - c1.getKm())
                 .limit(3)
-                .sorted(Comparator.comparingInt(c -> c.getKm()))
+                .sorted(Comparator.comparingInt(Creature::getKm))
                 .map(creature -> creature.getId() + ":" + creature.getKm())
                 .collect(Collectors.toList());
         //Stream
@@ -241,7 +241,7 @@ public class FandeisiaGameManager implements Serializable{
         }
 
         List<Creature> sortedCreatures = creatures.stream()
-                .sorted((c1,c2) -> c1.getId() - c2.getId())
+                .sorted(Comparator.comparingInt(Element::getId))
                 .collect(Collectors.toList());
         setCreaturesList(sortedCreatures);
 
@@ -791,21 +791,37 @@ public class FandeisiaGameManager implements Serializable{
                     case ("Norte"):{
                         creature.setNextX(creature.getX());
                         creature.setNextY(creature.getY() - creature.getRange());
+                        /*Checa salto do humano inclusive em caso de reduz alcance - vai virar função depois*/
+                        if (getElementId(creature.getNextX(), creature.getNextY()-1) > 0 || getElementId(creature.getNextX(), creature.getNextY()-1) <=-500){
+                            return false;
+                        }
                         return validateMovement(creature.getX(), creature.getY(), creature.getNextX(), creature.getNextY());
                     }
                     case ("Sul"):{
                         creature.setNextX(creature.getX());
                         creature.setNextY(creature.getY() + creature.getRange());
+                        /*Checa salto do humano inclusive em caso de reduz alcance - vai virar função depois*/
+                        if (getElementId(creature.getNextX(), creature.getNextY()+1) > 0 || getElementId(creature.getNextX(), creature.getNextY()+1) <=-500){
+                            return false;
+                        }
                         return validateMovement(creature.getX(), creature.getY(), creature.getNextX(), creature.getNextY());
                     }
                     case ("Este"):{
                         creature.setNextX(creature.getX() + creature.getRange());
                         creature.setNextY(creature.getY());
+                        /*Checa salto do humano inclusive em caso de reduz alcance - vai virar função depois*/
+                        if (getElementId(creature.getNextX()-1, creature.getNextY()) > 0 || getElementId(creature.getNextX()-1, creature.getNextY()) <=-500){
+                            return false;
+                        }
                         return validateMovement(creature.getX(), creature.getY(), creature.getNextX(), creature.getNextY());
                     }
                     case ("Oeste"):{
                         creature.setNextX(creature.getX() - creature.getRange());
                         creature.setNextY(creature.getY());
+                        /*Checa salto do humano inclusive em caso de reduz alcance - vai virar função depois*/
+                        if (getElementId(creature.getNextX()+1, creature.getNextY()) > 0 || getElementId(creature.getNextX()+1, creature.getNextY()) <=-500){
+                            return false;
+                        }
                         return validateMovement(creature.getX(), creature.getY(), creature.getNextX(), creature.getNextY());
                     }
                 }
@@ -886,6 +902,7 @@ public class FandeisiaGameManager implements Serializable{
 return false;
     }
     private boolean validateMovement(int x, int y, int nextX, int nextY) {
+
 
         if (nextX < 0 || nextY < 0){ // fora da tela
             return false;
