@@ -5,11 +5,6 @@ import java.io.Serializable;
 import java.util.*;
 import java.util.stream.Collectors;
 
-/* TODO - BUG central: Quando uma criatura recebe um spell de movimento sendo que outra criatura também recebe spell de movimento pra mesma próxima posição dá erro.
-    Acontece que a criatura que já tinha validado não executa o spell e mantem condição de isEnchant. Isso porque a validação é feita denovo no executeSpell.
-    Às vezes a criatura fica parada, às vezes fica com condição isENchant e se movimenta, às vezes não dá erro.
-    * */
-
 public class FandeisiaGameManager implements Serializable{
 
     /*Team*/
@@ -476,7 +471,7 @@ public class FandeisiaGameManager implements Serializable{
                         return false;
                     }
                 }
-                case ("DuplicaAlcance"): { // TODO Se duplicar o alcance e o próximo movimento da criatura não for valido.
+                case ("DuplicaAlcance"): {
                     switch (c.getOrientation()){
                         case ("Norte"):
                             c.setNextX(x);
@@ -611,7 +606,7 @@ public class FandeisiaGameManager implements Serializable{
             }
         }
         return false;
-    }// TODO - Revisar restrições e fluxo de ações. Principalmente implementar reduz alcance.
+    }
     public void giveCoins(){
         if (!teamLdr.isTreasuresFoundInThisTurn()){
             teamLdr.addCoins(1);
@@ -679,7 +674,7 @@ public class FandeisiaGameManager implements Serializable{
         }
         switchCurrentTeam();
         giveCoins(); // 1 se não achou tesouro neste turno e 2 se achou.
-    }  // still things fix and TODO - Verificar o fluxo, se está correto. Deu erro no teste do número de turnos embora estivesse tudo ok aqui.
+    }
     private void executeSpell(Creature creature,String spell) {
 
         switch(spell){
@@ -752,13 +747,13 @@ public class FandeisiaGameManager implements Serializable{
             }
             case ("DuplicaAlcance"): {
                 if (validateMovement(creature.getX(), creature.getY(),creature.getNextX(), creature.getNextY())) {
-                    creature.empurraParaOeste();
+                    //creature.empurraParaOeste();
                     creature.setItSpellName(null); // Já foi executado o feitiço, então passa a ficar em estado desencantado.
-                    creature.setOrientation("Oeste");
-                    creature.setImage(creature.getOutroTypeName()+"-Oeste.png");
+                    //creature.setOrientation("Oeste");
+                    //creature.setImage(creature.getOutroTypeName()+"-Oeste.png");
+                    creature.duplicaAlcance();
+                    creature.setItSpellName(null);
                 }
-                creature.duplicaAlcance();
-                creature.setItSpellName(null);
                 break;
             }
         }
