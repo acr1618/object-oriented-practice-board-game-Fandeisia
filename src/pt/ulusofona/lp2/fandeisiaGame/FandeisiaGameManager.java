@@ -592,7 +592,7 @@ public class FandeisiaGameManager implements Serializable{
                             }
                         case ("Sudoeste"):
                             c.setNextX(x - c.getRange()*2);
-                            c.setNextY(y + c.getRange()*2);
+                            c.setNextY(y +  c.getRange()*2);
                             if (validateMovement(c.getX(), c.getY(),c.getNextX(), c.getNextY())) { // movimento é valido
                                 if (checkBalanceToSpell(getCurrentTeamId(), 3)) {
                                     c.setEnchant(true);
@@ -611,7 +611,7 @@ public class FandeisiaGameManager implements Serializable{
             }
         }
         return false;
-    }// TODO - Revisar restrições e fluxo de ações. Principalmente implementar as de duplica e reduz alcance.
+    }// TODO - Revisar restrições e fluxo de ações. Principalmente implementar reduz alcance.
     public void giveCoins(){
         if (!teamLdr.isTreasuresFoundInThisTurn()){
             teamLdr.addCoins(1);
@@ -750,7 +750,13 @@ public class FandeisiaGameManager implements Serializable{
                 creature.setItSpellName(null);
                 break;
             }
-            case ("DuplicaAlcance"): { // Tem restrição! TODO Se duplicar o alcance e o próximo movimento da criatura não for válido.
+            case ("DuplicaAlcance"): {
+                if (validateMovement(creature.getX(), creature.getY(),creature.getNextX(), creature.getNextY())) {
+                    creature.empurraParaOeste();
+                    creature.setItSpellName(null); // Já foi executado o feitiço, então passa a ficar em estado desencantado.
+                    creature.setOrientation("Oeste");
+                    creature.setImage(creature.getOutroTypeName()+"-Oeste.png");
+                }
                 creature.duplicaAlcance();
                 creature.setItSpellName(null);
                 break;
