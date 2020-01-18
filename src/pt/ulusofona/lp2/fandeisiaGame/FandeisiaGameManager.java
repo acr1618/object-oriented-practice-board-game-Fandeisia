@@ -1,11 +1,9 @@
 package pt.ulusofona.lp2.fandeisiaGame;
-
 import java.io.File;
-import java.io.Serializable;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class FandeisiaGameManager implements Serializable{
+public class FandeisiaGameManager{
 
     /*Team*/
     private Team teamLdr = new Team (10, "LDR");
@@ -455,7 +453,7 @@ public class FandeisiaGameManager implements Serializable{
                         return false;
                     }
                 }
-                case ("ReduzAlcance"): {// TODO Se reduzir o alcance e o próximo movimento da criatura não for valido.
+                case ("ReduzAlcance"): {// TODO Se reduzir o alcance e o próximo movimento da criatura não for valido. Só é importante agora pro elfo que pode pular buraco.
                     if (checkBalanceToSpell(getCurrentTeamId(), 1)) {
                         c.setEnchant(true);
                         taxSpell(getCurrentTeamId(), 2);
@@ -737,7 +735,7 @@ public class FandeisiaGameManager implements Serializable{
                 }
                 break;
             }
-            case ("ReduzAlcance"): {    // TODO Se reduzir o alcance e o próximo movimento da criatura não for valido.
+            case ("ReduzAlcance"): {   // TODO Se reduzir o alcance e o próximo movimento da criatura não for valido. Só é importante agora pro elfo que pode pular buraco.
                 creature.reduzAlcance();
                 creature.setItSpellName(null);
                 break;
@@ -754,7 +752,7 @@ public class FandeisiaGameManager implements Serializable{
                 break;
             }
         }
-    }//TODO - To Check! SOMETHING IS WRONG! nextX nextY creature still spelled. Check getSpell, enchant, processturn, validate e executeSpell.
+    }
     private boolean canExecuteStandardMovement(Creature creature) {
         ////System.out.println("Entrou em canExecuteStandardMovement");
         switch (creature.getTypeName()){
