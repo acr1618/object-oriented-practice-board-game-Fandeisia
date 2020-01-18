@@ -3,7 +3,6 @@ package pt.ulusofona.lp2.fandeisiaGame;
 import java.io.File;
 import java.io.Serializable;
 import java.util.*;
-import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 
 /* TODO - BUG central: Quando uma criatura recebe um spell de movimento sendo que outra criatura também recebe spell de movimento pra mesma próxima posição dá erro.
@@ -16,12 +15,14 @@ public class FandeisiaGameManager implements Serializable{
     public FandeisiaGameManager(){
     }
 
-    private List<Treasure> treasures = new ArrayList<>();
-    private List<Hole> holes = new ArrayList<>();
-    private List<Creature> creatures = new ArrayList<>();
+    /*Team*/
     private Team teamLdr = new Team (10, "LDR");
     private Team teamRes = new Team (20, "RESISTENCIA");
     private Team currentTeam; // referencia ao time corrente
+
+    private List<Treasure> treasures = new ArrayList<>();
+    private List<Hole> holes = new ArrayList<>();
+    private List<Creature> creatures = new ArrayList<>();
     private int rowsFgm = 0; // linhas do mundo
     private int columnsFgm = 0; // colunas do mundo
     private int turnsWithoutTreasure = 0;

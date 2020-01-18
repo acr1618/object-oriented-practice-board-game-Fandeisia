@@ -223,7 +223,7 @@ public abstract class Creature extends Element {
         return bronze;
     }
     public void collectTreasure(int value) {
-        this.points = this.points++;
+        this.points = this.points + 1;
     }
 
     //public void lookAtTheWorld(int rows, int columns, List<Hole> holes, List<Treasure> treasures, List<Creature> creatures) {} -----> NOT YET!
