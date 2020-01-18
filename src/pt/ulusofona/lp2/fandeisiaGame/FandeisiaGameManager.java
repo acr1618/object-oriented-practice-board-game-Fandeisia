@@ -64,8 +64,8 @@ public class FandeisiaGameManager implements Serializable{
             //spent = spent + computerArmy.get("Anão");
             computerArmy.put("Humano", new Random().nextInt(3));
             spent = spent + computerArmy.get("Humano") *5;
-            //computerArmy.put("Elfo", new Random().nextInt(3));
-            //spent = spent + computerArmy.get("Elfo")*5;
+            computerArmy.put("Elfo", new Random().nextInt(3));
+            spent = spent + computerArmy.get("Elfo")*5;
             //computerArmy.put("Dragão", new Random().nextInt(1));
             //spent = spent + computerArmy.get("Dragão")*9;
             //computerArmy.put("Gigante", new Random().nextInt(3));
@@ -86,7 +86,7 @@ public class FandeisiaGameManager implements Serializable{
                 .collect(Collectors.toList());
         dictionary.put("as3MaisCarregadas", as3MaisCarregadas);
 
-        //As 5 criaturas com mais pontos encontrados
+        //As mais ricas - As 5 criaturas com mais pontos encontrados
         if (creatures.size() >= 5){
             Comparator<Creature> compareByPointsAndTreasures = Comparator
                     .comparing(Creature::getPoints)
@@ -107,27 +107,24 @@ public class FandeisiaGameManager implements Serializable{
             dictionary.put("as5MaisRicas", asExistentes);
         }
 
-        //As 3 que mais vezes foram alvos de feitiços
+        //Os alvos favoritos - As 3 que mais vezes foram alvos de feitiços
         List<String> osAlvosFavoritos = creatures.stream()
                 .sorted((c1, c2) -> c2.getSpellTargetCounter() - c1.getSpellTargetCounter())
                 .limit(3)
                 .map(creature -> creature.getId() + ":" + creature.getTeamId() + ":" + creature.getSpellTargetCounter())
                 .collect(Collectors.toList());
-
-        //Stream
         dictionary.put("osAlvosFavoritos", osAlvosFavoritos);
 
-        //As 3 que mais km percorreram? 1 casa 1 km
+        //As mais viajadas - As 3 que mais km percorreram? 1 casa 1 km
         List<String> as3MaisViajadas = creatures.stream()
                 .sorted((c1,c2) -> c2.getKm() - c1.getKm())
                 .limit(3)
                 .sorted(Comparator.comparingInt(Creature::getKm))
                 .map(creature -> creature.getId() + ":" + creature.getKm())
                 .collect(Collectors.toList());
-        //Stream
         dictionary.put("as3MaisViajadas", as3MaisViajadas);
 
-        //Total de pontos apanhado por cada tipo de criatura
+        //Tipos de Criaturas e Seus Tesouros - Total de pontos apanhado por cada tipo de criatura
         List<String> tiposDeCriaturasESeusTesouros = new ArrayList<>();
         //Stream
         dictionary.put("tiposDeCriaturasESeusTesouros", tiposDeCriaturasESeusTesouros);
