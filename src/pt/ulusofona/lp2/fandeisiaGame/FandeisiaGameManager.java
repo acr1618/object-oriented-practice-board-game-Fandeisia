@@ -712,7 +712,7 @@ public class FandeisiaGameManager implements Serializable{
                     if (validateMovement(creature.getX(), creature.getY(),creature.getNextX(), creature.getNextY())) {
                         creature.empurraParaEste();
                         creature.setItSpellName(null); // Já foi executado o feitiço, então passa a ficar em estado desencantado.
-                        creature.setOrientation("East");
+                        creature.setOrientation("Este");
                         creature.setImage(creature.getOutroTypeName()+"-Este.png");
                     }
                 }
