@@ -19,7 +19,7 @@ public abstract class Creature extends Element {
     protected int spellTargetCounter = 0;
     protected int distanceTraveled = 0;
     protected int km = 0;
-    protected int collectdTreasures =0;
+    protected int collectedTreasures =0;
 
     /*// Variáveis para guardar o mundo:
     protected int rows;
@@ -54,7 +54,7 @@ public abstract class Creature extends Element {
     public int getCost(){ return cost; }
     @Override
     public String toString() {
-        return id + " | " + typeName + " | " + teamId + " | " + collectdTreasures + " @ " + "(" + x +", " + y + ") " + orientation;
+        return id + " | " + typeName + " | " + teamId + " | " + collectedTreasures + " @ " + "(" + x +", " + y + ") " + orientation;
     }
 
     /*Imagem*/
@@ -224,7 +224,7 @@ public abstract class Creature extends Element {
     }
     public void collectTreasure(int value) {
         this.points = this.points + value;
-        this.collectdTreasures ++;
+        this.collectedTreasures ++;
     }
 
     /*Statistics*/

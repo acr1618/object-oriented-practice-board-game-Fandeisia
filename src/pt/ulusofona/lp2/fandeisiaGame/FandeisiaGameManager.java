@@ -791,8 +791,12 @@ public class FandeisiaGameManager implements Serializable{
                     case ("Norte"):{
                         creature.setNextX(creature.getX());
                         creature.setNextY(creature.getY() - creature.getRange());
+                        /*Corrige o teste da criatura com ela mesma - Atenção pra gambiarra. Melhorar se tiver tempo*/
+                        if (getElementId(creature.getNextX(), creature.getNextY()+1) == creature.getId()){
+                            return validateMovement(creature.getX(), creature.getY(), creature.getNextX(), creature.getNextY());
+                        }
                         /*Checa salto do humano inclusive em caso de reduz alcance - vai virar função depois*/
-                        if (getElementId(creature.getNextX(), creature.getNextY()+1) > 0 || getElementId(creature.getNextX(), creature.getNextY()+1) <=-500){
+                        if (getElementId(creature.getNextX(), creature.getNextY()+1) > 0 || getElementId(creature.getNextX(), creature.getNextY()+1) <=-500 && creature.getRange()==2){
                             return false;
                         }
                         return validateMovement(creature.getX(), creature.getY(), creature.getNextX(), creature.getNextY());
@@ -800,8 +804,12 @@ public class FandeisiaGameManager implements Serializable{
                     case ("Sul"):{
                         creature.setNextX(creature.getX());
                         creature.setNextY(creature.getY() + creature.getRange());
+                        /*Corrige o teste da criatura com ela mesma - Atenção pra gambiarra. Melhorar se tiver tempo*/
+                        if (getElementId(creature.getNextX(), creature.getNextY()-1) == creature.getId()){
+                            return validateMovement(creature.getX(), creature.getY(), creature.getNextX(), creature.getNextY());
+                        }
                         /*Checa salto do humano inclusive em caso de reduz alcance - vai virar função depois*/
-                        if (getElementId(creature.getNextX(), creature.getNextY()-1) > 0 || getElementId(creature.getNextX(), creature.getNextY()-1) <=-500){
+                        if (getElementId(creature.getNextX(), creature.getNextY()-1) > 0 || getElementId(creature.getNextX(), creature.getNextY()-1) <=-500&& creature.getRange()==2){
                             return false;
                         }
                         return validateMovement(creature.getX(), creature.getY(), creature.getNextX(), creature.getNextY());
@@ -809,6 +817,10 @@ public class FandeisiaGameManager implements Serializable{
                     case ("Este"):{
                         creature.setNextX(creature.getX() + creature.getRange());
                         creature.setNextY(creature.getY());
+                        /*Corrige o teste da criatura com ela mesma - Atenção pra gambiarra. Melhorar se tiver tempo*/
+                        if (getElementId(creature.getNextX()-1, creature.getNextY()) == creature.getId()){
+                            return validateMovement(creature.getX(), creature.getY(), creature.getNextX(), creature.getNextY());
+                        }
                         /*Checa salto do humano inclusive em caso de reduz alcance - vai virar função depois*/
                         if (getElementId(creature.getNextX()-1, creature.getNextY()) > 0 || getElementId(creature.getNextX()-1, creature.getNextY()) <=-500){
                             return false;
@@ -818,8 +830,12 @@ public class FandeisiaGameManager implements Serializable{
                     case ("Oeste"):{
                         creature.setNextX(creature.getX() - creature.getRange());
                         creature.setNextY(creature.getY());
+                        /*Corrige o teste da criatura com ela mesma - Atenção pra gambiarra. Melhorar se tiver tempo*/
+                        if (getElementId(creature.getNextX()+1, creature.getNextY()) == creature.getId()){
+                            return validateMovement(creature.getX(), creature.getY(), creature.getNextX(), creature.getNextY());
+                        }
                         /*Checa salto do humano inclusive em caso de reduz alcance - vai virar função depois*/
-                        if (getElementId(creature.getNextX()+1, creature.getNextY()) > 0 || getElementId(creature.getNextX()+1, creature.getNextY()) <=-500){
+                        if (getElementId(creature.getNextX()+1, creature.getNextY()) > 0 || getElementId(creature.getNextX()+1, creature.getNextY()) <=-500&& creature.getRange()==2){
                             return false;
                         }
                         return validateMovement(creature.getX(), creature.getY(), creature.getNextX(), creature.getNextY());
