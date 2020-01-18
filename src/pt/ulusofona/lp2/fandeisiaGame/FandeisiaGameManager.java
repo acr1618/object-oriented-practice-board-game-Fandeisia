@@ -477,16 +477,135 @@ public class FandeisiaGameManager implements Serializable{
                     }
                 }
                 case ("DuplicaAlcance"): { // TODO Se duplicar o alcance e o próximo movimento da criatura não for valido.
-                    if (checkBalanceToSpell(getCurrentTeamId(), 1)) {
-                        c.setEnchant(true);
-                        taxSpell(getCurrentTeamId(), 3);
-                        c.setItSpellName(spellName);
-                        //c.DuplicaAlcance(c.getRange());
-                        //c.setItSpellName("DuplicaAlcance");
-                        c.setSpellTargetCounter();
-                        return true;
-                    } else {
-                        return false;
+                    switch (c.getOrientation()){
+                        case ("Norte"):
+                            c.setNextX(x);
+                            c.setNextY(y -c.getRange()*2);
+                            if (validateMovement(c.getX(), c.getY(),c.getNextX(), c.getNextY())) { // movimento é valido
+                                if (checkBalanceToSpell(getCurrentTeamId(), 3)) {
+                                    c.setEnchant(true);
+                                    taxSpell(getCurrentTeamId(), 3);
+                                    c.setItSpellName(spellName);
+                                    c.setSpellTargetCounter();
+                                    return true;
+                                } else {
+                                    return false;
+                                }
+                            } else {
+                                return false;
+                            }
+                        case ("Este"):
+                            c.setNextX(x + c.getRange()*2);
+                            c.setNextY(y);
+                            if (validateMovement(c.getX(), c.getY(),c.getNextX(), c.getNextY())) { // movimento é valido
+                                if (checkBalanceToSpell(getCurrentTeamId(), 3)) {
+                                    c.setEnchant(true);
+                                    taxSpell(getCurrentTeamId(), 3);
+                                    c.setItSpellName(spellName);
+                                    c.setSpellTargetCounter();
+                                    return true;
+                                } else {
+                                    return false;
+                                }
+                            } else {
+                                return false;
+                            }
+                        case ("Sul"):
+                            c.setNextX(x);
+                            c.setNextY(y + c.getRange()*2);
+                            if (validateMovement(c.getX(), c.getY(),c.getNextX(), c.getNextY())) { // movimento é valido
+                                if (checkBalanceToSpell(getCurrentTeamId(), 3)) {
+                                    c.setEnchant(true);
+                                    taxSpell(getCurrentTeamId(), 3);
+                                    c.setItSpellName(spellName);
+                                    c.setSpellTargetCounter();
+                                    return true;
+                                } else {
+                                    return false;
+                                }
+                            } else {
+                                return false;
+                            }
+                        case ("Oeste"):
+                            c.setNextX(x - c.getRange()*2);
+                            c.setNextY(y);
+                            if (validateMovement(c.getX(), c.getY(),c.getNextX(), c.getNextY())) { // movimento é valido
+                                if (checkBalanceToSpell(getCurrentTeamId(), 3)) {
+                                    c.setEnchant(true);
+                                    taxSpell(getCurrentTeamId(), 3);
+                                    c.setItSpellName(spellName);
+                                    c.setSpellTargetCounter();
+                                    return true;
+                                } else {
+                                    return false;
+                                }
+                            } else {
+                                return false;
+                            }
+                        case ("Nordeste"):
+                            c.setNextX(x + c.getRange()*2);
+                            c.setNextY(y - c.getRange()*2);
+                            if (validateMovement(c.getX(), c.getY(),c.getNextX(), c.getNextY())) { // movimento é valido
+                                if (checkBalanceToSpell(getCurrentTeamId(), 3)) {
+                                    c.setEnchant(true);
+                                    taxSpell(getCurrentTeamId(), 3);
+                                    c.setItSpellName(spellName);
+                                    c.setSpellTargetCounter();
+                                    return true;
+                                } else {
+                                    return false;
+                                }
+                            } else {
+                                return false;
+                            }
+                        case ("Noroeste"):
+                            c.setNextX(x - c.getRange()*2);
+                            c.setNextY(y -c.getRange()*2);
+                            if (validateMovement(c.getX(), c.getY(),c.getNextX(), c.getNextY())) { // movimento é valido
+                                if (checkBalanceToSpell(getCurrentTeamId(), 3)) {
+                                    c.setEnchant(true);
+                                    taxSpell(getCurrentTeamId(), 3);
+                                    c.setItSpellName(spellName);
+                                    c.setSpellTargetCounter();
+                                    return true;
+                                } else {
+                                    return false;
+                                }
+                            } else {
+                                return false;
+                            }
+                        case ("Sudeste"):
+                            c.setNextX(x + c.getRange()*2);
+                            c.setNextY(y + c.getRange()*2);
+                            if (validateMovement(c.getX(), c.getY(),c.getNextX(), c.getNextY())) { // movimento é valido
+                                if (checkBalanceToSpell(getCurrentTeamId(), 3)) {
+                                    c.setEnchant(true);
+                                    taxSpell(getCurrentTeamId(), 3);
+                                    c.setItSpellName(spellName);
+                                    c.setSpellTargetCounter();
+                                    return true;
+                                } else {
+                                    return false;
+                                }
+                            } else {
+                                return false;
+                            }
+                        case ("Sudoeste"):
+                            c.setNextX(x - c.getRange()*2);
+                            c.setNextY(y + c.getRange()*2);
+                            if (validateMovement(c.getX(), c.getY(),c.getNextX(), c.getNextY())) { // movimento é valido
+                                if (checkBalanceToSpell(getCurrentTeamId(), 3)) {
+                                    c.setEnchant(true);
+                                    taxSpell(getCurrentTeamId(), 3);
+                                    c.setItSpellName(spellName);
+                                    c.setSpellTargetCounter();
+                                    return true;
+                                } else {
+                                    return false;
+                                }
+                            } else {
+                                return false;
+                            }
                     }
                 }
             }
