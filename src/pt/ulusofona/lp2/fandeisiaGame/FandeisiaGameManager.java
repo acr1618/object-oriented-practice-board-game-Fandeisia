@@ -453,130 +453,18 @@ public class FandeisiaGameManager{
                         return false;
                     }
                 }
-                case ("ReduzAlcance"): {
-                    switch (c.getOrientation()){
-                        case ("Norte"):{
-                            c.setNextX(x);
-                            c.setNextY(y - 1);
-                            if (validateMovement(c.getX(), c.getY(),c.getNextX(), c.getNextY())){
-                                if (checkBalanceToSpell(getCurrentTeamId(), 1)) {
-                                    c.setEnchant(true);
-                                    taxSpell(getCurrentTeamId(), 2);
-                                    c.setItSpellName(spellName);
-                                    c.setSpellTargetCounter();
-                                    return true;
-                                } else {
-                                    return false;
-                                }
-                            }
-                        }
-                        case ("Este"):{
-                            c.setNextX(x+1);
-                            c.setNextY(y);
-                            if (validateMovement(c.getX(), c.getY(),c.getNextX(), c.getNextY())){
-                                if (checkBalanceToSpell(getCurrentTeamId(), 1)) {
-                                    c.setEnchant(true);
-                                    taxSpell(getCurrentTeamId(), 2);
-                                    c.setItSpellName(spellName);
-                                    c.setSpellTargetCounter();
-                                    return true;
-                                } else {
-                                    return false;
-                                }
-                            }
-                        }
-                        case ("Sul"):{
-                            c.setNextX(x);
-                            c.setNextY(y+1);
-                            if (validateMovement(c.getX(), c.getY(),c.getNextX(), c.getNextY())){
-                                if (checkBalanceToSpell(getCurrentTeamId(), 1)) {
-                                    c.setEnchant(true);
-                                    taxSpell(getCurrentTeamId(), 2);
-                                    c.setItSpellName(spellName);
-                                    c.setSpellTargetCounter();
-                                    return true;
-                                } else {
-                                    return false;
-                                }
-                            }
-                        }
-                        case ("Oeste"):{
-                            c.setNextX(x-1);
-                            c.setNextY(y);
-                            if (validateMovement(c.getX(), c.getY(),c.getNextX(), c.getNextY())){
-                                if (checkBalanceToSpell(getCurrentTeamId(), 1)) {
-                                    c.setEnchant(true);
-                                    taxSpell(getCurrentTeamId(), 2);
-                                    c.setItSpellName(spellName);
-                                    c.setSpellTargetCounter();
-                                    return true;
-                                } else {
-                                    return false;
-                                }
-                            }
-                        }
-                        case ("Noroeste"):{
-                            c.setNextX(x - 1);
-                            c.setNextY(y - 1);
-                            if (validateMovement(c.getX(), c.getY(),c.getNextX(), c.getNextY())){
-                                if (checkBalanceToSpell(getCurrentTeamId(), 1)) {
-                                    c.setEnchant(true);
-                                    taxSpell(getCurrentTeamId(), 2);
-                                    c.setItSpellName(spellName);
-                                    c.setSpellTargetCounter();
-                                    return true;
-                                } else {
-                                    return false;
-                                }
-                            }
-                        }
-                        case ("Nordeste"):{
-                            c.setNextX(x + 1);
-                            c.setNextY(y - 1);
-                            if (validateMovement(c.getX(), c.getY(),c.getNextX(), c.getNextY())){
-                                if (checkBalanceToSpell(getCurrentTeamId(), 1)) {
-                                    c.setEnchant(true);
-                                    taxSpell(getCurrentTeamId(), 2);
-                                    c.setItSpellName(spellName);
-                                    c.setSpellTargetCounter();
-                                    return true;
-                                } else {
-                                    return false;
-                                }
-                            }
-                        }
-                        case ("Sudeste"):{
-                            c.setNextX(x + 1);
-                            c.setNextY(y + 1);
-                            if (validateMovement(c.getX(), c.getY(),c.getNextX(), c.getNextY())){
-                                if (checkBalanceToSpell(getCurrentTeamId(), 1)) {
-                                    c.setEnchant(true);
-                                    taxSpell(getCurrentTeamId(), 2);
-                                    c.setItSpellName(spellName);
-                                    c.setSpellTargetCounter();
-                                    return true;
-                                } else {
-                                    return false;
-                                }
-                            }
-                        }
-                        case ("Sudoeste"):{
-                            c.setNextX(x - 1);
-                            c.setNextY(y + 1);
-                            if (validateMovement(c.getX(), c.getY(),c.getNextX(), c.getNextY())){
-                                if (checkBalanceToSpell(getCurrentTeamId(), 1)) {
-                                    c.setEnchant(true);
-                                    taxSpell(getCurrentTeamId(), 2);
-                                    c.setItSpellName(spellName);
-                                    c.setSpellTargetCounter();
-                                    return true;
-                                } else {
-                                    return false;
-                                }
-                            }
-                        }
+                case ("ReduzAlcance"): {// TODO Se reduzir o alcance e o próximo movimento da criatura não for valido. Só é importante agora pro elfo que pode pular buraco.
+                    if (checkBalanceToSpell(getCurrentTeamId(), 1)) {
+                        c.setEnchant(true);
+                        taxSpell(getCurrentTeamId(), 2);
+                        c.setItSpellName(spellName);
+                        //c.ReduzAlcance();
+                        //c.setItSpellName("ReduzAlcance");
+                        c.setSpellTargetCounter();
+                        return true;
+                    } else {
+                        return false;
                     }
-
                 }
                 case ("DuplicaAlcance"): {
                     switch (c.getOrientation()){
