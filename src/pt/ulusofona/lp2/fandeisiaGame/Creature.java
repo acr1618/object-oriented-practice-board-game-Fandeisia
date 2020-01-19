@@ -20,6 +20,7 @@ public abstract class Creature extends Element {
     protected int distanceTraveled = 0;
     protected int km = 0;
     protected int collectedTreasures =0;
+    protected boolean isDuplicate= false;
 
     /*// Variáveis para guardar o mundo:
     protected int rows;
@@ -56,6 +57,7 @@ public abstract class Creature extends Element {
     public String toString() {
         return id + " | " + typeName + " | " + teamId + " | " + collectedTreasures + " @ " + "(" + x +", " + y + ") " + orientation;
     }
+
 
     /*Imagem*/
     public String getImagePNG(){
@@ -169,8 +171,11 @@ public abstract class Creature extends Element {
         this.range = 1; // Custa 2 Reduz o alcance para
     }
     public void duplicaAlcance(){
-        this.range = range *2;
+        isDuplicate = true;
          // Custa 3 Aumenta alcance para o dobro
+    }
+    public boolean isDuplicate(){
+        return isDuplicate;
     }
     public boolean isEnchant() {
         return isEnchant;
@@ -252,6 +257,8 @@ public abstract class Creature extends Element {
     public void addKm(int km){
         this.km = this.km + km;
     }
+
+
     //public void lookAtTheWorld(int rows, int columns, List<Hole> holes, List<Treasure> treasures, List<Creature> creatures) {} -----> NOT YET!
 
 }

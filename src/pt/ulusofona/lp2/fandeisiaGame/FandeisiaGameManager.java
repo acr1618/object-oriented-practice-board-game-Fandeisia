@@ -737,9 +737,6 @@ public class FandeisiaGameManager{
             }
             case ("DuplicaAlcance"): {
                 if (validateMovement(creature.getX(), creature.getY(),creature.getNextX(), creature.getNextY())) {
-                    //creature.empurraParaOeste();
-                    //creature.setOrientation("Oeste");
-                    //creature.setImage(creature.getOutroTypeName()+"-Oeste.png");
                     creature.duplicaAlcance();
                 }
                 break;
@@ -751,7 +748,7 @@ public class FandeisiaGameManager{
     private boolean canExecuteStandardMovement(Creature creature) {
         ////System.out.println("Entrou em canExecuteStandardMovement");
         switch (creature.getTypeName()){
-            /*case ("Anão"):*/ case ("Dragão"): case ("Gigante"):{
+            case ("Anão"): case ("Dragão"): case ("Gigante"):{
                 switch (creature.getOrientation()){
                     case ("Norte"):{
                         creature.setNextX(creature.getX());
@@ -776,16 +773,17 @@ public class FandeisiaGameManager{
                 }
             }
 
-            case ("Humano"): case ("Anão"):{
-                if (creature.getRange() != 4){
+            case ("Humano"):{
+                if (!creature.isDuplicate()){
                     switch (creature.getOrientation()){
                     case ("Norte"):{
                         creature.setNextX(creature.getX());
                         creature.setNextY(creature.getY() - creature.getRange());
-                        /*Corrige o teste da criatura com ela mesma - Atenção pra gambiarra. Melhorar se tiver tempo - Fiz isso porque o humano pode ter o reduz alcance todo*/
+                        /*Corrige o teste da criatura com ela mesma - Atenção pra gambiarra. Melhorar se tiver tempo*/
                         if (getElementId(creature.getNextX(), creature.getNextY()+1) == creature.getId()){
                             return validateMovement(creature.getX(), creature.getY(), creature.getNextX(), creature.getNextY());
                         }
+                        /*Checa salto do humano inclusive em caso de reduz alcance - vai virar função depois*/
                         if (getElementId(creature.getNextX(), creature.getNextY()+1) > 0 || getElementId(creature.getNextX(), creature.getNextY()+1) <=-500){
                             return false;
                         }
@@ -831,12 +829,11 @@ public class FandeisiaGameManager{
                         return validateMovement(creature.getX(), creature.getY(), creature.getNextX(), creature.getNextY());
                     }
                     }
-                } else { // Aqui o alcance está duplicado. Então as validações são diferentes. Aqui só entra o Humano com alcance duplicado.
+                } else { // Aqui o alcance está duplicado. Então as validações são diferentes. Aqui só entra o Humano
                     switch (creature.getOrientation()){
                         case ("Norte"):{
                             creature.setNextX(creature.getX());
                             creature.setNextY(creature.getY() - creature.getRange());
-                            /*Checa salto do humano inclusive em caso de reduz alcance - vai virar função depois*/
                             if (getElementId(creature.getNextX(), creature.getNextY()+1) > 0 || getElementId(creature.getNextX(), creature.getNextY()+1) <=-500
                             || getElementId(creature.getNextX(), creature.getNextY()+2) > 0 || getElementId(creature.getNextX(), creature.getNextY()+2) <=-500
                             || getElementId(creature.getNextX(), creature.getNextY()+3) > 0 || getElementId(creature.getNextX(), creature.getNextY()+3) <=-500){
@@ -847,7 +844,6 @@ public class FandeisiaGameManager{
                         case ("Sul"):{
                             creature.setNextX(creature.getX());
                             creature.setNextY(creature.getY() + creature.getRange());
-                            /*Checa salto do humano inclusive em caso de reduz alcance - vai virar função depois*/
                             if (getElementId(creature.getNextX(), creature.getNextY()-1) > 0 || getElementId(creature.getNextX(), creature.getNextY()-1) <=-500
                             || getElementId(creature.getNextX(), creature.getNextY()-2) > 0 || getElementId(creature.getNextX(), creature.getNextY()-2) <=-500
                             || getElementId(creature.getNextX(), creature.getNextY()-3) > 0 || getElementId(creature.getNextX(), creature.getNextY()-3) <=-500){
@@ -858,7 +854,6 @@ public class FandeisiaGameManager{
                         case ("Este"):{
                             creature.setNextX(creature.getX() + creature.getRange());
                             creature.setNextY(creature.getY());
-                            /*Checa salto do humano inclusive em caso de reduz alcance - vai virar função depois*/
                             if (getElementId(creature.getNextX()-1, creature.getNextY()) > 0 || getElementId(creature.getNextX()-1, creature.getNextY()) <=-500
                             || getElementId(creature.getNextX()-2, creature.getNextY()) > 0 || getElementId(creature.getNextX()-2, creature.getNextY()) <=-500
                             || getElementId(creature.getNextX()-3, creature.getNextY()) > 0 || getElementId(creature.getNextX()-3, creature.getNextY()) <=-500){
@@ -869,7 +864,6 @@ public class FandeisiaGameManager{
                         case ("Oeste"):{
                             creature.setNextX(creature.getX() - creature.getRange());
                             creature.setNextY(creature.getY());
-                            /*Checa salto do humano inclusive em caso de reduz alcance - vai virar função depois*/
                             if (getElementId(creature.getNextX()+1, creature.getNextY()) > 0 || getElementId(creature.getNextX()+1, creature.getNextY()) <=-500
                             || getElementId(creature.getNextX()+2, creature.getNextY()) > 0 || getElementId(creature.getNextX()+2, creature.getNextY()) <=-500
                             || getElementId(creature.getNextX()+3, creature.getNextY()) > 0 || getElementId(creature.getNextX()+3, creature.getNextY()) <=-500){
@@ -882,46 +876,116 @@ public class FandeisiaGameManager{
             }
 
             case ("Elfo"): {
-                switch (creature.getOrientation()){
-                    case ("Norte"):{
-                        creature.setNextX(creature.getX());
-                        creature.setNextY(creature.getY() - creature.getRange());
-                        return validateMovement(creature.getX(), creature.getY(), creature.getNextX(), creature.getNextY());
+                if (creature.isDuplicate()){
+                    switch (creature.getOrientation()){
+                        case ("Norte"):{
+                            creature.setNextX(creature.getX());
+                            creature.setNextY(creature.getY() - creature.getRange());
+                            if (getElementId(creature.getNextX(), creature.getNextY()+1) > 0){
+                                return false;
+                            }
+                            return validateMovement(creature.getX(), creature.getY(), creature.getNextX(), creature.getNextY());
+
+                        }
+                        case ("Sul"):{
+                            creature.setNextX(creature.getX());
+                            creature.setNextY(creature.getY() + creature.getRange());
+                            if (getElementId(creature.getNextX(), creature.getNextY()-1) > 0){
+                                return false;
+                            }
+                            return validateMovement(creature.getX(), creature.getY(), creature.getNextX(), creature.getNextY());
+                        }
+                        case ("Este"):{
+                            creature.setNextX(creature.getX() + creature.getRange());
+                            creature.setNextY(creature.getY());
+                            if (getElementId(creature.getNextX()+1, creature.getNextY()) > 0){
+                                return false;
+                            }
+                            return validateMovement(creature.getX(), creature.getY(), creature.getNextX(), creature.getNextY());
+                        }
+                        case ("Oeste"):{
+                            creature.setNextX(creature.getX() - creature.getRange());
+                            creature.setNextY(creature.getY());
+                            if (getElementId(creature.getNextX()-1, creature.getNextY()) > 0){
+                                return false;
+                            }
+                            return validateMovement(creature.getX(), creature.getY(), creature.getNextX(), creature.getNextY());
+                        }
+                        case ("Nordeste"):{
+                            creature.setNextY(creature.getY() - creature.getRange());
+                            creature.setNextX(creature.getX() + creature.getRange());
+                            if (getElementId(creature.getNextX()+1, creature.getNextY()-1) > 0){
+                                return false;
+                            }
+                            return validateMovement(creature.getX(), creature.getY(), creature.getNextX(), creature.getNextY());
+                        }
+                        case ("Sudeste"):{
+                            creature.setNextY(creature.getY() + creature.getRange());
+                            creature.setNextX(creature.getX() + creature.getRange());
+                            if (getElementId(creature.getNextX()+1, creature.getNextY()+1) > 0){
+                                return false;
+                            }
+                            return validateMovement(creature.getX(), creature.getY(), creature.getNextX(), creature.getNextY());
+                        }
+                        case ("Sudoeste"):{
+                            creature.setNextY(creature.getY() + creature.getRange());
+                            creature.setNextX(creature.getX() - creature.getRange());
+                            if (getElementId(creature.getNextX()-1, creature.getNextY()+1) > 0){
+                                return false;
+                            }
+                            return validateMovement(creature.getX(), creature.getY(), creature.getNextX(), creature.getNextY());
+                        }
+                        case ("Noroeste"):{
+                            creature.setNextY(creature.getY() - creature.getRange());
+                            creature.setNextX(creature.getX() - creature.getRange());
+                            if (getElementId(creature.getNextX()-1, creature.getNextY()+1) > 0){
+                                return false;
+                            }
+                            return validateMovement(creature.getX(), creature.getY(), creature.getNextX(), creature.getNextY());
+                        }
                     }
-                    case ("Sul"):{
-                        creature.setNextX(creature.getX());
-                        creature.setNextY(creature.getY() + creature.getRange());
-                        return validateMovement(creature.getX(), creature.getY(), creature.getNextX(), creature.getNextY());
-                    }
-                    case ("Este"):{
-                        creature.setNextX(creature.getX() + creature.getRange());
-                        creature.setNextY(creature.getY());
-                        return validateMovement(creature.getX(), creature.getY(), creature.getNextX(), creature.getNextY());
-                    }
-                    case ("Oeste"):{
-                        creature.setNextX(creature.getX() - creature.getRange());
-                        creature.setNextY(creature.getY());
-                        return validateMovement(creature.getX(), creature.getY(), creature.getNextX(), creature.getNextY());
-                    }
-                    case ("Nordeste"):{
-                        creature.setNextY(creature.getY() - creature.getRange());
-                        creature.setNextX(creature.getX() + creature.getRange());
-                        return validateMovement(creature.getX(), creature.getY(), creature.getNextX(), creature.getNextY());
-                    }
-                    case ("Sudeste"):{
-                        creature.setNextY(creature.getY() + creature.getRange());
-                        creature.setNextX(creature.getX() + creature.getRange());
-                        return validateMovement(creature.getX(), creature.getY(), creature.getNextX(), creature.getNextY());
-                    }
-                    case ("Sudoeste"):{
-                        creature.setNextY(creature.getY() + creature.getRange());
-                        creature.setNextX(creature.getX() - creature.getRange());
-                        return validateMovement(creature.getX(), creature.getY(), creature.getNextX(), creature.getNextY());
-                    }
-                    case ("Noroeste"):{
-                        creature.setNextY(creature.getY() - creature.getRange());
-                        creature.setNextX(creature.getX() - creature.getRange());
-                        return validateMovement(creature.getX(), creature.getY(), creature.getNextX(), creature.getNextY());
+                }else {
+                    switch (creature.getOrientation()){
+                        case ("Norte"):{
+                            creature.setNextX(creature.getX());
+                            creature.setNextY(creature.getY() - creature.getRange());
+                            return validateMovement(creature.getX(), creature.getY(), creature.getNextX(), creature.getNextY());
+                        }
+                        case ("Sul"):{
+                            creature.setNextX(creature.getX());
+                            creature.setNextY(creature.getY() + creature.getRange());
+                            return validateMovement(creature.getX(), creature.getY(), creature.getNextX(), creature.getNextY());
+                        }
+                        case ("Este"):{
+                            creature.setNextX(creature.getX() + creature.getRange());
+                            creature.setNextY(creature.getY());
+                            return validateMovement(creature.getX(), creature.getY(), creature.getNextX(), creature.getNextY());
+                        }
+                        case ("Oeste"):{
+                            creature.setNextX(creature.getX() - creature.getRange());
+                            creature.setNextY(creature.getY());
+                            return validateMovement(creature.getX(), creature.getY(), creature.getNextX(), creature.getNextY());
+                        }
+                        case ("Nordeste"):{
+                            creature.setNextY(creature.getY() - creature.getRange());
+                            creature.setNextX(creature.getX() + creature.getRange());
+                            return validateMovement(creature.getX(), creature.getY(), creature.getNextX(), creature.getNextY());
+                        }
+                        case ("Sudeste"):{
+                            creature.setNextY(creature.getY() + creature.getRange());
+                            creature.setNextX(creature.getX() + creature.getRange());
+                            return validateMovement(creature.getX(), creature.getY(), creature.getNextX(), creature.getNextY());
+                        }
+                        case ("Sudoeste"):{
+                            creature.setNextY(creature.getY() + creature.getRange());
+                            creature.setNextX(creature.getX() - creature.getRange());
+                            return validateMovement(creature.getX(), creature.getY(), creature.getNextX(), creature.getNextY());
+                        }
+                        case ("Noroeste"):{
+                            creature.setNextY(creature.getY() - creature.getRange());
+                            creature.setNextX(creature.getX() - creature.getRange());
+                            return validateMovement(creature.getX(), creature.getY(), creature.getNextX(), creature.getNextY());
+                        }
                     }
                 }
             }
@@ -956,7 +1020,6 @@ public class FandeisiaGameManager{
     return false;
     }
     private boolean validateMovement(int x, int y, int nextX, int nextY) {
-        // A validação de movimento está fraca. Deveria ter muita coisa aqui dentro e está sendo feita em canExecuteStandardMovement. todo check this later
 
 
         if (nextX < 0 || nextY < 0){ // fora da tela
