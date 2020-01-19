@@ -77,12 +77,12 @@ public class FandeisiaGameManager{
        listaGlobal = creatures;
         Map<String, List<String>> dictionary = new HashMap<>();
 
-        //As 3 criaturas com mais tesouros encontrados
+        //As 3 mais carregadas - As 3 criaturas com mais tesouros encontrados
         List<String> as3MaisCarregadas = listaGlobal.stream()
                 .sorted((c1,c2) -> c2.getPoints() - c1.getPoints())
                 .limit(3)
                 .sorted((c1,c2) -> c2.getPoints() - c1.getPoints())
-                .map(creature -> creature.getId() + ":" + creature.getPoints())
+                .map(creature -> creature.getId() + ":" + creature.getCollectedTreasures())
                 .collect(Collectors.toList());
         dictionary.put("as3MaisCarregadas", as3MaisCarregadas);
 
