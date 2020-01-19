@@ -58,8 +58,8 @@ public class FandeisiaGameManager{
         int spent  =0;
         Map<String, Integer> computerArmy = new HashMap<>();
         do {
-            //computerArmy.put("Anão", new Random().nextInt(3));
-            //spent = spent + computerArmy.get("Anão");
+            computerArmy.put("Anão", new Random().nextInt(3));
+            spent = spent + computerArmy.get("Anão");
             computerArmy.put("Humano", new Random().nextInt(3));
             spent = spent + computerArmy.get("Humano") *5;
             computerArmy.put("Elfo", new Random().nextInt(3));
