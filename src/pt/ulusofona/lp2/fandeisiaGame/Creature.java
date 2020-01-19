@@ -21,6 +21,7 @@ public abstract class Creature extends Element {
     protected int km = 0;
     protected int collectedTreasures =0;
     protected boolean isDuplicate= false;
+    private boolean isReduced = false;
 
     /*// Variáveis para guardar o mundo:
     protected int rows;
@@ -168,7 +169,7 @@ public abstract class Creature extends Element {
          // Custa 1 Move 1 para Oeste
     }
     public void reduzAlcance(){
-        this.range = 1; // Custa 2 Reduz o alcance para
+        isReduced = true; // Custa 2 Reduz o alcance para 1
     }
     public void duplicaAlcance(){
         isDuplicate = true;
@@ -257,6 +258,12 @@ public abstract class Creature extends Element {
     public void addKm(int km){
         this.km = this.km + km;
     }
+
+    public boolean isReduced() {
+        return isReduced;
+    }
+
+
 
 
     //public void lookAtTheWorld(int rows, int columns, List<Hole> holes, List<Treasure> treasures, List<Creature> creatures) {} -----> NOT YET!
