@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 public class FandeisiaGameManager{
 
     /*Team*/
+
     private Team teamLdr = new Team (10, "LDR");
     private Team teamRes = new Team (20, "RESISTENCIA");
     private Team currentTeam; // referencia ao time corrente
@@ -1111,13 +1112,12 @@ public class FandeisiaGameManager{
     }
     private List<String> listMaisCarregadas(){
         //As 3 mais carregadas - As 3 criaturas com mais tesouros encontrados
-        List<String> as3MaisCarregadas = creatures.stream()
+        return creatures.stream()
                 .sorted((c1,c2) -> c2.getPoints() - c1.getPoints())
                 .limit(3)
                 .sorted((c1,c2) -> c2.getPoints() - c1.getPoints())
                 .map(creature -> creature.getId() + ":" + creature.getCollectedTreasures())
                 .collect(Collectors.toList());
-        return as3MaisCarregadas;
     }
     private List<String> listMaisRicas(){
         //As mais ricas - As 5 criaturas com mais pontos encontrados
@@ -1126,50 +1126,45 @@ public class FandeisiaGameManager{
                     .comparing(Creature::getPoints)
                     .reversed()
                     .thenComparing(Creature::getPoints);
-            List<String> as5MaisRicas = creatures.stream()
+            return creatures.stream()
                     .sorted(compareByPointsAndTreasures)
                     .limit(5)
                     .sorted((c1, c2) -> c2.getPoints() - c1.getPoints() )
                     .map(creature -> creature.getId() + ":" + creature.getPoints() + ":" + creature.getCollectedTreasures())
                     .collect(Collectors.toList());
-            return as5MaisRicas;
         }else {
-            List<String> asExistentes = creatures.stream()
+
+            return creatures.stream()
                     .sorted((c1,c2) -> c2.getPoints() - c1.getPoints())
                     .map(creature -> creature.getId() + ":" + creature.getPoints() + ":" + creature.getCollectedTreasures())
                     .collect(Collectors.toList());
-
-            return asExistentes;
         }
     }
 
     private List<String> listAlvosFavoritos (){
         //Os alvos favoritos - As 3 que mais vezes foram alvos de feitiços
-        List<String> osAlvosFavoritos = creatures.stream()
+
+        return creatures.stream()
                 .sorted((c1, c2) -> c2.getSpellTargetCounter() - c1.getSpellTargetCounter())
                 .limit(3)
                 .map(creature -> creature.getId() + ":" + creature.getTeamId() + ":" + creature.getSpellTargetCounter())
                 .collect(Collectors.toList());
-
-        return osAlvosFavoritos;
     }
     private List<String> listMaisViajadas(){
         //As mais viajadas - As 3 que mais km percorreram? 1 casa 1 km
-        List<String> as3MaisViajadas = creatures.stream()
+
+        return creatures.stream()
                 .sorted((c1,c2) -> c2.getKm() - c1.getKm())
                 .limit(3)
                 .sorted(Comparator.comparingInt(Creature::getKm))
                 .map(creature -> creature.getId() + ":" + creature.getKm())
                 .collect(Collectors.toList());
-
-        return as3MaisViajadas;
     }
 
     private List<String> listTiposETesouros(){
         //Tipos de Criaturas e Seus Tesouros - Total de pontos apanhado por cada tipo de criatura
-        List<String> tiposDeCriaturasESeusTesouros = new ArrayList<>();
 
-        return tiposDeCriaturasESeusTesouros;
+        return new ArrayList<>();
     }
     public Map<String, List<String>> getStatistics(){
         Map<String, List<String>> dictionary = new HashMap<>();
