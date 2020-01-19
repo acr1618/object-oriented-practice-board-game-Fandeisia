@@ -9,7 +9,6 @@ public class FandeisiaGameManager{
     private Team teamLdr = new Team (10, "LDR");
     private Team teamRes = new Team (20, "RESISTENCIA");
     private Team currentTeam; // referencia ao time corrente
-
     private List<Treasure> treasures = new ArrayList<>();
     private List<Hole> holes = new ArrayList<>();
     private List<Creature> creatures = new ArrayList<>();
@@ -72,78 +71,7 @@ public class FandeisiaGameManager{
         } while (spent >50 || computerArmy.isEmpty());
         return computerArmy;
     }
-    private List<String> listMaisCarregadas(){
-        //As 3 mais carregadas - As 3 criaturas com mais tesouros encontrados
-        List<String> as3MaisCarregadas = creatures.stream()
-                .sorted((c1,c2) -> c2.getPoints() - c1.getPoints())
-                .limit(3)
-                .sorted((c1,c2) -> c2.getPoints() - c1.getPoints())
-                .map(creature -> creature.getId() + ":" + creature.getCollectedTreasures())
-                .collect(Collectors.toList());
-        return as3MaisCarregadas;
-    }
-    private List<String> listMaisRicas(){
-        //As mais ricas - As 5 criaturas com mais pontos encontrados
-        if (creatures.size() >= 5){
-            Comparator<Creature> compareByPointsAndTreasures = Comparator
-                    .comparing(Creature::getPoints)
-                    .reversed()
-                    .thenComparing(Creature::getPoints);
-            List<String> as5MaisRicas = creatures.stream()
-                    .sorted(compareByPointsAndTreasures)
-                    .limit(5)
-                    .sorted((c1, c2) -> c2.getPoints() - c1.getPoints() )
-                    .map(creature -> creature.getId() + ":" + creature.getPoints() + ":" + creature.getCollectedTreasures())
-                    .collect(Collectors.toList());
-            return as5MaisRicas;
-        }else {
-            List<String> asExistentes = creatures.stream()
-                    .sorted((c1,c2) -> c2.getPoints() - c1.getPoints())
-                    .map(creature -> creature.getId() + ":" + creature.getPoints() + ":" + creature.getCollectedTreasures())
-                    .collect(Collectors.toList());
 
-            return asExistentes;
-        }
-    }
-
-    private List<String> listAlvosFavoritos (){
-        //Os alvos favoritos - As 3 que mais vezes foram alvos de feitiços
-        List<String> osAlvosFavoritos = creatures.stream()
-                .sorted((c1, c2) -> c2.getSpellTargetCounter() - c1.getSpellTargetCounter())
-                .limit(3)
-                .map(creature -> creature.getId() + ":" + creature.getTeamId() + ":" + creature.getSpellTargetCounter())
-                .collect(Collectors.toList());
-
-        return osAlvosFavoritos;
-    }
-    private List<String> listMaisViajadas(){
-        //As mais viajadas - As 3 que mais km percorreram? 1 casa 1 km
-        List<String> as3MaisViajadas = creatures.stream()
-                .sorted((c1,c2) -> c2.getKm() - c1.getKm())
-                .limit(3)
-                .sorted(Comparator.comparingInt(Creature::getKm))
-                .map(creature -> creature.getId() + ":" + creature.getKm())
-                .collect(Collectors.toList());
-
-        return as3MaisViajadas;
-    }
-
-    private List<String> listTiposETesouros(){
-        //Tipos de Criaturas e Seus Tesouros - Total de pontos apanhado por cada tipo de criatura
-        List<String> tiposDeCriaturasESeusTesouros = new ArrayList<>();
-
-        return tiposDeCriaturasESeusTesouros;
-    }
-    public Map<String, List<String>> getStatistics(){
-        Map<String, List<String>> dictionary = new HashMap<>();
-        dictionary.put("as3MaisCarregadas", listMaisCarregadas());
-        dictionary.put("as5MaisRicas", listMaisRicas());
-        dictionary.put("osAlvosFavoritos", listAlvosFavoritos());
-        dictionary.put("as3MaisViajadas", listMaisViajadas());
-        dictionary.put("tiposDeCriaturasESeusTesouros", listTiposETesouros());
-
-        return dictionary;
-    } //TODO 3 more statistics
     public void startGame(String[] content, int rows, int columns) throws InsufficientCoinsException{
         //System.out.println( iterate(logCounter) + " - "+"IN startGame\n -----------------------------------\n");
 
@@ -665,6 +593,7 @@ public class FandeisiaGameManager{
             if (!creature.isFrozen4Ever() && !creature.isFrozen()){
                 if (canExecuteStandardMovement(creature)){
                    creature.move();
+                   creature.addKm(creature.getRange());
                     if(matchTreasure(creature)){
                         // turnsWithoutTreasure =0;
                         if (creature.getTeamId() ==10){
@@ -711,6 +640,7 @@ public class FandeisiaGameManager{
                         creature.empurraParaNorte();
                         creature.setOrientation("Norte");
                         creature.setImage(creature.getOutroTypeName()+"-Norte.png");
+                        creature.addKm(1);
                     }
                 }
                 break;
@@ -722,6 +652,7 @@ public class FandeisiaGameManager{
                         creature.setItSpellName(null); // Já foi executado o feitiço, então passa a ficar em estado desencantado.
                         creature.setOrientation("Este");
                         creature.setImage(creature.getOutroTypeName()+"-Este.png");
+                        creature.addKm(1);
                     }
                 }
                 break;
@@ -732,6 +663,7 @@ public class FandeisiaGameManager{
                         creature.empurraParaSul();
                         creature.setOrientation("Sul");
                         creature.setImage(creature.getOutroTypeName()+"-Sul.png");
+                        creature.addKm(1);
                     }
                 }
                 break;
@@ -742,15 +674,16 @@ public class FandeisiaGameManager{
                         creature.empurraParaOeste();
                         creature.setOrientation("Oeste");
                         creature.setImage(creature.getOutroTypeName()+"-Oeste.png");
+                        creature.addKm(1);
                     }
                 }
                 break;
             }
-            case ("ReduzAlcance"): {
+            case ("ReduzAlcance"): { // todo
                 creature.reduzAlcance();
                 break;
             }
-            case ("DuplicaAlcance"): {
+            case ("DuplicaAlcance"): { // todo
                 if (validateMovement(creature.getX(), creature.getY(),creature.getNextX(), creature.getNextY())) {
                     creature.duplicaAlcance();
                 }
@@ -1176,4 +1109,76 @@ public class FandeisiaGameManager{
     public List<String> getAuthors(){
         return Collections.singletonList("Allyson Rodrigues");
     }
+    private List<String> listMaisCarregadas(){
+        //As 3 mais carregadas - As 3 criaturas com mais tesouros encontrados
+        List<String> as3MaisCarregadas = creatures.stream()
+                .sorted((c1,c2) -> c2.getPoints() - c1.getPoints())
+                .limit(3)
+                .sorted((c1,c2) -> c2.getPoints() - c1.getPoints())
+                .map(creature -> creature.getId() + ":" + creature.getCollectedTreasures())
+                .collect(Collectors.toList());
+        return as3MaisCarregadas;
+    }
+    private List<String> listMaisRicas(){
+        //As mais ricas - As 5 criaturas com mais pontos encontrados
+        if (creatures.size() >= 5){
+            Comparator<Creature> compareByPointsAndTreasures = Comparator
+                    .comparing(Creature::getPoints)
+                    .reversed()
+                    .thenComparing(Creature::getPoints);
+            List<String> as5MaisRicas = creatures.stream()
+                    .sorted(compareByPointsAndTreasures)
+                    .limit(5)
+                    .sorted((c1, c2) -> c2.getPoints() - c1.getPoints() )
+                    .map(creature -> creature.getId() + ":" + creature.getPoints() + ":" + creature.getCollectedTreasures())
+                    .collect(Collectors.toList());
+            return as5MaisRicas;
+        }else {
+            List<String> asExistentes = creatures.stream()
+                    .sorted((c1,c2) -> c2.getPoints() - c1.getPoints())
+                    .map(creature -> creature.getId() + ":" + creature.getPoints() + ":" + creature.getCollectedTreasures())
+                    .collect(Collectors.toList());
+
+            return asExistentes;
+        }
+    }
+
+    private List<String> listAlvosFavoritos (){
+        //Os alvos favoritos - As 3 que mais vezes foram alvos de feitiços
+        List<String> osAlvosFavoritos = creatures.stream()
+                .sorted((c1, c2) -> c2.getSpellTargetCounter() - c1.getSpellTargetCounter())
+                .limit(3)
+                .map(creature -> creature.getId() + ":" + creature.getTeamId() + ":" + creature.getSpellTargetCounter())
+                .collect(Collectors.toList());
+
+        return osAlvosFavoritos;
+    }
+    private List<String> listMaisViajadas(){
+        //As mais viajadas - As 3 que mais km percorreram? 1 casa 1 km
+        List<String> as3MaisViajadas = creatures.stream()
+                .sorted((c1,c2) -> c2.getKm() - c1.getKm())
+                .limit(3)
+                .sorted(Comparator.comparingInt(Creature::getKm))
+                .map(creature -> creature.getId() + ":" + creature.getKm())
+                .collect(Collectors.toList());
+
+        return as3MaisViajadas;
+    }
+
+    private List<String> listTiposETesouros(){
+        //Tipos de Criaturas e Seus Tesouros - Total de pontos apanhado por cada tipo de criatura
+        List<String> tiposDeCriaturasESeusTesouros = new ArrayList<>();
+
+        return tiposDeCriaturasESeusTesouros;
+    }
+    public Map<String, List<String>> getStatistics(){
+        Map<String, List<String>> dictionary = new HashMap<>();
+        dictionary.put("as3MaisCarregadas", listMaisCarregadas());
+        dictionary.put("as5MaisRicas", listMaisRicas());
+        dictionary.put("osAlvosFavoritos", listAlvosFavoritos());
+        dictionary.put("as3MaisViajadas", listMaisViajadas());
+        dictionary.put("tiposDeCriaturasESeusTesouros", listTiposETesouros());
+
+        return dictionary;
+    } //TODO listMaisViajadas e listTiposETesouros
 }
