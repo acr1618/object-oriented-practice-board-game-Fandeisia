@@ -876,7 +876,7 @@ public class FandeisiaGameManager{
             }
 
             case ("Elfo"): {
-                if (creature.isDuplicate()){
+                if (!creature.isDuplicate()){
                     switch (creature.getOrientation()){
                         case ("Norte"):{
                             creature.setNextX(creature.getX());
@@ -898,7 +898,7 @@ public class FandeisiaGameManager{
                         case ("Este"):{
                             creature.setNextX(creature.getX() + creature.getRange());
                             creature.setNextY(creature.getY());
-                            if (getElementId(creature.getNextX()+1, creature.getNextY()) > 0){
+                            if (getElementId(creature.getNextX()-1, creature.getNextY()) > 0){
                                 return false;
                             }
                             return validateMovement(creature.getX(), creature.getY(), creature.getNextX(), creature.getNextY());
@@ -906,7 +906,7 @@ public class FandeisiaGameManager{
                         case ("Oeste"):{
                             creature.setNextX(creature.getX() - creature.getRange());
                             creature.setNextY(creature.getY());
-                            if (getElementId(creature.getNextX()-1, creature.getNextY()) > 0){
+                            if (getElementId(creature.getNextX()+1, creature.getNextY()) > 0){
                                 return false;
                             }
                             return validateMovement(creature.getX(), creature.getY(), creature.getNextX(), creature.getNextY());
@@ -914,7 +914,7 @@ public class FandeisiaGameManager{
                         case ("Nordeste"):{
                             creature.setNextY(creature.getY() - creature.getRange());
                             creature.setNextX(creature.getX() + creature.getRange());
-                            if (getElementId(creature.getNextX()+1, creature.getNextY()-1) > 0){
+                            if (getElementId(creature.getNextX()-1, creature.getNextY()+1) > 0){
                                 return false;
                             }
                             return validateMovement(creature.getX(), creature.getY(), creature.getNextX(), creature.getNextY());
@@ -922,7 +922,7 @@ public class FandeisiaGameManager{
                         case ("Sudeste"):{
                             creature.setNextY(creature.getY() + creature.getRange());
                             creature.setNextX(creature.getX() + creature.getRange());
-                            if (getElementId(creature.getNextX()+1, creature.getNextY()+1) > 0){
+                            if (getElementId(creature.getNextX()-1, creature.getNextY()-1) > 0){
                                 return false;
                             }
                             return validateMovement(creature.getX(), creature.getY(), creature.getNextX(), creature.getNextY());
@@ -930,7 +930,7 @@ public class FandeisiaGameManager{
                         case ("Sudoeste"):{
                             creature.setNextY(creature.getY() + creature.getRange());
                             creature.setNextX(creature.getX() - creature.getRange());
-                            if (getElementId(creature.getNextX()-1, creature.getNextY()+1) > 0){
+                            if (getElementId(creature.getNextX()+1, creature.getNextY()-1) > 0){
                                 return false;
                             }
                             return validateMovement(creature.getX(), creature.getY(), creature.getNextX(), creature.getNextY());
@@ -938,13 +938,13 @@ public class FandeisiaGameManager{
                         case ("Noroeste"):{
                             creature.setNextY(creature.getY() - creature.getRange());
                             creature.setNextX(creature.getX() - creature.getRange());
-                            if (getElementId(creature.getNextX()-1, creature.getNextY()+1) > 0){
+                            if (getElementId(creature.getNextX()+1, creature.getNextY()+1) > 0){
                                 return false;
                             }
                             return validateMovement(creature.getX(), creature.getY(), creature.getNextX(), creature.getNextY());
                         }
                     }
-                }else {
+                }else { // todo tá duplicada. checar o que raios fazer
                     switch (creature.getOrientation()){
                         case ("Norte"):{
                             creature.setNextX(creature.getX());
