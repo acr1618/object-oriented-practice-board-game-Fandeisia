@@ -80,7 +80,7 @@ public class FandeisiaGameManager{
                 .sorted((c1,c2) -> c2.getPoints() - c1.getPoints())
                 .limit(3)
                 .sorted((c1,c2) -> c2.getPoints() - c1.getPoints())
-                .map(creature -> creature.getId() + ":" + creature.getPoints())
+                .map(creature -> creature.getId() + ":" + creature.getCollectedTreasures())
                 .collect(Collectors.toList());
         dictionary.put("as3MaisCarregadas", as3MaisCarregadas);
 
@@ -94,13 +94,13 @@ public class FandeisiaGameManager{
                     .sorted(compareByPointsAndTreasures)
                     .limit(5)
                     .sorted((c1, c2) -> c2.getPoints() - c1.getPoints() )
-                    .map(creature -> creature.getId() + ":" + creature.getPoints() + ":" + creature.getPoints())
+                    .map(creature -> creature.getId() + ":" + creature.getPoints() + ":" + creature.getCollectedTreasures())
                     .collect(Collectors.toList());
             dictionary.put("as5MaisRicas", as5MaisRicas);
         }else {
             List<String> asExistentes = creatures.stream()
                     .sorted((c1,c2) -> c2.getPoints() - c1.getPoints())
-                    .map(creature -> creature.getId() + ":" + creature.getPoints() + ":" + creature.getPoints())
+                    .map(creature -> creature.getId() + ":" + creature.getPoints() + ":" + creature.getCollectedTreasures())
                     .collect(Collectors.toList());
             dictionary.put("as5MaisRicas", asExistentes);
         }
@@ -453,7 +453,7 @@ public class FandeisiaGameManager{
                         return false;
                     }
                 }
-                case ("ReduzAlcance"): {// TODO Se reduzir o alcance e o próximo movimento da criatura não for valido. Só é importante agora pro elfo que pode pular buraco.
+                case ("ReduzAlcance"): {
                     if (checkBalanceToSpell(getCurrentTeamId(), 1)) {
                         c.setEnchant(true);
                         taxSpell(getCurrentTeamId(), 2);
@@ -774,7 +774,7 @@ public class FandeisiaGameManager{
             }
 
             case ("Humano"):{
-                if (!creature.isDuplicate()){
+                if (creature.getRange()==4){ // movimento duplicado. assim mesmo...
                     switch (creature.getOrientation()){
                     case ("Norte"):{
                         creature.setNextX(creature.getX());
@@ -876,10 +876,10 @@ public class FandeisiaGameManager{
             }
 
             case ("Elfo"): {
-                if (creature.isReduced()){
+                if (creature.getRange()==1){
                     return validateMovement(creature.getX(), creature.getY(), creature.getNextX(), creature.getNextY());
                 }
-                if (!creature.isDuplicate()){
+                if (creature.getRange()!=4){ //Não tá duplicado... assim mesmo...!
                     switch (creature.getOrientation()){
                         case ("Norte"):{
                             creature.setNextX(creature.getX());
@@ -947,7 +947,7 @@ public class FandeisiaGameManager{
                             return validateMovement(creature.getX(), creature.getY(), creature.getNextX(), creature.getNextY());
                         }
                     }
-                }else { // todo tá duplicada. checar o que raios fazer
+                } else { // todo tá duplicada. checar o que raios fazer
                     switch (creature.getOrientation()){
                         case ("Norte"):{
                             creature.setNextX(creature.getX());
