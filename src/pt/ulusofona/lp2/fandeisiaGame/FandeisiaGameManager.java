@@ -72,11 +72,13 @@ public class FandeisiaGameManager{
         } while (spent >50 || computerArmy.isEmpty());
         return computerArmy;
     }
+    static List<Creature> listaGlobal;
     public Map<String, List<String>> getStatistics(){
+       listaGlobal = creatures;
         Map<String, List<String>> dictionary = new HashMap<>();
 
         //As 3 criaturas com mais tesouros encontrados
-        List<String> as3MaisCarregadas = creatures.stream()
+        List<String> as3MaisCarregadas = listaGlobal.stream()
                 .sorted((c1,c2) -> c2.getPoints() - c1.getPoints())
                 .limit(3)
                 .sorted((c1,c2) -> c2.getPoints() - c1.getPoints())
@@ -85,12 +87,12 @@ public class FandeisiaGameManager{
         dictionary.put("as3MaisCarregadas", as3MaisCarregadas);
 
         //As mais ricas - As 5 criaturas com mais pontos encontrados
-        if (creatures.size() >= 5){
+        if (listaGlobal.size() >= 5){
             Comparator<Creature> compareByPointsAndTreasures = Comparator
                     .comparing(Creature::getPoints)
                     .reversed()
                     .thenComparing(Creature::getPoints);
-            List<String> as5MaisRicas = creatures.stream()
+            List<String> as5MaisRicas = listaGlobal.stream()
                     .sorted(compareByPointsAndTreasures)
                     .limit(5)
                     .sorted((c1, c2) -> c2.getPoints() - c1.getPoints() )
@@ -98,7 +100,7 @@ public class FandeisiaGameManager{
                     .collect(Collectors.toList());
             dictionary.put("as5MaisRicas", as5MaisRicas);
         }else {
-            List<String> asExistentes = creatures.stream()
+            List<String> asExistentes = listaGlobal.stream()
                     .sorted((c1,c2) -> c2.getPoints() - c1.getPoints())
                     .map(creature -> creature.getId() + ":" + creature.getPoints() + ":" + creature.getCollectedTreasures())
                     .collect(Collectors.toList());
@@ -106,7 +108,7 @@ public class FandeisiaGameManager{
         }
 
         //Os alvos favoritos - As 3 que mais vezes foram alvos de feitiços
-        List<String> osAlvosFavoritos = creatures.stream()
+        List<String> osAlvosFavoritos = listaGlobal.stream()
                 .sorted((c1, c2) -> c2.getSpellTargetCounter() - c1.getSpellTargetCounter())
                 .limit(3)
                 .map(creature -> creature.getId() + ":" + creature.getTeamId() + ":" + creature.getSpellTargetCounter())
@@ -114,7 +116,7 @@ public class FandeisiaGameManager{
         dictionary.put("osAlvosFavoritos", osAlvosFavoritos);
 
         //As mais viajadas - As 3 que mais km percorreram? 1 casa 1 km
-        List<String> as3MaisViajadas = creatures.stream()
+        List<String> as3MaisViajadas = listaGlobal.stream()
                 .sorted((c1,c2) -> c2.getKm() - c1.getKm())
                 .limit(3)
                 .sorted(Comparator.comparingInt(Creature::getKm))
@@ -453,7 +455,7 @@ public class FandeisiaGameManager{
                         return false;
                     }
                 }
-                case ("ReduzAlcance"): {// TODO Se reduzir o alcance e o próximo movimento da criatura não for valido. Só é importante agora pro elfo que pode pular buraco.
+                case ("ReduzAlcance"): {// TODO Se reduzir o alcance e o próximo movimento da criatura não for valido.
                     if (checkBalanceToSpell(getCurrentTeamId(), 1)) {
                         c.setEnchant(true);
                         taxSpell(getCurrentTeamId(), 2);
@@ -618,7 +620,7 @@ public class FandeisiaGameManager{
         turnCounter ++;
         teamLdr.setTreasuresFoundInThisTurn(false);// Zera em todos turnos e incrementa quando acha tesouro
         teamRes.setTreasuresFoundInThisTurn(false);
-        int teste = treasures.size();
+        int treasuresSize = treasures.size();
         for (Creature creature: creatures){
 
             // Timer para descongelar
@@ -663,7 +665,7 @@ public class FandeisiaGameManager{
                 }
             }
         }
-        if(teste == treasures.size()){
+        if(treasuresSize == treasures.size()){
             turnsWithoutTreasure ++;
         } else {
             turnsWithoutTreasure = 0;
@@ -743,8 +745,6 @@ public class FandeisiaGameManager{
             }
         }
     }
-
-    // TODO - Posso futuramente fazer uma validação especifica por tamanho do alcance. Mas agora a questão é cumprir o prazo.
     private boolean canExecuteStandardMovement(Creature creature) {
         ////System.out.println("Entrou em canExecuteStandardMovement");
         switch (creature.getTypeName()){
