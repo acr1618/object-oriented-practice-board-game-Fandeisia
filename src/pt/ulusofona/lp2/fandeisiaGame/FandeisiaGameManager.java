@@ -395,7 +395,7 @@ public class FandeisiaGameManager{
                             return false;
                         }
                     } else {
-                        return false; // Se não entrar nesse if tem erro!
+                        return false;
                     }
                 }
                 case ("EmpurraParaEste"): {
@@ -643,6 +643,8 @@ public class FandeisiaGameManager{
                 }
 
             }
+        }
+        for (Creature creature: creatures){
             /* Movimento normal das criaturas */
             // Se não tá congelada ou congelada4Ever não se movimenta. Se não, bota pra movimentar.
             if (!creature.isFrozen4Ever() && !creature.isFrozen()){
@@ -652,9 +654,8 @@ public class FandeisiaGameManager{
                         // turnsWithoutTreasure =0;
                         if (creature.getTeamId() ==10){
                                 teamLdr.setTreasuresFoundInThisTurn(true);
-                        }
-                        if (creature.getTeamId() ==20){
-                                teamRes.setTreasuresFoundInThisTurn(true);
+                        }else {
+                            teamRes.setTreasuresFoundInThisTurn(true);
                         }
                     }
                 } else {
@@ -671,31 +672,28 @@ public class FandeisiaGameManager{
         giveCoins(); // 1 se não achou tesouro neste turno e 2 se achou.
     }
     private void executeSpell(Creature creature,String spell) {
+        creature.setItSpellName(null);
 
         switch(spell){
             case ("Descongela"): {
                 creature.descongela();
                 creature.setImage(creature.getOutroTypeName()+"-"+ creature.getOrientation()+".png");
-                creature.setItSpellName(null);
                 break;
             }
             case ("Congela"): {
                 creature.congela();
                 creature.setImage(creature.getOutroTypeName() + "-Frozen.png");
-                creature.setItSpellName(null);
                 break;
             }
             case ("Congela4Ever") : {
                 creature.congela4Ever();
                 creature.setImage(creature.getOutroTypeName() + "-Frozen4Ever.png");
-                creature.setItSpellName(null);
                 break;
             }
             case ("EmpurraParaNorte"): {
                 if (!creature.isFrozen() && !creature.isFrozen4Ever()){
                     if (validateMovement(creature.getX(), creature.getY(),creature.getNextX(), creature.getNextY())) {
                         creature.empurraParaNorte();
-                        creature.setItSpellName(null);
                         creature.setOrientation("Norte");
                         creature.setImage(creature.getOutroTypeName()+"-Norte.png");
                     }
@@ -717,7 +715,6 @@ public class FandeisiaGameManager{
                 if (!creature.isFrozen() && !creature.isFrozen4Ever()){
                     if (validateMovement(creature.getX(), creature.getY(),creature.getNextX(), creature.getNextY())) {
                         creature.empurraParaSul();
-                        creature.setItSpellName(null); // Já foi executado o feitiço, então passa a ficar em estado desencantado.
                         creature.setOrientation("Sul");
                         creature.setImage(creature.getOutroTypeName()+"-Sul.png");
                     }
@@ -728,7 +725,6 @@ public class FandeisiaGameManager{
                 if (!creature.isFrozen() && !creature.isFrozen4Ever()){
                     if (validateMovement(creature.getX(), creature.getY(),creature.getNextX(), creature.getNextY())) {
                         creature.empurraParaOeste();
-                        creature.setItSpellName(null); // Já foi executado o feitiço, então passa a ficar em estado desencantado.
                         creature.setOrientation("Oeste");
                         creature.setImage(creature.getOutroTypeName()+"-Oeste.png");
                     }
@@ -737,17 +733,14 @@ public class FandeisiaGameManager{
             }
             case ("ReduzAlcance"): {   // TODO Se reduzir o alcance e o próximo movimento da criatura não for valido. Só é importante agora pro elfo que pode pular buraco.
                 creature.reduzAlcance();
-                creature.setItSpellName(null);
                 break;
             }
             case ("DuplicaAlcance"): {
                 if (validateMovement(creature.getX(), creature.getY(),creature.getNextX(), creature.getNextY())) {
                     //creature.empurraParaOeste();
-                    creature.setItSpellName(null); // Já foi executado o feitiço, então passa a ficar em estado desencantado.
                     //creature.setOrientation("Oeste");
                     //creature.setImage(creature.getOutroTypeName()+"-Oeste.png");
                     creature.duplicaAlcance();
-                    creature.setItSpellName(null);
                 }
                 break;
             }
@@ -926,7 +919,7 @@ return false;
             return false;
         }
 
-        for (Creature otherCreature: creatures){
+        /*for (Creature otherCreature: creatures){
             if (!otherCreature.equals(getCreature(x,y))){
                 if (nextX == otherCreature.getX() && nextY == otherCreature.getY()){
                     return false;
@@ -935,7 +928,7 @@ return false;
                     return false;
                 }
             }
-        }
+        }*/
         /*outra criatura */
         return getElementId(nextX, nextY) <= 0;
     }
