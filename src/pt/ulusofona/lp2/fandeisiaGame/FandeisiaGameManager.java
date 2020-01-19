@@ -775,7 +775,8 @@ public class FandeisiaGameManager{
             }
 
             case ("Humano"): {
-                switch (creature.getOrientation()){
+                if (creature.getRange() != 4){
+                    switch (creature.getOrientation()){
                     case ("Norte"):{
                         creature.setNextX(creature.getX());
                         creature.setNextY(creature.getY() - creature.getRange());
@@ -784,7 +785,7 @@ public class FandeisiaGameManager{
                             return validateMovement(creature.getX(), creature.getY(), creature.getNextX(), creature.getNextY());
                         }
                         /*Checa salto do humano inclusive em caso de reduz alcance - vai virar função depois*/
-                        if (getElementId(creature.getNextX(), creature.getNextY()+1) > 0 || getElementId(creature.getNextX(), creature.getNextY()+1) <=-500 && creature.getRange()==2){
+                        if (getElementId(creature.getNextX(), creature.getNextY()+1) > 0 || getElementId(creature.getNextX(), creature.getNextY()+1) <=-500){
                             return false;
                         }
                         return validateMovement(creature.getX(), creature.getY(), creature.getNextX(), creature.getNextY());
@@ -797,7 +798,7 @@ public class FandeisiaGameManager{
                             return validateMovement(creature.getX(), creature.getY(), creature.getNextX(), creature.getNextY());
                         }
                         /*Checa salto do humano inclusive em caso de reduz alcance - vai virar função depois*/
-                        if (getElementId(creature.getNextX(), creature.getNextY()-1) > 0 || getElementId(creature.getNextX(), creature.getNextY()-1) <=-500&& creature.getRange()==2){
+                        if (getElementId(creature.getNextX(), creature.getNextY()-1) > 0 || getElementId(creature.getNextX(), creature.getNextY()-1) <=-500){
                             return false;
                         }
                         return validateMovement(creature.getX(), creature.getY(), creature.getNextX(), creature.getNextY());
@@ -823,10 +824,58 @@ public class FandeisiaGameManager{
                             return validateMovement(creature.getX(), creature.getY(), creature.getNextX(), creature.getNextY());
                         }
                         /*Checa salto do humano inclusive em caso de reduz alcance - vai virar função depois*/
-                        if (getElementId(creature.getNextX()+1, creature.getNextY()) > 0 || getElementId(creature.getNextX()+1, creature.getNextY()) <=-500&& creature.getRange()==2){
+                        if (getElementId(creature.getNextX()+1, creature.getNextY()) > 0 || getElementId(creature.getNextX()+1, creature.getNextY()) <=-500){
                             return false;
                         }
                         return validateMovement(creature.getX(), creature.getY(), creature.getNextX(), creature.getNextY());
+                    }
+                    }
+                } else { // Aqui o alcance está duplicado. Então as validações são diferentes. todo
+                    switch (creature.getOrientation()){
+                        case ("Norte"):{
+                            creature.setNextX(creature.getX());
+                            creature.setNextY(creature.getY() - creature.getRange());
+                            /*Checa salto do humano inclusive em caso de reduz alcance - vai virar função depois*/
+                            if (getElementId(creature.getNextX(), creature.getNextY()+1) > 0 || getElementId(creature.getNextX(), creature.getNextY()+1) <=-500
+                            || getElementId(creature.getNextX(), creature.getNextY()+2) > 0 || getElementId(creature.getNextX(), creature.getNextY()+2) <=-500
+                            || getElementId(creature.getNextX(), creature.getNextY()+3) > 0 || getElementId(creature.getNextX(), creature.getNextY()+3) <=-500){
+                                return false;
+                            }
+                            return validateMovement(creature.getX(), creature.getY(), creature.getNextX(), creature.getNextY());
+                        }
+                        case ("Sul"):{
+                            creature.setNextX(creature.getX());
+                            creature.setNextY(creature.getY() + creature.getRange());
+                            /*Checa salto do humano inclusive em caso de reduz alcance - vai virar função depois*/
+                            if (getElementId(creature.getNextX(), creature.getNextY()-1) > 0 || getElementId(creature.getNextX(), creature.getNextY()-1) <=-500
+                            || getElementId(creature.getNextX(), creature.getNextY()-2) > 0 || getElementId(creature.getNextX(), creature.getNextY()-2) <=-500
+                            || getElementId(creature.getNextX(), creature.getNextY()-3) > 0 || getElementId(creature.getNextX(), creature.getNextY()-3) <=-500){
+                                return false;
+                            }
+                            return validateMovement(creature.getX(), creature.getY(), creature.getNextX(), creature.getNextY());
+                        }
+                        case ("Este"):{
+                            creature.setNextX(creature.getX() + creature.getRange());
+                            creature.setNextY(creature.getY());
+                            /*Checa salto do humano inclusive em caso de reduz alcance - vai virar função depois*/
+                            if (getElementId(creature.getNextX()-1, creature.getNextY()) > 0 || getElementId(creature.getNextX()-1, creature.getNextY()) <=-500
+                            || getElementId(creature.getNextX()-2, creature.getNextY()) > 0 || getElementId(creature.getNextX()-2, creature.getNextY()) <=-500
+                            || getElementId(creature.getNextX()-3, creature.getNextY()) > 0 || getElementId(creature.getNextX()-3, creature.getNextY()) <=-500){
+                                return false;
+                            }
+                            return validateMovement(creature.getX(), creature.getY(), creature.getNextX(), creature.getNextY());
+                        }
+                        case ("Oeste"):{
+                            creature.setNextX(creature.getX() - creature.getRange());
+                            creature.setNextY(creature.getY());
+                            /*Checa salto do humano inclusive em caso de reduz alcance - vai virar função depois*/
+                            if (getElementId(creature.getNextX()+1, creature.getNextY()) > 0 || getElementId(creature.getNextX()+1, creature.getNextY()) <=-500
+                            || getElementId(creature.getNextX()+2, creature.getNextY()) > 0 || getElementId(creature.getNextX()+2, creature.getNextY()) <=-500
+                            || getElementId(creature.getNextX()+3, creature.getNextY()) > 0 || getElementId(creature.getNextX()+3, creature.getNextY()) <=-500){
+                                return false;
+                            }
+                            return validateMovement(creature.getX(), creature.getY(), creature.getNextX(), creature.getNextY());
+                        }
                     }
                 }
             }
@@ -903,7 +952,7 @@ public class FandeisiaGameManager{
                 return true;
             }
         }
-return false;
+    return false;
     }
     private boolean validateMovement(int x, int y, int nextX, int nextY) {
 
@@ -919,16 +968,6 @@ return false;
             return false;
         }
 
-        /*for (Creature otherCreature: creatures){
-            if (!otherCreature.equals(getCreature(x,y))){
-                if (nextX == otherCreature.getX() && nextY == otherCreature.getY()){
-                    return false;
-                }
-                if (nextX == otherCreature.getNextX() && nextY == otherCreature.getNextY()){
-                    return false;
-                }
-            }
-        }*/
         /*outra criatura */
         return getElementId(nextX, nextY) <= 0;
     }
