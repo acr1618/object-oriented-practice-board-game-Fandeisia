@@ -1152,7 +1152,37 @@ public class FandeisiaGameManager{
     }
     private List<String> listTiposETesouros(){
         //Tipos de Criaturas e Seus Tesouros - Total de pontos apanhado por cada tipo de criatura
+        int sumAnao =0, sumElfo=0, sumHumano=0, sumDragao=0, sumGigante=0;
+
+        for(Creature c: creatures){
+            switch(c.getTypeName()){
+                case ("Anão"):
+                    sumAnao = sumAnao + c.getCollectedTreasures();
+                    break;
+                case ("Elfo"):
+                    sumElfo = sumElfo + c.getCollectedTreasures();
+                    break;
+                case ("Humano"):
+                    sumHumano = sumHumano + c.getCollectedTreasures();
+                    break;
+                case ("Dragão"):
+                    sumDragao = sumDragao + c.getCollectedTreasures();
+                    break;
+                case ("Gigante"):
+                    sumGigante = sumGigante + c.getCollectedTreasures();
+                    break;
+            }
+        }
         List<String> tiposDeCriaturasESeusTesouros = new ArrayList<>();
+
+        Map<String, Integer> myTypes = new HashMap();
+        creatures.stream()
+                .map(Creature::getTypeName)
+                .distinct()
+                .collect(Collectors.toList());
+        System.out.println(myTypes);
+
+
 
         return tiposDeCriaturasESeusTesouros;
     }
