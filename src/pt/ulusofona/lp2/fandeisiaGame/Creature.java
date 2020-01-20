@@ -25,12 +25,11 @@ public abstract class Creature extends Element {
     protected int collectedTreasures =0;
     private boolean isReduced = false;
     private boolean isDuplicate = false;
-    private int typeCapturesCounter =0;
-    private int capturasAnao =0;
-    private int capturasHumano=0;
-    private int capturasGigante=0;
-    private int capturasElfo=0;
-    private int capturasDragao=0;
+    private int capturesAnao =0;
+    private int capturesHumano=0;
+    private int capturesGigante=0;
+    private int capturesElfo=0;
+    private int capturesDragao=0;
 
 
     /*// Variáveis para guardar o mundo:
@@ -239,7 +238,6 @@ public abstract class Creature extends Element {
     public void collectTreasure(int value) {
         this.points = this.points + value;
         this.collectedTreasures ++;
-        this.typeCapturesCounter++;
     }
 
     /*Statistics*/
@@ -283,51 +281,44 @@ public abstract class Creature extends Element {
     public int setTypeCapturesCounter() {
         switch(this.typeName){
             case ("Anão"):{
-                this.capturasAnao++;
+                this.capturesAnao++;
             }
             case ("Humano"):{
-                this.capturasHumano++;
+                this.capturesHumano++;
             }
             case ("Elfo"):{
-                this.capturasElfo++;
+                this.capturesElfo++;
             }
             case ("Dragão"):{
-                this.capturasDragao++;
+                this.capturesDragao++;
             }
             case ("Gigante"):{
-                this.capturasGigante++;
+                this.capturesGigante++;
             }
         }
 
-        return typeCapturesCounter;
+        return 0;
     }
 
     public int getTypeCapturesCounter() {
         switch(this.typeName){
             case ("Anão"):{
-                return capturasAnao++;
+                return this.capturesAnao;
             }
             case ("Humano"):{
-                return capturasHumano++;
+                return this.capturesHumano;
             }
             case ("Elfo"):{
-                return capturasElfo++;
+                return this.capturesElfo;
             }
             case ("Dragão"):{
-                return capturasDragao++;
+                return this.capturesDragao;
             }
             case ("Gigante"):{
-                return capturasGigante++;
+                return this.capturesGigante;
             }
         }
-        return -1; // não é bem isso... mas ok
-    }
-
-
-    private Map<String, Integer> setTypeCounter(String tipo, int quant) {
-        Map<String, Integer> tipoQuant = new HashMap<>();
-        tipoQuant.put(tipo, quant);
-        return tipoQuant;
+        return 0; // não é bem isso... mas ok
     }
     //public void lookAtTheWorld(int rows, int columns, List<Hole> holes, List<Treasure> treasures, List<Creature> creatures) {} -----> NOT YET!
 

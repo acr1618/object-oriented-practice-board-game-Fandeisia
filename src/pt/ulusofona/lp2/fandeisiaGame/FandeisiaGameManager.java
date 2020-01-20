@@ -20,11 +20,11 @@ public class FandeisiaGameManager{
     private long logCounter = 0;
     private int turnCounter = 0;
     private boolean iAactive = false; // Altera para true se quiser IA
-    static int quantAnao = 0;
-    static int quantElfo =0;
-    static int quantHumano = 0;
-    static int quantDragao =0;
-    static int quantGigante =0;
+    private int quantAnao = 0;
+    private int quantElfo =0;
+    private int quantHumano = 0;
+    private int quantDragao =0;
+    private int quantGigante =0;
 
     public FandeisiaGameManager(){
     }
@@ -64,16 +64,16 @@ public class FandeisiaGameManager{
         Map<String, Integer> computerArmy = new HashMap<>();
         do {
             computerArmy.put("Anão", 0);
-            //computerArmy.put("Anão", new Random().nextInt(3));
-            //spent = spent + computerArmy.get("Anão");
-            //computerArmy.put("Humano", new Random().nextInt(3));
-            //spent = spent + computerArmy.get("Humano") *5;
-            //computerArmy.put("Elfo", new Random().nextInt(3));
-            //spent = spent + computerArmy.get("Elfo")*5;
-            //computerArmy.put("Dragão", new Random().nextInt(1));
-            //spent = spent + computerArmy.get("Dragão")*9;
-            //computerArmy.put("Gigante", new Random().nextInt(3));
-            //spent = spent + computerArmy.get("Gigante")*5;
+            computerArmy.put("Anão", new Random().nextInt(3));
+            spent = spent + computerArmy.get("Anão");
+            computerArmy.put("Humano", new Random().nextInt(3));
+            spent = spent + computerArmy.get("Humano") *5;
+            computerArmy.put("Elfo", new Random().nextInt(3));
+            spent = spent + computerArmy.get("Elfo")*5;
+            computerArmy.put("Dragão", new Random().nextInt(1));
+            spent = spent + computerArmy.get("Dragão")*9;
+            computerArmy.put("Gigante", new Random().nextInt(3));
+            spent = spent + computerArmy.get("Gigante")*5;
 
         } while (spent >50 || computerArmy.isEmpty());
         return computerArmy;
@@ -118,10 +118,10 @@ public class FandeisiaGameManager{
 
                 switch (type) {
                     case ("Anão") : creatures.add(new Dwarf(id, x, y, teamId, 1, orientation));
-                        quantAnao ++;
+                        quantAnao++;
                         break;
                     case("Dragão") : creatures.add(new Dragon(id, x, y, teamId, 9, orientation));
-                        quantDragao ++;
+                        quantDragao++;
                         break;
                     case("Elfo") : creatures.add(new Elf(id, x, y, teamId, 5, orientation));
                         quantElfo++;
@@ -130,15 +130,13 @@ public class FandeisiaGameManager{
                         quantGigante++;
                         break;
                     case("Humano") : creatures.add(new Human(id, x, y, teamId, 3, orientation));
-                        quantGigante++;
+                        quantHumano++;
                         break;
                 }
             }
-            setTypeCounter("Anão", quantAnao);
-            setTypeCounter("Dragão", quantDragao);
-            setTypeCounter("Elfo", quantElfo);
-            setTypeCounter("Gigante", quantGigante);
-            setTypeCounter("Humano", quantHumano);
+
+            // Chama fç que cria um Hashmap com tipo e qtd
+
 
 
             if (individual_line[1].contains("hole") || individual_line[1].contains("gold") || individual_line[1].contains("silver") || individual_line[1].contains("bronze")){
@@ -197,6 +195,13 @@ public class FandeisiaGameManager{
                     break;
             }
         }
+
+        setTypeCounter("Anão", quantAnao);
+        setTypeCounter("Dragão", quantDragao);
+        setTypeCounter("Elfo", quantElfo);
+        setTypeCounter("Gigante", quantGigante);
+        setTypeCounter("Humano", quantHumano);
+
 
         List<Creature> sortedCreatures = creatures.stream()
                 .sorted(Comparator.comparingInt(Element::getId))
@@ -300,6 +305,9 @@ public class FandeisiaGameManager{
         }
         //System.out.println(iterate(logCounter) + " - " + "Entrou em enchant");
         Creature c = getCreature(x, y);
+        if(c == null){
+            return false;
+        }
 
         if (c.isFrozen4Ever() && spellName.equals("Descongela")) {
             if (checkBalanceToSpell(getCurrentTeamId(), 8)) {
@@ -409,7 +417,7 @@ public class FandeisiaGameManager{
                         return false;
                     }
                 }
-                case ("ReduzAlcance"): {// TODO Se reduzir o alcance e o próximo movimento da criatura não for valido.
+                case ("ReduzAlcance"): {
                     if (checkBalanceToSpell(getCurrentTeamId(), 1)) {
                         c.setEnchant(true);
                         taxSpell(getCurrentTeamId(), 2);
@@ -1157,6 +1165,7 @@ public class FandeisiaGameManager{
         }
     }
 
+
     private List<String> listMaisViajadas(){
         //As mais viajadas - As 3 que mais km percorreram? 1 casa 1 km
         List<String> as3MaisViajadas = new ArrayList<>();
@@ -1170,42 +1179,53 @@ public class FandeisiaGameManager{
     }
     private List<String> listTiposETesouros(){
 
+        List<String> creatureTypes = new ArrayList<>();
+        creatureTypes.add("Anão");
+        creatureTypes.add("Dragão");
+        creatureTypes.add("Elfo");
+        creatureTypes.add("Humano");
+        creatureTypes.add("Gigante");
+
+        List<String> typesInGame = creatures.stream()
+                .map(creature -> creature.getTypeName())
+                .distinct()
+                .collect(Collectors.toList());
+        typesInGame.stream()
+                .forEach(t -> setTypeCounter(t, 0));
+
         List<String> tiposDeCriaturasESeusTesouros = new ArrayList<>();
-        List<String> tipos = new ArrayList<>();
         creatures.stream()
         .sorted((c1, c2) -> c2.getTypeCapturesCounter() - c1.getTypeCapturesCounter())
         .forEach(creature -> tiposDeCriaturasESeusTesouros.add(creature.getTypeName() + ":"+ tipoQuant.get(creature.getTypeName())+":"+creature.getTypeCapturesCounter()));
 
         return tiposDeCriaturasESeusTesouros;
     }
-    static Map<String, Integer> tipoQuant = new HashMap<>();
-    private Map<String, Integer> setTypeCounter(String tipo, int quant) {
-
-        tipoQuant.put(tipo, quant);
-        return tipoQuant;
-    }
-
-
 
 
     private List<String> listAlvosFavoritos (){
         //Os alvos favoritos - As 3 que mais vezes foram alvos de feitiços
         List<String> osAlvosFavoritos = new ArrayList<>();
         creatures.stream()
-                .sorted((c1, c2) -> c2.getSpellTargetCounter() - c1.getSpellTargetCounter())
-                .limit(3)
-                .forEach(creature -> osAlvosFavoritos.add(creature.getId()+ ":" + creature.getTeamId() + ":"+ creature.getSpellTargetCounter()));
+    .sorted((c1, c2) -> c2.getSpellTargetCounter() - c1.getSpellTargetCounter())
+    .limit(3)
+    .forEach(creature -> osAlvosFavoritos.add(creature.getId()+ ":" + creature.getTeamId() + ":"+ creature.getSpellTargetCounter()));
 
         return osAlvosFavoritos;
     }
+    static Map<String, Integer> tipoQuant = new HashMap<>();
+    private void setTypeCounter(String tipo, int quant) {
+        tipoQuant.put(tipo, quant);
+        System.out.println(tipoQuant);
+    }
+
     public Map<String, List<String>> getStatistics(){
         Map<String, List<String>> dictionary = new HashMap<>();
         dictionary.put("as3MaisCarregadas", listMaisCarregadas());
         dictionary.put("as5MaisRicas", listMaisRicas());
         dictionary.put("osAlvosFavoritos", listAlvosFavoritos());
         dictionary.put("as3MaisViajadas", listMaisViajadas());
-        dictionary.put("tiposDeCriaturasESeusTesouros", listTiposETesouros());
+        dictionary.put("tiposDeCriaturaESeusTesouros", listTiposETesouros());
 
         return dictionary;
-    } //TODO listMaisViajadas e listTiposETesouros
+    }
 }
