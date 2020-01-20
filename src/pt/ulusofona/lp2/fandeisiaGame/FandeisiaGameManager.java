@@ -28,6 +28,11 @@ public class FandeisiaGameManager{
 
     public FandeisiaGameManager(){
     }
+
+    private boolean isIA() {
+        return iAactive;
+    }
+
     private void setRowsFgm(int rows){
         this.rowsFgm = rows;
      }
@@ -299,6 +304,9 @@ public class FandeisiaGameManager{
         return (getCreature(x, y).getItSpellName());
     }
     public boolean enchant (int x, int y, String spellName) {
+
+        Creature z = getCreature(x,y);
+        z.setSpellTargetCounter();
         if (spellName == null){
             return false;
         }
@@ -565,6 +573,9 @@ public class FandeisiaGameManager{
         }
     }
     public void processTurn(){
+        /*if (isIA() && currentTeam.getId()==20){
+            enchantMachine();
+        }*/
         turnCounter ++;
         teamLdr.setTreasuresFoundInThisTurn(false);// Zera em todos turnos e incrementa quando acha tesouro
         teamRes.setTreasuresFoundInThisTurn(false);
@@ -622,6 +633,12 @@ public class FandeisiaGameManager{
         switchCurrentTeam();
         giveCoins(); // 1 se não achou tesouro neste turno e 2 se achou.
     }
+
+    private void enchantMachine() {
+
+    }
+
+
     private void executeSpell(Creature creature,String spell) {
         creature.setItSpellName(null);
 
@@ -1178,9 +1195,9 @@ public class FandeisiaGameManager{
         //Os alvos favoritos - As 3 que mais vezes foram alvos de feitiços
         List<String> osAlvosFavoritos = new ArrayList<>();
         creatures.stream()
-    .sorted((c1, c2) -> c2.getSpellTargetCounter() - c1.getSpellTargetCounter())
-    .limit(3)
-    .forEach(creature -> osAlvosFavoritos.add(creature.getId()+ ":" + creature.getTeamId() + ":"+ creature.getSpellTargetCounter()));
+        .sorted((c1, c2) -> c2.getSpellTargetCounter() - c1.getSpellTargetCounter())
+        .limit(3)
+        .forEach(creature -> osAlvosFavoritos.add(creature.getId()+ ":" + creature.getTeamId() + ":"+ creature.getSpellTargetCounter()));
 
         return osAlvosFavoritos;
     }
