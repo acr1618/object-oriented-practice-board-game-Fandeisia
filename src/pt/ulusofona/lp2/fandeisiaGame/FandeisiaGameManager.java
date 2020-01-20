@@ -1184,7 +1184,7 @@ public class FandeisiaGameManager{
 
         return osAlvosFavoritos;
     }
-    Map<String, Integer> tipoQuant = new HashMap<>();
+    private Map<String, Integer> tipoQuant = new HashMap<>();
     private void setTypeCounter(String tipo, int quant) {
         tipoQuant.put(tipo, quant);
         System.out.println(tipoQuant);
