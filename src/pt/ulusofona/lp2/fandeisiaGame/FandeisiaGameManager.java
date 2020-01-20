@@ -296,8 +296,8 @@ public class FandeisiaGameManager{
                     switch (c.getOrientation()){
                         case ("Norte"):
                             c.setNextX(x);
-                            c.setNextY(y - c.getRange()*2);
-                            if (canExecuteStandardMovement(c)) { // movimento é valido
+                            c.setNextY(y -c.getRange()*2);
+                            if (validateMovement(c.getX(), c.getY(),c.getNextX(), c.getNextY())) { // movimento é valido
                                 if (checkBalanceToSpell(getCurrentTeamId(), 3)) {
                                     System.out.println("    Tem coin pra pagar.");
                                     c.setEnchant(true);
@@ -307,7 +307,6 @@ public class FandeisiaGameManager{
                                     System.out.println("    seta spellName " + spellName);
                                     c.setSpellTargetCounter();
                                     System.out.println("    número de vezes alvo de feitiço: " + c.getSpellTargetCounter());
-                                    c.setDuplicate(true);
                                     return true;
                                 } else {
                                     return false;
@@ -328,7 +327,6 @@ public class FandeisiaGameManager{
                                     System.out.println("    seta spellName " + spellName);
                                     c.setSpellTargetCounter();
                                     System.out.println("    número de vezes alvo de feitiço: " + c.getSpellTargetCounter());
-                                    c.setDuplicate(true);
                                     return true;
                                 } else {
                                     return false;
@@ -349,7 +347,6 @@ public class FandeisiaGameManager{
                                     System.out.println("    seta spellName " + spellName);
                                     c.setSpellTargetCounter();
                                     System.out.println("    número de vezes alvo de feitiço: " + c.getSpellTargetCounter());
-                                    c.setDuplicate(true);
                                     return true;
                                 } else {
                                     return false;
@@ -370,7 +367,6 @@ public class FandeisiaGameManager{
                                     System.out.println("    seta spellName " + spellName);
                                     c.setSpellTargetCounter();
                                     System.out.println("    número de vezes alvo de feitiço: " + c.getSpellTargetCounter());
-                                    c.setDuplicate(true);
                                     return true;
                                 } else {
                                     return false;
@@ -391,7 +387,6 @@ public class FandeisiaGameManager{
                                     System.out.println("    seta spellName " + spellName);
                                     c.setSpellTargetCounter();
                                     System.out.println("    número de vezes alvo de feitiço: " + c.getSpellTargetCounter());
-                                    c.setDuplicate(true);
                                     return true;
                                 } else {
                                     return false;
@@ -412,7 +407,6 @@ public class FandeisiaGameManager{
                                     System.out.println("    seta spellName " + spellName);
                                     c.setSpellTargetCounter();
                                     System.out.println("    número de vezes alvo de feitiço: " + c.getSpellTargetCounter());
-                                    c.setDuplicate(true);
                                     return true;
                                 } else {
                                     return false;
@@ -433,7 +427,6 @@ public class FandeisiaGameManager{
                                     System.out.println("    seta spellName " + spellName);
                                     c.setSpellTargetCounter();
                                     System.out.println("    número de vezes alvo de feitiço: " + c.getSpellTargetCounter());
-                                    c.setDuplicate(true);
                                     return true;
                                 } else {
                                     return false;
@@ -454,7 +447,6 @@ public class FandeisiaGameManager{
                                     System.out.println("    seta spellName " + spellName);
                                     c.setSpellTargetCounter();
                                     System.out.println("    número de vezes alvo de feitiço: " + c.getSpellTargetCounter());
-                                    c.setDuplicate(true);
                                     return true;
                                 } else {
                                     return false;
@@ -529,7 +521,6 @@ public class FandeisiaGameManager{
         switchCurrentTeam();
         giveCoins(); // 1 se não achou tesouro neste turno e 2 se achou.
     } // todo - CHECAR POSSÍVEIS ERROS
-
     private void executeSpell(Creature creature,String spell) {
         System.out.println(iterate(logCounter) + " - " + "Entrou em executeSpell");
         creature.setItSpellName(null);
@@ -599,9 +590,8 @@ public class FandeisiaGameManager{
                 break;
             }
             case ("DuplicaAlcance"): { // todo
-                if (canExecuteStandardMovement(creature)) {
-                    creature.setDuplicate(false);
-                    creature.move();
+                if (validateMovement(creature.getX(), creature.getY(),creature.getNextX(), creature.getNextY())) {
+                    creature.duplicaAlcance();
                 }
                 break;
             }
@@ -610,7 +600,6 @@ public class FandeisiaGameManager{
     private boolean canExecuteStandardMovement(Creature creature) {
         System.out.println(iterate(logCounter) + " - " + "Entrou em canExecuteStandardMovement");
         switch (creature.getTypeName()){
-
             case ("Anão"): case ("Dragão"): case ("Gigante"):{
                 switch (creature.getOrientation()){
                     case ("Norte"):{
@@ -633,7 +622,7 @@ public class FandeisiaGameManager{
                         creature.setNextY(creature.getY());
                         return validateMovement(creature.getX(), creature.getY(), creature.getNextX(), creature.getNextY());
                     }
-                } break;
+                }
             }
 
             case ("Humano"):{
@@ -884,39 +873,22 @@ public class FandeisiaGameManager{
         return false;
     } //todo - CHECAR POSSÍVEIS ERROS NO MOVIMENTO USUAL DAS PEÇAS - também há muita validação aqui que poderia generalizar
     private boolean validateMovement(int x, int y, int nextX, int nextY) {
-        System.out.print(iterate(logCounter) + " - " + "Entrou em validateMovement");
-        System.out.println("    Criatura: " + getCreature(x,y));
-
+        System.out.println(iterate(logCounter) + " - " + "Entrou em validateMovement");
         if (nextX < 0 || nextY < 0){
-            System.out.print(iterate(logCounter) + " - " + "Movimento inválido - ");
-            System.out.println(iterate(logCounter) + " - " + "Fora da tela - menor que zero");
+            System.out.println(iterate(logCounter) + " - " + "Fora da tela - menor que zero");// fora da tela
             return false;
         }
-        if (nextX > columnsFgm-1 || nextY > rowsFgm-1){
-            System.out.print(iterate(logCounter) + " - " + "Movimento inválido - ");
-            System.out.println(iterate(logCounter) + " - " + "Fora da tela - maior que zero");
+        if (nextX > columnsFgm-1 || nextY > rowsFgm-1){ // fora da tela
             return false;
         }
 
-        if (getElementId(nextX, nextY) <=-500){
-            System.out.print(iterate(logCounter) + " - " + "Movimento inválido - ");
-            System.out.println(iterate(logCounter) + " - " + "Não pula buraco em: (" + nextX + ","+nextY+")");
+        if (getElementId(nextX, nextY) <=-500){ // buraco
             return false;
         }
 
         /*outra criatura */
-        if (getElementId(nextX, nextY) > 0){
-            System.out.print(iterate(logCounter) + " - " + "Movimento inválido - ");
-            System.out.println(iterate(logCounter) + " - " + "Não pula criatura em: (" + nextX + ","+nextY+")");
-            return false;
-        }
-        /*if (haveObstacle(getCreature(x, y))){
-            System.out.print(iterate(logCounter) + " - " + "Movimento inválido - ");
-            System.out.println(iterate(logCounter) + " - " + "Não pula criatura ou buraco em: (" + nextX + ","+nextY+")");
-            return false;
-        }*/
-        return (getElementId(nextX, nextY) <= 0);
-    }
+        return getElementId(nextX, nextY) <= 0;
+    }//todo - CHECAR POSSÍVEIS ERROS NA VALIDAÇÃO DOS MOVIMENTOS -
 
     /*Daqui pra baixo parece tudo bem embora save e load game não esteja implementado mas não será mais avaliado*/
     private List<String> listMaisCarregadas(){
@@ -1150,12 +1122,12 @@ public class FandeisiaGameManager{
         int spent  =0;
         Map<String, Integer> computerArmy = new HashMap<>();
         do {
-            //computerArmy.put("Anão", new Random().nextInt(3));
-            //spent = spent + computerArmy.get("Anão");
+            computerArmy.put("Anão", new Random().nextInt(3));
+            spent = spent + computerArmy.get("Anão");
             computerArmy.put("Humano", new Random().nextInt(3));
             spent = spent + computerArmy.get("Humano") *5;
-            //computerArmy.put("Elfo", new Random().nextInt(3));
-            //spent = spent + computerArmy.get("Elfo")*5;
+            computerArmy.put("Elfo", new Random().nextInt(3));
+            spent = spent + computerArmy.get("Elfo")*5;
             //computerArmy.put("Dragão", new Random().nextInt(1));
             //spent = spent + computerArmy.get("Dragão")*9;
             //computerArmy.put("Gigante", new Random().nextInt(3));

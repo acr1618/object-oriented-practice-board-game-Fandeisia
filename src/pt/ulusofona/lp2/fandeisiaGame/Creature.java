@@ -171,8 +171,9 @@ public abstract class Creature extends Element {
         this.range = 1; // Custa 2 Reduz o alcance para
         this. isReduced =true;
     }
-    public void setDuplicate(boolean state){
-        this.isDuplicate = state;
+    public void duplicaAlcance(){
+        this.range = range *2;
+        this.isDuplicate = true;
         // Custa 3 Aumenta alcance para o dobro
     }
     public boolean isEnchant() {
