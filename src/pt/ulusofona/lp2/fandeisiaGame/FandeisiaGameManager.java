@@ -183,14 +183,13 @@ public class FandeisiaGameManager{
                 .collect(Collectors.toList());
         setCreaturesList(sortedCreatures);
 
-        /*if (teamLdr.getCoins() < 0 && teamRes.getCoins() < 0){
-            return 1;
+        if (teamLdr.getCoins() < 0 && teamRes.getCoins() < 0){
+            throw new InsufficientCoinsException("Nenhum dos times respeitou o plafond", teamLdr, teamRes);
         } else if(teamLdr.getCoins() < 0){
-            return 2;
+            throw new InsufficientCoinsException("O time LDR não respeito o plafond", teamLdr,teamRes);
         } else if(teamRes.getCoins() < 0){
-            return 3;
+            throw new InsufficientCoinsException("O time RESISTENCIA não respeitou o plafond", teamLdr, teamRes);
         }
-        return 0;*/ // TODO Exception
 
     }
 
@@ -273,14 +272,6 @@ public class FandeisiaGameManager{
     public String getSpell (int x, int y){
         //System.out.println(iterate(logCounter) + " - "+"IN getSpell");
         return (getCreature(x, y).getItSpellName());
-    }
-    public Creature getCreature (int x, int y){
-        for (Creature cG : creatures) {
-            if (cG.getX() == x && cG.getY() == y){
-                return cG;
-            }
-        }
-        return null;
     }
     public boolean enchant (int x, int y, String spellName) {
         if (spellName == null){
@@ -1010,6 +1001,14 @@ public class FandeisiaGameManager{
         return getElementId(nextX, nextY) <= 0;
     }
 
+    public Creature getCreature (int x, int y){
+        for (Creature cG : creatures) {
+            if (cG.getX() == x && cG.getY() == y){
+                return cG;
+            }
+        }
+        return null;
+    }
     // Checar saldo;
     private boolean checkBalanceToSpell(int teamId, int spellCost) {
 
@@ -1142,10 +1141,10 @@ public class FandeisiaGameManager{
             return asExistentes;
         }
     }
-
     private List<String> listAlvosFavoritos (){
         //Os alvos favoritos - As 3 que mais vezes foram alvos de feitiços
-        List<String> osAlvosFavoritos = creatures.stream()
+        List<String> osAlvosFavoritos = new ArrayList<>();
+        osAlvosFavoritos = creatures.stream()
                 .sorted((c1, c2) -> c2.getSpellTargetCounter() - c1.getSpellTargetCounter())
                 .limit(3)
                 .map(creature -> creature.getId() + ":" + creature.getTeamId() + ":" + creature.getSpellTargetCounter())
@@ -1155,7 +1154,8 @@ public class FandeisiaGameManager{
     }
     private List<String> listMaisViajadas(){
         //As mais viajadas - As 3 que mais km percorreram? 1 casa 1 km
-        List<String> as3MaisViajadas = creatures.stream()
+        List<String> as3MaisViajadas = new ArrayList<>();
+        as3MaisViajadas = creatures.stream()
                 .sorted((c1,c2) -> c2.getKm() - c1.getKm())
                 .limit(3)
                 .sorted(Comparator.comparingInt(Creature::getKm))
@@ -1164,7 +1164,6 @@ public class FandeisiaGameManager{
 
         return as3MaisViajadas;
     }
-
     private List<String> listTiposETesouros(){
         //Tipos de Criaturas e Seus Tesouros - Total de pontos apanhado por cada tipo de criatura
         List<String> tiposDeCriaturasESeusTesouros = new ArrayList<>();
