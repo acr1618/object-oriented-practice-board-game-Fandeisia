@@ -200,6 +200,12 @@ public class FandeisiaGameManager{
             }
         }
 
+        setTypeCounter("Anão", quantAnao);
+        setTypeCounter("Dragão", quantDragao);
+        setTypeCounter("Elfo", quantElfo);
+        setTypeCounter("Gigante", quantGigante);
+        setTypeCounter("Humano", quantHumano);
+
 
         List<Creature> sortedCreatures = creatures.stream()
                 .sorted(Comparator.comparingInt(Element::getId))
@@ -1189,7 +1195,6 @@ public class FandeisiaGameManager{
         creatures.stream()
         .sorted((c1, c2) -> c2.getSpellTargetCounter() - c1.getSpellTargetCounter())
         .limit(3)
-        .sorted((c1, c2) -> c1.getSpellTargetCounter() - c2.getSpellTargetCounter())
         .forEach(creature -> osAlvosFavoritos.add(creature.getId()+ ":" + creature.getTeamId() + ":"+ creature.getSpellTargetCounter()));
 
         return osAlvosFavoritos;
