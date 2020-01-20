@@ -238,7 +238,7 @@ public abstract class Creature extends Element {
     }
 
     public void setSpellTargetCounter() {
-        this.spellTargetCounter ++;
+        this.spellTargetCounter = this.spellTargetCounter +1;
     }
 
     public int getDistanceTraveled() {
