@@ -632,8 +632,6 @@ public class FandeisiaGameManager{
                 if (!creature.isFrozen() && !creature.isFrozen4Ever()){
                     if (validateMovement(creature.getX(), creature.getY(),creature.getNextX(), creature.getNextY())) {
                         creature.empurraParaNorte();
-                        creature.setOrientation("Norte");
-                        creature.setImage(creature.getOutroTypeName()+"-Norte.png");
                         creature.addKm(1);
                     }
                 }
