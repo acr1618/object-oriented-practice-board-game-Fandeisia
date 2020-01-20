@@ -23,13 +23,13 @@ public abstract class Creature extends Element {
     protected int distanceTraveled = 0;
     protected int km = 0;
     protected int collectedTreasures =0;
-    private boolean isReduced = false;
-    private boolean isDuplicate = false;
-    private int capturesAnao =0;
-    private int capturesHumano=0;
-    private int capturesGigante=0;
-    private int capturesElfo=0;
-    private int capturesDragao=0;
+    protected boolean isReduced = false;
+    protected boolean isDuplicate = false;
+    protected int capturesAnao =0;
+    protected int capturesHumano=0;
+    protected int capturesGigante=0;
+    protected int capturesElfo=0;
+    protected int capturesDragao=0;
 
 
     /*// Variáveis para guardar o mundo:
