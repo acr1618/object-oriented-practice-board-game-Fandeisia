@@ -1,5 +1,8 @@
 package pt.ulusofona.lp2.fandeisiaGame;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public abstract class Creature extends Element {
 
     protected int teamId;
@@ -22,6 +25,7 @@ public abstract class Creature extends Element {
     protected int collectedTreasures =0;
     private boolean isReduced = false;
     private boolean isDuplicate = false;
+    private int typeCapturesCounter =0;
 
     /*// Variáveis para guardar o mundo:
     protected int rows;
@@ -229,6 +233,7 @@ public abstract class Creature extends Element {
     public void collectTreasure(int value) {
         this.points = this.points + value;
         this.collectedTreasures ++;
+        this.typeCapturesCounter++;
     }
 
     /*Statistics*/
@@ -269,6 +274,20 @@ public abstract class Creature extends Element {
         return collectedTreasures;
     }
 
+    public int getTypeCapturesCounter() {
+        return typeCapturesCounter;
+    }
+
+    public void setTypeCapturesCounter(int typeCapturesCounter) {
+        this.typeCapturesCounter = typeCapturesCounter;
+    }
+
+
+    private Map<String, Integer> setTypeCounter(String tipo, int quant) {
+        Map<String, Integer> tipoQuant = new HashMap<>();
+        tipoQuant.put(tipo, quant);
+        return tipoQuant;
+    }
     //public void lookAtTheWorld(int rows, int columns, List<Hole> holes, List<Treasure> treasures, List<Creature> creatures) {} -----> NOT YET!
 
 }

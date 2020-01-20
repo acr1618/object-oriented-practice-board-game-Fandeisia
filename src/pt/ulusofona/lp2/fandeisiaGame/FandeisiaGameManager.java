@@ -20,6 +20,11 @@ public class FandeisiaGameManager{
     private long logCounter = 0;
     private int turnCounter = 0;
     private boolean iAactive = false; // Altera para true se quiser IA
+    static int quantAnao = 0;
+    static int quantElfo =0;
+    static int quantHumano = 0;
+    static int quantDragao =0;
+    static int quantGigante =0;
 
     public FandeisiaGameManager(){
     }
@@ -110,19 +115,32 @@ public class FandeisiaGameManager{
                 int y = Integer.parseInt(y_string);
                 String[] aux_orientation = individual_line[5].split(": ");
                 String orientation = aux_orientation[1];
+
                 switch (type) {
                     case ("Anão") : creatures.add(new Dwarf(id, x, y, teamId, 1, orientation));
+                        quantAnao ++;
                         break;
                     case("Dragão") : creatures.add(new Dragon(id, x, y, teamId, 9, orientation));
+                        quantDragao ++;
                         break;
                     case("Elfo") : creatures.add(new Elf(id, x, y, teamId, 5, orientation));
+                        quantElfo++;
                         break;
                     case("Gigante") : creatures.add(new Giant(id, x, y, teamId, 5, orientation));
+                        quantGigante++;
                         break;
                     case("Humano") : creatures.add(new Human(id, x, y, teamId, 3, orientation));
+                        quantGigante++;
                         break;
                 }
             }
+            setTypeCounter("Anão", quantAnao);
+            setTypeCounter("Dragão", quantDragao);
+            setTypeCounter("Elfo", quantElfo);
+            setTypeCounter("Gigante", quantGigante);
+            setTypeCounter("Humano", quantHumano);
+
+
             if (individual_line[1].contains("hole") || individual_line[1].contains("gold") || individual_line[1].contains("silver") || individual_line[1].contains("bronze")){
                 String[] detach_colon = individual_line[0].split(": ");
                 int id = Integer.parseInt(detach_colon[1]);
@@ -194,6 +212,7 @@ public class FandeisiaGameManager{
         }
 
     }
+
 
     private void setCreaturesList(List<Creature> sortedCreatures) {
         this.creatures = sortedCreatures;
@@ -1149,41 +1168,24 @@ public class FandeisiaGameManager{
         return as3MaisViajadas;
     }
     private List<String> listTiposETesouros(){
-        //Tipos de Criaturas e Seus Tesouros - Total de pontos apanhado por cada tipo de criatura
-        int sumAnao =0, sumElfo=0, sumHumano=0, sumDragao=0, sumGigante=0;
 
-        for(Creature c: creatures){
-            switch(c.getTypeName()){
-                case ("Anão"):
-                    sumAnao = sumAnao + c.getCollectedTreasures();
-                    break;
-                case ("Elfo"):
-                    sumElfo = sumElfo + c.getCollectedTreasures();
-                    break;
-                case ("Humano"):
-                    sumHumano = sumHumano + c.getCollectedTreasures();
-                    break;
-                case ("Dragão"):
-                    sumDragao = sumDragao + c.getCollectedTreasures();
-                    break;
-                case ("Gigante"):
-                    sumGigante = sumGigante + c.getCollectedTreasures();
-                    break;
-            }
-        }
         List<String> tiposDeCriaturasESeusTesouros = new ArrayList<>();
-
-        Map<String, Integer> myTypes = new HashMap();
+        List<String> tipos = new ArrayList<>();
         creatures.stream()
-                .map(Creature::getTypeName)
-                .distinct()
-                .collect(Collectors.toList());
-        System.out.println(myTypes);
-
-
+        .sorted((c1, c2) -> c2.getTypeCapturesCounter() - c1.getTypeCapturesCounter())
+        .forEach(creature -> tiposDeCriaturasESeusTesouros.add(creature.getTypeName() + ":"+ tipoQuant.get(creature.getTypeName())+":"+creature.getTypeCapturesCounter()));
 
         return tiposDeCriaturasESeusTesouros;
     }
+    static Map<String, Integer> tipoQuant = new HashMap<>();
+    private Map<String, Integer> setTypeCounter(String tipo, int quant) {
+
+        tipoQuant.put(tipo, quant);
+        return tipoQuant;
+    }
+
+
+
 
     private List<String> listAlvosFavoritos (){
         //Os alvos favoritos - As 3 que mais vezes foram alvos de feitiços
