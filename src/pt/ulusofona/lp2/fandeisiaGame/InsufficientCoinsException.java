@@ -6,16 +6,28 @@ public class InsufficientCoinsException extends Exception{
 
     public InsufficientCoinsException(String message, Team ldr, Team res){
         super(message);
-        teamLdr = ldr;
-        teamRes = res;
+        this.teamLdr = ldr;
+        this.teamRes = res;
     }
 
     public boolean teamRequiresMoreCoins (int teamId){
-
+        if(teamId == teamLdr.getId()){
+            if(teamLdr.getCoins() < 0){
+                return true;
+            }
+        }else{
+            if(teamRes.getCoins() < 0){
+                return true;
+            }
+        }
         return false;
     }
 
     public int getRequiredCoinsForTeam (int teamID){
-        return 20;
+        if(teamID == teamLdr.getId()){
+            return 50 - teamLdr.getCoins();
+        } else {
+            return 50 - teamRes.getCoins();
+        }
     }
 }

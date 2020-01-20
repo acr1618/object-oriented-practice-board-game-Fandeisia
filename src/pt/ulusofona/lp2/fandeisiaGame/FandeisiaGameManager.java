@@ -1110,12 +1110,12 @@ public class FandeisiaGameManager{
     }
     private List<String> listMaisCarregadas(){
         //As 3 mais carregadas - As 3 criaturas com mais tesouros encontrados
-        List<String> as3MaisCarregadas = creatures.stream()
+        List<String> as3MaisCarregadas = new ArrayList<>();
+        creatures.stream()
                 .sorted((c1,c2) -> c2.getPoints() - c1.getPoints())
                 .limit(3)
                 .sorted((c1,c2) -> c2.getPoints() - c1.getPoints())
-                .map(creature -> creature.getId() + ":" + creature.getCollectedTreasures())
-                .collect(Collectors.toList());
+                .forEach(creature -> as3MaisCarregadas.add(creature.getId() + ":" + creature.getCollectedTreasures()));
         return as3MaisCarregadas;
     }
     private List<String> listMaisRicas(){
@@ -1125,18 +1125,18 @@ public class FandeisiaGameManager{
                     .comparing(Creature::getPoints)
                     .reversed()
                     .thenComparing(Creature::getPoints);
-            List<String> as5MaisRicas = creatures.stream()
+            List<String> as5MaisRicas = new ArrayList<>();
+            creatures.stream()
                     .sorted(compareByPointsAndTreasures)
                     .limit(5)
-                    .sorted((c1, c2) -> c2.getPoints() - c1.getPoints() )
-                    .map(creature -> creature.getId() + ":" + creature.getPoints() + ":" + creature.getCollectedTreasures())
-                    .collect(Collectors.toList());
+                    .sorted((c1, c2) -> c2.getPoints() - c1.getPoints())
+                    .forEach(creature -> as5MaisRicas.add(creature.getId() + ":" + creature.getPoints() + ":" + creature.getCollectedTreasures()));
             return as5MaisRicas;
         }else {
-            List<String> asExistentes = creatures.stream()
+            List<String> asExistentes = new ArrayList<>();
+            creatures.stream()
                     .sorted((c1,c2) -> c2.getPoints() - c1.getPoints())
-                    .map(creature -> creature.getId() + ":" + creature.getPoints() + ":" + creature.getCollectedTreasures())
-                    .collect(Collectors.toList());
+                    .forEach(creature -> asExistentes.add(creature.getId() + ":" + creature.getPoints() + ":" + creature.getCollectedTreasures()));
 
             return asExistentes;
         }
@@ -1144,23 +1144,22 @@ public class FandeisiaGameManager{
     private List<String> listAlvosFavoritos (){
         //Os alvos favoritos - As 3 que mais vezes foram alvos de feitiços
         List<String> osAlvosFavoritos = new ArrayList<>();
-        osAlvosFavoritos = creatures.stream()
+        creatures.stream()
                 .sorted((c1, c2) -> c2.getSpellTargetCounter() - c1.getSpellTargetCounter())
                 .limit(3)
-                .map(creature -> creature.getId() + ":" + creature.getTeamId() + ":" + creature.getSpellTargetCounter())
-                .collect(Collectors.toList());
+                .forEach(creature -> osAlvosFavoritos.add(creature.getId()+ ":" + creature.getSpellTargetCounter()));
 
         return osAlvosFavoritos;
     }
     private List<String> listMaisViajadas(){
         //As mais viajadas - As 3 que mais km percorreram? 1 casa 1 km
         List<String> as3MaisViajadas = new ArrayList<>();
-        as3MaisViajadas = creatures.stream()
+        creatures.stream()
                 .sorted((c1,c2) -> c2.getKm() - c1.getKm())
                 .limit(3)
                 .sorted(Comparator.comparingInt(Creature::getKm))
-                .map(creature -> creature.getId() + ":" + creature.getKm())
-                .collect(Collectors.toList());
+                .forEach(creature -> as3MaisViajadas.add(creature.getId() + ":" + creature.getKm()));
+
 
         return as3MaisViajadas;
     }
