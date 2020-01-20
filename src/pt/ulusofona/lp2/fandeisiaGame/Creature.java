@@ -157,7 +157,7 @@ public abstract class Creature extends Element {
     }
     public void empurraParaEste(){
         this.x = this.x +1;
-         // Custa 1 Move 1 para Leste
+        // Custa 1 Move 1 para Leste
     }
     public void empurraParaSul(){
         this.y = this.y +1;
@@ -165,7 +165,7 @@ public abstract class Creature extends Element {
     }
     public void empurraParaOeste(){
         this.x = this.x -1;
-         // Custa 1 Move 1 para Oeste
+        // Custa 1 Move 1 para Oeste
     }
     public void reduzAlcance(){
         this.range = 1; // Custa 2 Reduz o alcance para
@@ -174,7 +174,7 @@ public abstract class Creature extends Element {
     public void duplicaAlcance(){
         this.range = range *2;
         this.isDuplicate = true;
-         // Custa 3 Aumenta alcance para o dobro
+        // Custa 3 Aumenta alcance para o dobro
     }
     public boolean isEnchant() {
         return isEnchant;
@@ -268,6 +268,7 @@ public abstract class Creature extends Element {
     public int getCollectedTreasures() {
         return collectedTreasures;
     }
+
 
     //public void lookAtTheWorld(int rows, int columns, List<Hole> holes, List<Treasure> treasures, List<Creature> creatures) {} -----> NOT YET!
 
