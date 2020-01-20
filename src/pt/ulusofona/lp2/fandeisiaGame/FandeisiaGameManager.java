@@ -991,6 +991,7 @@ public class FandeisiaGameManager{
                     teamRes.addPoints(treasure.getValue()); // Add pontos time
                 }
                 creatureT.collectTreasure(treasure.getValue());
+                creatureT.setTypeCapturesCounter();
                 i.remove();
                 return true;
             }

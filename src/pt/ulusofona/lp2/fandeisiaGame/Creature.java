@@ -26,6 +26,12 @@ public abstract class Creature extends Element {
     private boolean isReduced = false;
     private boolean isDuplicate = false;
     private int typeCapturesCounter =0;
+    private int capturasAnao =0;
+    private int capturasHumano=0;
+    private int capturasGigante=0;
+    private int capturasElfo=0;
+    private int capturasDragao=0;
+
 
     /*// Variáveis para guardar o mundo:
     protected int rows;
@@ -274,12 +280,47 @@ public abstract class Creature extends Element {
         return collectedTreasures;
     }
 
-    public int getTypeCapturesCounter() {
+    public int setTypeCapturesCounter() {
+        switch(this.typeName){
+            case ("Anão"):{
+                this.capturasAnao++;
+            }
+            case ("Humano"):{
+                this.capturasHumano++;
+            }
+            case ("Elfo"):{
+                this.capturasElfo++;
+            }
+            case ("Dragão"):{
+                this.capturasDragao++;
+            }
+            case ("Gigante"):{
+                this.capturasGigante++;
+            }
+        }
+
         return typeCapturesCounter;
     }
 
-    public void setTypeCapturesCounter(int typeCapturesCounter) {
-        this.typeCapturesCounter = typeCapturesCounter;
+    public int getTypeCapturesCounter() {
+        switch(this.typeName){
+            case ("Anão"):{
+                return capturasAnao++;
+            }
+            case ("Humano"):{
+                return capturasHumano++;
+            }
+            case ("Elfo"):{
+                return capturasElfo++;
+            }
+            case ("Dragão"):{
+                return capturasDragao++;
+            }
+            case ("Gigante"):{
+                return capturasGigante++;
+            }
+        }
+        return -1; // não é bem isso... mas ok
     }
 
 
